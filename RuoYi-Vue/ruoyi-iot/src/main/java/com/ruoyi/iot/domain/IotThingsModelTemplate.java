@@ -30,6 +30,10 @@ public class IotThingsModelTemplate extends BaseEntity
     @Excel(name = "租户名称")
     private String tenantName;
 
+    /** 产品ID */
+    @Excel(name = "产品ID")
+    private Long productId;
+
     /** 标识符，产品下唯一 */
     @Excel(name = "标识符，产品下唯一")
     private String identifier;
@@ -107,6 +111,16 @@ public class IotThingsModelTemplate extends BaseEntity
     public String getTenantName() 
     {
         return tenantName;
+    }
+
+    public Long getProductId() 
+    {
+        return productId;
+    }
+
+    public void setProductId(Long productId) 
+    {
+        this.productId = productId;
     }
 
     public void setIdentifier(String identifier) 
@@ -216,6 +230,7 @@ public class IotThingsModelTemplate extends BaseEntity
             .append("templateName", getTemplateName())
             .append("tenantId", getTenantId())
             .append("tenantName", getTenantName())
+            .append("productId", getProductId())
             .append("identifier", getIdentifier())
             .append("type", getType())
             .append("datatype", getDatatype())

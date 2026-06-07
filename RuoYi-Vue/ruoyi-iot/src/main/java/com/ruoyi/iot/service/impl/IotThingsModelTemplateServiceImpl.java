@@ -43,6 +43,50 @@ public class IotThingsModelTemplateServiceImpl implements IIotThingsModelTemplat
     }
 
     /**
+     * 批量导入通用物模型模板至指定产品
+     * 
+     * @param productId 产品ID
+     * @param productName 产品名称
+     * @param templateIds 模板ID集合
+     * @return 结果
+     */
+    @Override
+    public int importModelsToProduct(Long productId, String productName, Long[] templateIds)
+    {
+        int count = 0;
+        for (Long templateId : templateIds) {
+            // 1. 查询源模板
+            IotThingsModelTemplate source = iotThingsModelTemplateMapper.selectIotThingsModelTemplateByTemplateId(templateId);
+            if (source == null) {
+                continue;
+            }
+            // 2. 复制为新记录，绑定到指定产品
+            IotThingsModelTemplate target = new IotThingsModelTemplate();
+            target.setProductId(productId);
+            target.setTemplateName(source.getTemplateName());
+            target.setIdentifier(source.getIdentifier());
+            target.setType(source.getType());
+            target.setDatatype(source.getDatatype());
+            target.setSpecs(source.getSpecs());
+            target.setIsSys(source.getIsSys());
+            target.setIsTop(source.getIsTop());
+            target.setIsMonitor(source.getIsMonitor());
+            target.setIsReadonly(source.getIsReadonly());
+            target.setModelOrder(source.getModelOrder());
+            target.setTenantId(source.getTenantId() != null ? source.getTenantId() : 0L);
+            target.setTenantName(source.getTenantName() != null ? source.getTenantName() : "系统");
+            target.setCreateTime(DateUtils.getNowDate());
+            try {
+                target.setCreateBy(SecurityUtils.getUsername());
+            } catch (Exception e) {
+                target.setCreateBy("admin");
+            }
+            count += iotThingsModelTemplateMapper.insertIotThingsModelTemplate(target);
+        }
+        return count;
+    }
+
+    /**
      * 新增物模型模板
      * * @param iotThingsModelTemplate 物模型模板
      * @return 结果

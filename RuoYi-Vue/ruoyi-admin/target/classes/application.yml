@@ -151,6 +151,7 @@ xss:
 # 物联网相关配置
 iot:
   mqtt:
+    enabled: false
     url: tcp://localhost:1883
     clientId: ruoyi_iot_backend_service
     username: admin

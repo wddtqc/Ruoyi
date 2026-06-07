@@ -5,10 +5,12 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnProperty(prefix = "iot.mqtt", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class MqttConfig {
 
     private static final Logger log = LoggerFactory.getLogger(MqttConfig.class);

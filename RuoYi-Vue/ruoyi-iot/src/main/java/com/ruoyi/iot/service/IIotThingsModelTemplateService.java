@@ -36,6 +36,16 @@ public interface IIotThingsModelTemplateService
     public int insertIotThingsModelTemplate(IotThingsModelTemplate iotThingsModelTemplate);
 
     /**
+     * 批量导入通用物模型模板至指定产品
+     * 
+     * @param productId 产品ID
+     * @param productName 产品名称
+     * @param templateIds 模板ID集合
+     * @return 结果
+     */
+    public int importModelsToProduct(Long productId, String productName, Long[] templateIds);
+
+    /**
      * 修改物模型模板
      * 
      * @param iotThingsModelTemplate 物模型模板

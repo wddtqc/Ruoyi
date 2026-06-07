@@ -19,7 +19,7 @@
     </el-row>
 
     <el-table v-loading="loading" :data="modelList" size="mini">
-        <el-table-column label="名称" align="center" prop="modelName" />
+        <el-table-column label="名称" align="center" prop="templateName" />
         <el-table-column label="标识符" align="center" prop="identifier" />
         <el-table-column label="只读" align="center" prop="" width="80">
             <template slot-scope="scope">
@@ -379,7 +379,14 @@ export default {
         getList() {
             this.loading = true;
             listModel(this.queryParams).then((response) => {
-                this.modelList = response.rows;
+                var rows = response.rows;
+                if (rows) {
+                    for (var i = 0; i < rows.length; i++) {
+                        rows[i].modelId = rows[i].templateId;
+                        rows[i].modelName = rows[i].templateName;
+                    }
+                }
+                this.modelList = rows;
                 this.total = response.total;
                 this.loading = false;
             });

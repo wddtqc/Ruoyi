@@ -9,6 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="templateName"    column="template_name"    />
         <result property="tenantId"    column="tenant_id"    />
         <result property="tenantName"    column="tenant_name"    />
+        <result property="productId"    column="product_id"    />
         <result property="identifier"    column="identifier"    />
         <result property="type"    column="type"    />
         <result property="datatype"    column="datatype"    />
@@ -27,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectIotThingsModelTemplateVo">
-        select template_id, template_name, tenant_id, tenant_name, identifier, type, datatype, specs, is_sys, is_Top, is_Monitor, is_readonly, model_order, del_flag, create_by, create_time, update_by, update_time, remark from iot_things_model_template
+        select template_id, template_name, tenant_id, tenant_name, product_id, identifier, type, datatype, specs, is_sys, is_Top, is_Monitor, is_readonly, model_order, del_flag, create_by, create_time, update_by, update_time, remark from iot_things_model_template
     </sql>
 
     <select id="selectIotThingsModelTemplateList" parameterType="IotThingsModelTemplate" resultMap="IotThingsModelTemplateResult">
@@ -36,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
             <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
             <if test="tenantName != null  and tenantName != ''"> and tenant_name like concat('%', #{tenantName}, '%')</if>
+            <if test="productId != null "> and product_id = #{productId}</if>
             <if test="identifier != null  and identifier != ''"> and identifier = #{identifier}</if>
             <if test="type != null "> and type = #{type}</if>
             <if test="datatype != null  and datatype != ''"> and datatype = #{datatype}</if>
@@ -59,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="templateName != null and templateName != ''">template_name,</if>
             <if test="tenantId != null">tenant_id,</if>
             <if test="tenantName != null and tenantName != ''">tenant_name,</if>
+            <if test="productId != null">product_id,</if>
             <if test="identifier != null and identifier != ''">identifier,</if>
             <if test="type != null">type,</if>
             <if test="datatype != null and datatype != ''">datatype,</if>
@@ -79,6 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="templateName != null and templateName != ''">#{templateName},</if>
             <if test="tenantId != null">#{tenantId},</if>
             <if test="tenantName != null and tenantName != ''">#{tenantName},</if>
+            <if test="productId != null">#{productId},</if>
             <if test="identifier != null and identifier != ''">#{identifier},</if>
             <if test="type != null">#{type},</if>
             <if test="datatype != null and datatype != ''">#{datatype},</if>
@@ -103,6 +107,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
             <if test="tenantId != null">tenant_id = #{tenantId},</if>
             <if test="tenantName != null and tenantName != ''">tenant_name = #{tenantName},</if>
+            <if test="productId != null">product_id = #{productId},</if>
             <if test="identifier != null and identifier != ''">identifier = #{identifier},</if>
             <if test="type != null">type = #{type},</if>
             <if test="datatype != null and datatype != ''">datatype = #{datatype},</if>
