@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotDeviceRunningStatusMapper">
+
+    <resultMap type="IotDeviceRunningStatus" id="IotDeviceRunningStatusResult">
+        <id property="statusId" column="status_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="serialNumber" column="serial_number"/>
+        <result property="productId" column="product_id"/>
+        <result property="status" column="status"/>
+        <result property="rssi" column="rssi"/>
+        <result property="onlineTime" column="online_time"/>
+        <result property="offlineTime" column="offline_time"/>
+        <result property="isShadow" column="is_shadow"/>
+        <result property="thingsModelValue" column="things_model_value"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectIotDeviceRunningStatusVo">
+        select status_id, device_id, device_name, serial_number, product_id,
+               status, rssi, online_time, offline_time, is_shadow,
+               things_model_value, update_time
+        from iot_device_running_status
+    </sql>
+
+    <select id="selectIotDeviceRunningStatusById" parameterType="Long" resultMap="IotDeviceRunningStatusResult">
+        <include refid="selectIotDeviceRunningStatusVo"/>
+        where status_id = #{statusId}
+    </select>
+
+    <select id="selectIotDeviceRunningStatusByDeviceId" parameterType="Long" resultMap="IotDeviceRunningStatusResult">
+        <include refid="selectIotDeviceRunningStatusVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <select id="selectIotDeviceRunningStatusList" parameterType="IotDeviceRunningStatus" resultMap="IotDeviceRunningStatusResult">
+        <include refid="selectIotDeviceRunningStatusVo"/>
+        <where>
+            <if test="deviceName != null and deviceName != ''">
+                AND device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="serialNumber != null and serialNumber != ''">
+                AND serial_number like concat('%', #{serialNumber}, '%')
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertIotDeviceRunningStatus" parameterType="IotDeviceRunningStatus" useGeneratedKeys="true" keyProperty="statusId">
+        insert into iot_device_running_status
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="status != null">status,</if>
+            <if test="rssi != null">rssi,</if>
+            <if test="onlineTime != null">online_time,</if>
+            <if test="offlineTime != null">offline_time,</if>
+            <if test="isShadow != null">is_shadow,</if>
+            <if test="thingsModelValue != null">things_model_value,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="rssi != null">#{rssi},</if>
+            <if test="onlineTime != null">#{onlineTime},</if>
+            <if test="offlineTime != null">#{offlineTime},</if>
+            <if test="isShadow != null">#{isShadow},</if>
+            <if test="thingsModelValue != null">#{thingsModelValue},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIotDeviceRunningStatus" parameterType="IotDeviceRunningStatus">
+        update iot_device_running_status
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="rssi != null">rssi = #{rssi},</if>
+            <if test="onlineTime != null">online_time = #{onlineTime},</if>
+            <if test="offlineTime != null">offline_time = #{offlineTime},</if>
+            <if test="isShadow != null">is_shadow = #{isShadow},</if>
+            <if test="thingsModelValue != null">things_model_value = #{thingsModelValue},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where status_id = #{statusId}
+    </update>
+
+    <delete id="deleteIotDeviceRunningStatusById" parameterType="Long">
+        delete from iot_device_running_status where status_id = #{statusId}
+    </delete>
+
+    <delete id="deleteIotDeviceRunningStatusByIds" parameterType="String">
+        delete from iot_device_running_status where status_id in
+        <foreach item="statusId" collection="array" open="(" separator="," close=")">
+            #{statusId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteIotDeviceRunningStatusByDeviceId" parameterType="Long">
+        delete from iot_device_running_status where device_id = #{deviceId}
+    </delete>
+
+</mapper>
