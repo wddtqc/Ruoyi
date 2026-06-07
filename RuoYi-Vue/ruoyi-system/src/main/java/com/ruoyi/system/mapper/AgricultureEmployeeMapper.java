@@ -1,0 +1,61 @@
+package com.ruoyi.system.mapper;
+
+import java.util.List;
+import com.ruoyi.system.domain.AgricultureEmployee;
+
+/**
+ * 雇员Mapper接口
+ * 
+ * @author ruoyi
+ * @date 2026-06-01
+ */
+public interface AgricultureEmployeeMapper 
+{
+    /**
+     * 查询雇员
+     * 
+     * @param employeeId 雇员主键
+     * @return 雇员
+     */
+    public AgricultureEmployee selectAgricultureEmployeeByEmployeeId(String employeeId);
+
+    /**
+     * 查询雇员列表
+     * 
+     * @param agricultureEmployee 雇员
+     * @return 雇员集合
+     */
+    public List<AgricultureEmployee> selectAgricultureEmployeeList(AgricultureEmployee agricultureEmployee);
+
+    /**
+     * 新增雇员
+     * 
+     * @param agricultureEmployee 雇员
+     * @return 结果
+     */
+    public int insertAgricultureEmployee(AgricultureEmployee agricultureEmployee);
+
+    /**
+     * 修改雇员
+     * 
+     * @param agricultureEmployee 雇员
+     * @return 结果
+     */
+    public int updateAgricultureEmployee(AgricultureEmployee agricultureEmployee);
+
+    /**
+     * 删除雇员
+     * 
+     * @param employeeId 雇员主键
+     * @return 结果
+     */
+    public int deleteAgricultureEmployeeByEmployeeId(String employeeId);
+
+    /**
+     * 批量删除雇员
+     * 
+     * @param employeeIds 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteAgricultureEmployeeByEmployeeIds(String[] employeeIds);
+}

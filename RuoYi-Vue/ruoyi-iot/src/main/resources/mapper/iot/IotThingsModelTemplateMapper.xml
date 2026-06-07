@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotThingsModelTemplateMapper">
+    
+    <resultMap type="IotThingsModelTemplate" id="IotThingsModelTemplateResult">
+        <result property="templateId"    column="template_id"    />
+        <result property="templateName"    column="template_name"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="tenantName"    column="tenant_name"    />
+        <result property="identifier"    column="identifier"    />
+        <result property="type"    column="type"    />
+        <result property="datatype"    column="datatype"    />
+        <result property="specs"    column="specs"    />
+        <result property="isSys"    column="is_sys"    />
+        <result property="isTop"    column="is_Top"    />
+        <result property="isMonitor"    column="is_Monitor"    />
+        <result property="isReadonly"    column="is_readonly"    />
+        <result property="modelOrder"    column="model_order"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectIotThingsModelTemplateVo">
+        select template_id, template_name, tenant_id, tenant_name, identifier, type, datatype, specs, is_sys, is_Top, is_Monitor, is_readonly, model_order, del_flag, create_by, create_time, update_by, update_time, remark from iot_things_model_template
+    </sql>
+
+    <select id="selectIotThingsModelTemplateList" parameterType="IotThingsModelTemplate" resultMap="IotThingsModelTemplateResult">
+        <include refid="selectIotThingsModelTemplateVo"/>
+        <where>  
+            <if test="templateName != null  and templateName != ''"> and template_name like concat('%', #{templateName}, '%')</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="tenantName != null  and tenantName != ''"> and tenant_name like concat('%', #{tenantName}, '%')</if>
+            <if test="identifier != null  and identifier != ''"> and identifier = #{identifier}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="datatype != null  and datatype != ''"> and datatype = #{datatype}</if>
+            <if test="specs != null  and specs != ''"> and specs = #{specs}</if>
+            <if test="isSys != null "> and is_sys = #{isSys}</if>
+            <if test="isTop != null "> and is_Top = #{isTop}</if>
+            <if test="isMonitor != null "> and is_Monitor = #{isMonitor}</if>
+            <if test="isReadonly != null "> and is_readonly = #{isReadonly}</if>
+            <if test="modelOrder != null "> and model_order = #{modelOrder}</if>
+        </where>
+    </select>
+    
+    <select id="selectIotThingsModelTemplateByTemplateId" parameterType="Long" resultMap="IotThingsModelTemplateResult">
+        <include refid="selectIotThingsModelTemplateVo"/>
+        where template_id = #{templateId}
+    </select>
+
+    <insert id="insertIotThingsModelTemplate" parameterType="IotThingsModelTemplate" useGeneratedKeys="true" keyProperty="templateId">
+        insert into iot_things_model_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">template_name,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="tenantName != null and tenantName != ''">tenant_name,</if>
+            <if test="identifier != null and identifier != ''">identifier,</if>
+            <if test="type != null">type,</if>
+            <if test="datatype != null and datatype != ''">datatype,</if>
+            <if test="specs != null and specs != ''">specs,</if>
+            <if test="isSys != null">is_sys,</if>
+            <if test="isTop != null">is_Top,</if>
+            <if test="isMonitor != null">is_Monitor,</if>
+            <if test="isReadonly != null">is_readonly,</if>
+            <if test="modelOrder != null">model_order,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">#{templateName},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="tenantName != null and tenantName != ''">#{tenantName},</if>
+            <if test="identifier != null and identifier != ''">#{identifier},</if>
+            <if test="type != null">#{type},</if>
+            <if test="datatype != null and datatype != ''">#{datatype},</if>
+            <if test="specs != null and specs != ''">#{specs},</if>
+            <if test="isSys != null">#{isSys},</if>
+            <if test="isTop != null">#{isTop},</if>
+            <if test="isMonitor != null">#{isMonitor},</if>
+            <if test="isReadonly != null">#{isReadonly},</if>
+            <if test="modelOrder != null">#{modelOrder},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIotThingsModelTemplate" parameterType="IotThingsModelTemplate">
+        update iot_things_model_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="templateName != null and templateName != ''">template_name = #{templateName},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="tenantName != null and tenantName != ''">tenant_name = #{tenantName},</if>
+            <if test="identifier != null and identifier != ''">identifier = #{identifier},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="datatype != null and datatype != ''">datatype = #{datatype},</if>
+            <if test="specs != null and specs != ''">specs = #{specs},</if>
+            <if test="isSys != null">is_sys = #{isSys},</if>
+            <if test="isTop != null">is_Top = #{isTop},</if>
+            <if test="isMonitor != null">is_Monitor = #{isMonitor},</if>
+            <if test="isReadonly != null">is_readonly = #{isReadonly},</if>
+            <if test="modelOrder != null">model_order = #{modelOrder},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where template_id = #{templateId}
+    </update>
+
+    <delete id="deleteIotThingsModelTemplateByTemplateId" parameterType="Long">
+        delete from iot_things_model_template where template_id = #{templateId}
+    </delete>
+
+    <delete id="deleteIotThingsModelTemplateByTemplateIds" parameterType="String">
+        delete from iot_things_model_template where template_id in 
+        <foreach item="templateId" collection="array" open="(" separator="," close=")">
+            #{templateId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotProductMapper">
+    
+    <resultMap type="IotProduct" id="IotProductResult">
+        <result property="productId"    column="product_id"    />
+        <result property="productName"    column="product_name"    />
+        <result property="protocolCode"    column="protocol_code"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="categoryName"    column="category_name"    />
+        <result property="tenantId"    column="tenant_id"    />
+        <result property="tenantName"    column="tenant_name"    />
+        <result property="isSys"    column="is_sys"    />
+        <result property="isAuthorize"    column="is_authorize"    />
+        <result property="mqttAccount"    column="mqtt_account"    />
+        <result property="mqttPassword"    column="mqtt_password"    />
+        <result property="mqttSecret"    column="mqtt_secret"    />
+        <result property="status"    column="status"    />
+        <result property="thingsModelsJson"    column="things_models_json"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="networkMethod"    column="network_method"    />
+        <result property="vertificateMethod"    column="vertificate_method"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectIotProductVo">
+        select product_id, product_name, protocol_code, category_id, category_name, tenant_id, tenant_name, is_sys, is_authorize, mqtt_account, mqtt_password, mqtt_secret, status, things_models_json, device_type, network_method, vertificate_method, img_url, del_flag, create_by, create_time, update_by, update_time, remark from iot_product
+    </sql>
+
+    <select id="selectIotProductList" parameterType="IotProduct" resultMap="IotProductResult">
+        <include refid="selectIotProductVo"/>
+        <where>  
+            <if test="productName != null  and productName != ''"> and product_name like concat('%', #{productName}, '%')</if>
+            <if test="protocolCode != null "> and protocol_code = #{protocolCode}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
+            <if test="categoryName != null  and categoryName != ''"> and category_name like concat('%', #{categoryName}, '%')</if>
+            <if test="tenantId != null "> and tenant_id = #{tenantId}</if>
+            <if test="tenantName != null  and tenantName != ''"> and tenant_name like concat('%', #{tenantName}, '%')</if>
+            <if test="isSys != null "> and is_sys = #{isSys}</if>
+            <if test="isAuthorize != null "> and is_authorize = #{isAuthorize}</if>
+            <if test="mqttAccount != null  and mqttAccount != ''"> and mqtt_account = #{mqttAccount}</if>
+            <if test="mqttPassword != null  and mqttPassword != ''"> and mqtt_password = #{mqttPassword}</if>
+            <if test="mqttSecret != null  and mqttSecret != ''"> and mqtt_secret = #{mqttSecret}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="thingsModelsJson != null  and thingsModelsJson != ''"> and things_models_json = #{thingsModelsJson}</if>
+            <if test="deviceType != null "> and device_type = #{deviceType}</if>
+            <if test="networkMethod != null "> and network_method = #{networkMethod}</if>
+            <if test="vertificateMethod != null "> and vertificate_method = #{vertificateMethod}</if>
+            <if test="imgUrl != null  and imgUrl != ''"> and img_url = #{imgUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectIotProductByProductId" parameterType="Long" resultMap="IotProductResult">
+        <include refid="selectIotProductVo"/>
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertIotProduct" parameterType="IotProduct" useGeneratedKeys="true" keyProperty="productId">
+        insert into iot_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name,</if>
+            <if test="protocolCode != null">protocol_code,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="categoryName != null and categoryName != ''">category_name,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="tenantName != null and tenantName != ''">tenant_name,</if>
+            <if test="isSys != null">is_sys,</if>
+            <if test="isAuthorize != null">is_authorize,</if>
+            <if test="mqttAccount != null">mqtt_account,</if>
+            <if test="mqttPassword != null">mqtt_password,</if>
+            <if test="mqttSecret != null">mqtt_secret,</if>
+            <if test="status != null">status,</if>
+            <if test="thingsModelsJson != null">things_models_json,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="networkMethod != null">network_method,</if>
+            <if test="vertificateMethod != null">vertificate_method,</if>
+            <if test="imgUrl != null">img_url,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productName != null and productName != ''">#{productName},</if>
+            <if test="protocolCode != null">#{protocolCode},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="categoryName != null and categoryName != ''">#{categoryName},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="tenantName != null and tenantName != ''">#{tenantName},</if>
+            <if test="isSys != null">#{isSys},</if>
+            <if test="isAuthorize != null">#{isAuthorize},</if>
+            <if test="mqttAccount != null">#{mqttAccount},</if>
+            <if test="mqttPassword != null">#{mqttPassword},</if>
+            <if test="mqttSecret != null">#{mqttSecret},</if>
+            <if test="status != null">#{status},</if>
+            <if test="thingsModelsJson != null">#{thingsModelsJson},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="networkMethod != null">#{networkMethod},</if>
+            <if test="vertificateMethod != null">#{vertificateMethod},</if>
+            <if test="imgUrl != null">#{imgUrl},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIotProduct" parameterType="IotProduct">
+        update iot_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productName != null and productName != ''">product_name = #{productName},</if>
+            <if test="protocolCode != null">protocol_code = #{protocolCode},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="categoryName != null and categoryName != ''">category_name = #{categoryName},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="tenantName != null and tenantName != ''">tenant_name = #{tenantName},</if>
+            <if test="isSys != null">is_sys = #{isSys},</if>
+            <if test="isAuthorize != null">is_authorize = #{isAuthorize},</if>
+            <if test="mqttAccount != null">mqtt_account = #{mqttAccount},</if>
+            <if test="mqttPassword != null">mqtt_password = #{mqttPassword},</if>
+            <if test="mqttSecret != null">mqtt_secret = #{mqttSecret},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="thingsModelsJson != null">things_models_json = #{thingsModelsJson},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="networkMethod != null">network_method = #{networkMethod},</if>
+            <if test="vertificateMethod != null">vertificate_method = #{vertificateMethod},</if>
+            <if test="imgUrl != null">img_url = #{imgUrl},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where product_id = #{productId}
+    </update>
+
+    <delete id="deleteIotProductByProductId" parameterType="Long">
+        delete from iot_product where product_id = #{productId}
+    </delete>
+
+    <delete id="deleteIotProductByProductIds" parameterType="String">
+        delete from iot_product where product_id in 
+        <foreach item="productId" collection="array" open="(" separator="," close=")">
+            #{productId}
+        </foreach>
+    </delete>
+</mapper>
