@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotDeviceMapper">
+
+    <resultMap type="IotDevice" id="IotDeviceResult">
+        <id property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="serialNumber" column="serial_number"/>
+        <result property="status" column="status"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="firmwareVersion" column="firmware_version"/>
+        <result property="coordinate" column="coordinate"/>
+        <result property="networkAddress" column="network_address"/>
+        <result property="networkIp" column="network_ip"/>
+        <result property="locationWay" column="location_way"/>
+        <result property="landId" column="land_id"/>
+        <result property="landName" column="land_name"/>
+        <result property="isShadow" column="is_shadow"/>
+        <result property="tenantId" column="tenant_id"/>
+        <result property="tenantName" column="tenant_name"/>
+        <result property="activeTime" column="active_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectIotDeviceVo">
+        select device_id, device_name, product_id, product_name, serial_number,
+               status, device_type, firmware_version, coordinate, network_address,
+               network_ip, location_way, land_id, land_name, is_shadow,
+               tenant_id, tenant_name, active_time, del_flag,
+               create_by, create_time, update_by, update_time, remark
+        from iot_device
+    </sql>
+
+    <select id="selectIotDeviceById" parameterType="Long" resultMap="IotDeviceResult">
+        <include refid="selectIotDeviceVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <select id="selectIotDeviceList" parameterType="IotDevice" resultMap="IotDeviceResult">
+        <include refid="selectIotDeviceVo"/>
+        <where>
+            <if test="deviceName != null and deviceName != ''">
+                AND device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="serialNumber != null and serialNumber != ''">
+                AND serial_number like concat('%', #{serialNumber}, '%')
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="deviceType != null">
+                AND device_type = #{deviceType}
+            </if>
+            <if test="productId != null">
+                AND product_id = #{productId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertIotDevice" parameterType="IotDevice" useGeneratedKeys="true" keyProperty="deviceId">
+        insert into iot_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceName != null">device_name,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="status != null">status,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="firmwareVersion != null">firmware_version,</if>
+            <if test="coordinate != null">coordinate,</if>
+            <if test="networkAddress != null">network_address,</if>
+            <if test="networkIp != null">network_ip,</if>
+            <if test="locationWay != null">location_way,</if>
+            <if test="landId != null">land_id,</if>
+            <if test="landName != null">land_name,</if>
+            <if test="isShadow != null">is_shadow,</if>
+            <if test="tenantId != null">tenant_id,</if>
+            <if test="tenantName != null">tenant_name,</if>
+            <if test="activeTime != null">active_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="status != null">#{status},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="firmwareVersion != null">#{firmwareVersion},</if>
+            <if test="coordinate != null">#{coordinate},</if>
+            <if test="networkAddress != null">#{networkAddress},</if>
+            <if test="networkIp != null">#{networkIp},</if>
+            <if test="locationWay != null">#{locationWay},</if>
+            <if test="landId != null">#{landId},</if>
+            <if test="landName != null">#{landName},</if>
+            <if test="isShadow != null">#{isShadow},</if>
+            <if test="tenantId != null">#{tenantId},</if>
+            <if test="tenantName != null">#{tenantName},</if>
+            <if test="activeTime != null">#{activeTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIotDevice" parameterType="IotDevice">
+        update iot_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="firmwareVersion != null">firmware_version = #{firmwareVersion},</if>
+            <if test="coordinate != null">coordinate = #{coordinate},</if>
+            <if test="networkAddress != null">network_address = #{networkAddress},</if>
+            <if test="networkIp != null">network_ip = #{networkIp},</if>
+            <if test="locationWay != null">location_way = #{locationWay},</if>
+            <if test="landId != null">land_id = #{landId},</if>
+            <if test="landName != null">land_name = #{landName},</if>
+            <if test="isShadow != null">is_shadow = #{isShadow},</if>
+            <if test="tenantId != null">tenant_id = #{tenantId},</if>
+            <if test="tenantName != null">tenant_name = #{tenantName},</if>
+            <if test="activeTime != null">active_time = #{activeTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where device_id = #{deviceId}
+    </update>
+
+    <delete id="deleteIotDeviceById" parameterType="Long">
+        update iot_device set del_flag = '2' where device_id = #{deviceId}
+    </delete>
+
+    <delete id="deleteIotDeviceByIds" parameterType="String">
+        update iot_device set del_flag = '2' where device_id in
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </delete>
+
+</mapper>

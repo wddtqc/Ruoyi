@@ -35,6 +35,24 @@ export function updateAlert(data) {
   })
 }
 
+// 根据设备ID查询告警列表
+export function listAlertByDeviceId(deviceId) {
+  return request({
+    url: '/iot/alert/listByDeviceId',
+    method: 'get',
+    params: { deviceId }
+  })
+}
+
+// 处理告警
+export function handleAlert(data) {
+  return request({
+    url: '/iot/alert/handle',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除设备告警
 export function delAlert(alertId) {
   return request({

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotDeviceAlertMapper">
+
+    <resultMap type="IotDeviceAlert" id="IotDeviceAlertResult">
+        <id property="alertId" column="alert_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="alertName" column="alert_name"/>
+        <result property="alertLevel" column="alert_level"/>
+        <result property="alertContent" column="alert_content"/>
+        <result property="alertTime" column="alert_time"/>
+        <result property="alertType" column="alert_type"/>
+        <result property="source" column="source"/>
+        <result property="sourceIdentifier" column="source_identifier"/>
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="status" column="status"/>
+        <result property="handler" column="handler"/>
+        <result property="handleTime" column="handle_time"/>
+        <result property="handleRemark" column="handle_remark"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectIotDeviceAlertVo">
+        select alert_id, device_id, device_name, alert_name, alert_level,
+               alert_content, alert_time, alert_type, source, source_identifier,
+               product_id, product_name, status, handler, handle_time,
+               handle_remark, del_flag, create_by, create_time, update_by,
+               update_time
+        from iot_device_alert
+    </sql>
+
+    <select id="selectIotDeviceAlertById" parameterType="Long" resultMap="IotDeviceAlertResult">
+        <include refid="selectIotDeviceAlertVo"/>
+        where alert_id = #{alertId}
+    </select>
+
+    <select id="selectIotDeviceAlertList" parameterType="IotDeviceAlert" resultMap="IotDeviceAlertResult">
+        <include refid="selectIotDeviceAlertVo"/>
+        <where>
+            <if test="alertName != null and alertName != ''">
+                AND alert_name like concat('%', #{alertName}, '%')
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                AND device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="alertLevel != null">
+                AND alert_level = #{alertLevel}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="deviceId != null">
+                AND device_id = #{deviceId}
+            </if>
+        </where>
+        order by alert_time desc
+    </select>
+
+    <select id="selectIotDeviceAlertListByDeviceId" parameterType="Long" resultMap="IotDeviceAlertResult">
+        <include refid="selectIotDeviceAlertVo"/>
+        where device_id = #{deviceId}
+        order by alert_time desc
+    </select>
+
+    <insert id="insertIotDeviceAlert" parameterType="IotDeviceAlert" useGeneratedKeys="true" keyProperty="alertId">
+        insert into iot_device_alert
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="alertName != null">alert_name,</if>
+            <if test="alertLevel != null">alert_level,</if>
+            <if test="alertContent != null">alert_content,</if>
+            <if test="alertTime != null">alert_time,</if>
+            <if test="alertType != null">alert_type,</if>
+            <if test="source != null">source,</if>
+            <if test="sourceIdentifier != null">source_identifier,</if>
+            <if test="productId != null">product_id,</if>
+            <if test="productName != null">product_name,</if>
+            <if test="status != null">status,</if>
+            <if test="handler != null">handler,</if>
+            <if test="handleTime != null">handle_time,</if>
+            <if test="handleRemark != null">handle_remark,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="alertName != null">#{alertName},</if>
+            <if test="alertLevel != null">#{alertLevel},</if>
+            <if test="alertContent != null">#{alertContent},</if>
+            <if test="alertTime != null">#{alertTime},</if>
+            <if test="alertType != null">#{alertType},</if>
+            <if test="source != null">#{source},</if>
+            <if test="sourceIdentifier != null">#{sourceIdentifier},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="productName != null">#{productName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="handler != null">#{handler},</if>
+            <if test="handleTime != null">#{handleTime},</if>
+            <if test="handleRemark != null">#{handleRemark},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateIotDeviceAlert" parameterType="IotDeviceAlert">
+        update iot_device_alert
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="alertName != null">alert_name = #{alertName},</if>
+            <if test="alertLevel != null">alert_level = #{alertLevel},</if>
+            <if test="alertContent != null">alert_content = #{alertContent},</if>
+            <if test="alertTime != null">alert_time = #{alertTime},</if>
+            <if test="alertType != null">alert_type = #{alertType},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="sourceIdentifier != null">source_identifier = #{sourceIdentifier},</if>
+            <if test="productId != null">product_id = #{productId},</if>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="handler != null">handler = #{handler},</if>
+            <if test="handleTime != null">handle_time = #{handleTime},</if>
+            <if test="handleRemark != null">handle_remark = #{handleRemark},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where alert_id = #{alertId}
+    </update>
+
+    <delete id="deleteIotDeviceAlertById" parameterType="Long">
+        update iot_device_alert set del_flag = '2' where alert_id = #{alertId}
+    </delete>
+
+    <delete id="deleteIotDeviceAlertByIds" parameterType="String">
+        update iot_device_alert set del_flag = '2' where alert_id in
+        <foreach item="alertId" collection="array" open="(" separator="," close=")">
+            #{alertId}
+        </foreach>
+    </delete>
+
+</mapper>

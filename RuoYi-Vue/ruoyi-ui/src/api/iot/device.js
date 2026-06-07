@@ -90,7 +90,7 @@ export function getDeviceStatistic() {
 // 查询设备运行状态详细
 export function getDeviceRunningStatus(deviceId) {
     return request({
-        url: '/iot/device/runningStatus/' + deviceId,
+        url: '/iot/device/runningStatus/device/' + deviceId,
         method: 'get'
     })
 }
