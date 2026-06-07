@@ -1,5 +1,11 @@
 <template>
   <div class="app-container home">
+    <!-- 智慧农业大屏入口 -->
+    <div class="screen-entry">
+      <el-button type="primary" size="medium" icon="el-icon-s-data" @click="$router.push('/screen')">
+        进入智慧农业大数据监测大屏
+      </el-button>
+    </div>
     <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>若依后台管理框架</h2>
@@ -1144,6 +1150,29 @@ export default {
 
 <style scoped lang="scss">
 .home {
+  .screen-entry {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #081022 0%, #0a1a3a 100%);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 8px;
+
+    .el-button {
+      font-size: 16px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #00d4ff, #00b894);
+      border: none;
+      letter-spacing: 2px;
+      font-weight: 600;
+
+      &:hover {
+        background: linear-gradient(135deg, #00e8ff, #00d9a0);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+      }
+    }
+  }
+
   blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;

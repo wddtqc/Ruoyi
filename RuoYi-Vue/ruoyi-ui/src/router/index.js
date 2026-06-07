@@ -75,6 +75,12 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/screen',
+    component: () => import('@/views/agriculture/screen/index'),
+    name: 'Screen',
+    meta: { title: '智慧农业大屏', icon: 'dashboard' }
+  },
+  {
     path: '/lock',
     component: () => import('@/views/lock'),
     hidden: true,
