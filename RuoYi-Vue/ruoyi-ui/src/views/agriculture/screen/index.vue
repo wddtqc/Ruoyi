@@ -18,63 +18,72 @@
 
     <!-- 主体内容区域 -->
     <main class="screen-main">
-      <!-- 左侧面板 -->
-      <section class="panel-left">
-        <!-- 气象信息 -->
-        <div class="panel-card weather-panel">
-          <div class="card-title">
-            <span class="title-icon"><i class="el-icon-cloudy"></i></span>
-            实时气象监测 — 重庆财经学院
-          </div>
-          <div class="weather-content" v-if="weatherData">
-            <div class="weather-main">
-              <div class="weather-temp">{{ weatherData.main.temp }}°C</div>
-              <div class="weather-desc">{{ weatherData.weather[0].description }}</div>
-              <img :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" class="weather-icon" alt="weather" />
+      <!-- 上部：地图（左上）+ 右侧面板 -->
+      <div class="screen-top">
+        <!-- 地图区域 — 左上角 -->
+        <section class="map-area">
+          <div class="map-wrapper">
+            <div id="screenMap" class="map-container"></div>
+            <div class="map-overlay-top">
+              <div class="stat-badge" v-for="stat in overviewStats" :key="stat.label">
+                <span class="stat-num" :style="{ color: stat.color }">{{ stat.value }}</span>
+                <span class="stat-label">{{ stat.label }}</span>
+              </div>
             </div>
-            <div class="weather-details">
-              <div class="detail-item"><span class="label">体感温度</span><span class="value">{{ weatherData.main.feels_like }}°C</span></div>
-              <div class="detail-item"><span class="label">空气湿度</span><span class="value">{{ weatherData.main.humidity }}%</span></div>
-              <div class="detail-item"><span class="label">大气压</span><span class="value">{{ weatherData.main.pressure }} hPa</span></div>
-              <div class="detail-item"><span class="label">风速</span><span class="value">{{ weatherData.wind.speed }} m/s</span></div>
-              <div class="detail-item" v-if="weatherData.rain"><span class="label">降水量</span><span class="value">{{ weatherData.rain['1h'] || 0 }} mm</span></div>
-              <div class="detail-item"><span class="label">能见度</span><span class="value">{{ (weatherData.visibility / 1000).toFixed(1) }} km</span></div>
+            <div class="map-legend">
+              <div class="legend-item" v-for="item in cropTypeLegend" :key="item.name">
+                <span class="dot" :style="{ background: item.color }"></span> {{ item.name }}
+              </div>
             </div>
           </div>
-          <div class="loading-placeholder" v-else><i class="el-icon-loading"></i> 气象数据加载中...</div>
-        </div>
+        </section>
 
+        <!-- 右侧面板 -->
+        <section class="panel-side">
+          <!-- 气象信息 -->
+          <div class="panel-card weather-panel">
+            <div class="card-title">
+              <span class="title-icon"><i class="el-icon-cloudy"></i></span>
+              实时气象监测 — 重庆财经学院
+            </div>
+            <div class="weather-content" v-if="weatherData">
+              <div class="weather-main">
+                <div class="weather-temp">{{ weatherData.main.temp }}°C</div>
+                <div class="weather-desc">{{ weatherData.weather[0].description }}</div>
+                <img :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" class="weather-icon" alt="weather" />
+              </div>
+              <div class="weather-details">
+                <div class="detail-item"><span class="label">体感温度</span><span class="value">{{ weatherData.main.feels_like }}°C</span></div>
+                <div class="detail-item"><span class="label">空气湿度</span><span class="value">{{ weatherData.main.humidity }}%</span></div>
+                <div class="detail-item"><span class="label">大气压</span><span class="value">{{ weatherData.main.pressure }} hPa</span></div>
+                <div class="detail-item"><span class="label">风速</span><span class="value">{{ weatherData.wind.speed }} m/s</span></div>
+                <div class="detail-item" v-if="weatherData.rain"><span class="label">降水量</span><span class="value">{{ weatherData.rain['1h'] || 0 }} mm</span></div>
+                <div class="detail-item"><span class="label">能见度</span><span class="value">{{ (weatherData.visibility / 1000).toFixed(1) }} km</span></div>
+              </div>
+            </div>
+            <div class="loading-placeholder" v-else><i class="el-icon-loading"></i> 气象数据加载中...</div>
+          </div>
+
+          <!-- 作物种类占比 -->
+          <div class="panel-card chart-card">
+            <div class="card-title"><span class="title-icon"><i class="el-icon-pie-chart"></i></span> 作物种类占比</div>
+            <div ref="pieChart" class="chart-box"></div>
+          </div>
+
+          <!-- 温湿度趋势 -->
+          <div class="panel-card chart-card">
+            <div class="card-title"><span class="title-icon"><i class="el-icon-s-marketing"></i></span> 温湿度变化趋势</div>
+            <div ref="lineChart" class="chart-box"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 下部：图表行 -->
+      <div class="screen-bottom">
         <!-- 产量对比柱状图 -->
         <div class="panel-card chart-card">
           <div class="card-title"><span class="title-icon"><i class="el-icon-s-data"></i></span> 各地块面积与产量对比</div>
           <div ref="barChart" class="chart-box"></div>
-        </div>
-      </section>
-
-      <!-- 中间地图区域 -->
-      <section class="panel-center">
-        <div class="map-wrapper">
-          <div id="screenMap" class="map-container"></div>
-          <div class="map-overlay-top">
-            <div class="stat-badge" v-for="stat in overviewStats" :key="stat.label">
-              <span class="stat-num" :style="{ color: stat.color }">{{ stat.value }}</span>
-              <span class="stat-label">{{ stat.label }}</span>
-            </div>
-          </div>
-          <div class="map-legend">
-            <div class="legend-item" v-for="item in cropTypeLegend" :key="item.name">
-              <span class="dot" :style="{ background: item.color }"></span> {{ item.name }}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 右侧面板 -->
-      <section class="panel-right">
-        <!-- 作物种类占比 -->
-        <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-pie-chart"></i></span> 作物种类占比</div>
-          <div ref="pieChart" class="chart-box"></div>
         </div>
 
         <!-- 土壤氮磷钾 -->
@@ -88,13 +97,7 @@
           <div class="card-title"><span class="title-icon"><i class="el-icon-odometer"></i></span> 土壤墒情监测</div>
           <div ref="gaugeChart" class="chart-box"></div>
         </div>
-
-        <!-- 温湿度趋势 -->
-        <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-s-marketing"></i></span> 温湿度变化趋势</div>
-          <div ref="lineChart" class="chart-box"></div>
-        </div>
-      </section>
+      </div>
     </main>
   </div>
 </template>
@@ -107,7 +110,7 @@ import { getCurrentWeather } from '@/api/agriculture/weather'
 import { listAllLand } from '@/api/agriculture/screen'
 
 // 颜色映射
-const CROP_COLORS = ['#00ff88', '#ffcc00', '#ff6b6b', '#45b7ff', '#a78bfa', '#f97316']
+const CROP_COLORS = ['#00ff88', '#ff8c00', '#ff6b6b', '#45b7ff', '#a78bfa', '#f97316']
 const CROP_COLORS_MAP = {}
 
 export default {
@@ -219,7 +222,7 @@ export default {
       this.overviewStats = [
         { label: '地块总数', value: `${this.landList.length} 块`, color: '#00ff88' },
         { label: '农田总面积', value: `${totalArea.toFixed(0)} 亩`, color: '#45b7ff' },
-        { label: '作物种类', value: `${cropTypes.size} 类`, color: '#ffcc00' },
+        { label: '作物种类', value: `${cropTypes.size} 类`, color: '#ff8c00' },
         { label: '估产总量', value: `${totalYield.toFixed(0)} 吨`, color: '#ff6b6b' }
       ]
     },
@@ -245,28 +248,16 @@ export default {
       this.map = new AMap.Map('screenMap', {
         viewMode: '3D',
         mapStyle: 'amap://styles/dark',
-        zoom: 15,
-        center: [106.526506, 29.345333],
+        zoom: 13,
+        center: [106.525488, 29.343695],
         layers: [new AMap.TileLayer.Satellite()],
         features: ['bg', 'road', 'building', 'point']
       })
       this.map.addControl(new AMap.Scale())
 
-      // 环湖范围圈
-      new AMap.Circle({
-        center: [106.526506, 29.345333],
-        radius: 1800,
-        strokeColor: '#00d4ff',
-        strokeWeight: 2,
-        strokeOpacity: 0.6,
-        fillColor: '#00d4ff',
-        fillOpacity: 0.04,
-        strokeStyle: 'dashed'
-      }).setMap(this.map)
-
       // 学院标注
       new AMap.Marker({
-        position: [106.526506, 29.345333],
+        position: [106.525488, 29.343695],
         content: '<div style="background:#00d4ff;color:#000;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:bold;white-space:nowrap;">🏫 重庆财经学院</div>',
         offset: new AMap.Pixel(-50, -10)
       }).setMap(this.map)
@@ -281,12 +272,6 @@ export default {
       this.map.clearMap()
       // 重新添加基础元素
       this.map.addControl(new AMap.Scale())
-      new AMap.Circle({
-        center: [106.526506, 29.345333],
-        radius: 1800,
-        strokeColor: '#00d4ff', strokeWeight: 2, strokeOpacity: 0.6,
-        fillColor: '#00d4ff', fillOpacity: 0.04, strokeStyle: 'dashed'
-      }).setMap(this.map)
 
       this.landList.forEach(land => {
         const color = land.fillColor || CROP_COLORS_MAP[land.cropName] || '#00ff88'
@@ -348,7 +333,7 @@ export default {
       // fallback: distribute around center
       const i = parseInt(land.landId) || 0
       const angle = (i * 45) * Math.PI / 180
-      return [106.526506 + Math.cos(angle) * 0.008, 29.345333 + Math.sin(angle) * 0.008]
+      return [106.525488 + Math.cos(angle) * 0.008, 29.343695 + Math.sin(angle) * 0.008]
     },
 
     showLandInfo(land, position) {
@@ -377,8 +362,8 @@ export default {
 
     t() {
       return {
-        text: '#8ec8ff', textWeak: '#5a7a9a', border: 'rgba(0,212,255,0.15)',
-        splitLine: 'rgba(0,212,255,0.08)'
+        text: '#80d8ff', textWeak: '#6090b0', border: 'rgba(60,70,90,0.5)',
+        splitLine: 'rgba(60,70,90,0.2)'
       }
     },
 
@@ -653,134 +638,337 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/* ============================================
+   环湖智慧农业大数据监测平台 — DataV 赛博朋克主题
+   配色：深空黑底 + 青蓝(#00d4ff) + 亮绿(#00ff88) + 橙色强调(#ff8c00)
+   ============================================ */
+
+// ---------- CSS 变量 ----------
+$cyan: #00d4ff;
+$green: #00ff88;
+$orange: #ff8c00;
+$bg-dark: #010510;
+$bg-card: rgba(6, 16, 40, 0.6);
+$text-bright: #c8e8ff;
+$text-dim: #6088a8;
+$border-glow: rgba(0, 212, 255, 0.15);
+
+// ---------- 全局容器 ----------
 .screen-container {
-  width: 100vw;
-  height: 100vh;
-  background: #081022;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  color: #c0d8f0;
+  width: 100vw; height: 100vh;
+  background: radial-gradient(ellipse at 50% 20%, #0d2048 0%, #0b1229 35%, #020818 70%, #000000 100%);
+  display: flex; flex-direction: column; overflow: hidden;
+  color: $text-bright;
   font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 100;
+  position: fixed; top: 0; left: 0; z-index: 100;
+
+  // 网格点阵背景（增强可见度）
+  &::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      linear-gradient(rgba($cyan, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($cyan, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none; z-index: 0;
+  }
+
+  // 扫描线
+  &::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0, 0, 0, 0.05) 2px, rgba(0, 0, 0, 0.05) 4px
+    );
+    pointer-events: none; z-index: 0;
+  }
 }
 
+// ---------- 顶部标题栏 ----------
 .screen-header {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
-  background: linear-gradient(180deg, rgba(0,20,50,0.9) 0%, rgba(8,16,34,0) 100%);
-  border-bottom: 1px solid rgba(0,212,255,0.15);
-  flex-shrink: 0;
+  height: 64px; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 30px; flex-shrink: 0; position: relative; z-index: 1;
+  background: linear-gradient(180deg, rgba(0, 30, 60, 0.95) 0%, rgba(5, 15, 35, 0.4) 100%);
+  border-bottom: 1px solid rgba($cyan, 0.2);
+
+  // 底部流动发光条
+  &::after {
+    content: '';
+    position: absolute; bottom: -1px; left: 5%; right: 5%; height: 2px;
+    background: linear-gradient(90deg,
+      transparent, rgba($cyan, 0.5), $cyan, $green, $orange, $cyan, rgba($cyan, 0.5), transparent
+    );
+    box-shadow: 0 0 12px rgba($cyan, 0.6), 0 0 30px rgba($green, 0.3), 0 0 45px rgba($orange, 0.2);
+    z-index: 1; animation: headerGlow 4s ease-in-out infinite;
+  }
 
   .header-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    display: flex; align-items: center; gap: 20px;
 
     .back-btn {
-      color: #00d4ff; cursor: pointer; font-size: 13px;
-      padding: 4px 12px;
-      border: 1px solid rgba(0,212,255,0.3); border-radius: 3px;
-      transition: all 0.3s; white-space: nowrap;
-      &:hover { background: rgba(0,212,255,0.1); border-color: #00d4ff; }
+      color: $cyan; cursor: pointer; font-size: 13px;
+      padding: 5px 16px; border: 1px solid rgba($cyan, 0.4); border-radius: 2px;
+      transition: all 0.3s ease; white-space: nowrap; letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba($cyan, 0.4);
+      background: rgba($cyan, 0.05);
+      &:hover {
+        background: rgba($cyan, 0.18); border-color: $cyan; color: #fff;
+        box-shadow: 0 0 18px rgba($cyan, 0.4), inset 0 0 16px rgba($cyan, 0.1);
+        text-shadow: 0 0 14px rgba($cyan, 0.9);
+      }
     }
 
     h1 {
-      font-size: 26px; font-weight: 700; letter-spacing: 4px;
-      background: linear-gradient(90deg, #00d4ff, #00ff88);
+      font-size: 28px; font-weight: 700; letter-spacing: 7px;
+      background: linear-gradient(90deg, $cyan, $green, $cyan);
+      background-size: 200% 100%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text; margin: 0;
+      animation: titleShimmer 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba($cyan, 0.4));
     }
 
     .header-line {
-      display: block; width: 150px; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.6), transparent);
+      display: block; width: 120px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba($cyan, 0.5), $cyan, rgba($cyan, 0.5), transparent);
+      box-shadow: 0 0 8px rgba($cyan, 0.4);
     }
   }
 
   .header-right {
-    display: flex; gap: 20px; align-items: center;
-    .refresh-hint { font-size: 12px; color: #5a7a9a; }
-    .datetime { font-size: 16px; color: #00d4ff; font-family: 'Courier New', monospace; letter-spacing: 2px; }
+    display: flex; gap: 24px; align-items: center;
+    .refresh-hint {
+      font-size: 12px; color: $text-dim; letter-spacing: 1px;
+      &::before { content: '●'; color: $green; margin-right: 6px; font-size: 8px; animation: dotPulse 2s ease-in-out infinite; }
+    }
+    .datetime {
+      font-size: 16px; color: $cyan; font-family: 'Courier New', monospace; letter-spacing: 3px;
+      text-shadow: 0 0 12px rgba($cyan, 0.6), 0 0 25px rgba($cyan, 0.3);
+    }
   }
 }
 
-.screen-main {
-  flex: 1; display: flex; gap: 12px; padding: 8px 12px 12px; min-height: 0;
+@keyframes titleShimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes headerGlow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes neonPulse {
+  0%, 100% { text-shadow: 0 0 7px currentColor, 0 0 18px currentColor, 0 0 35px currentColor; }
+  50% { text-shadow: 0 0 12px currentColor, 0 0 28px currentColor, 0 0 55px currentColor, 0 0 80px currentColor; }
 }
 
-.panel-left, .panel-right {
-  width: 26%; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+// ---------- 主体布局 ----------
+.screen-main {
+  flex: 1; display: flex; flex-direction: column; gap: 10px;
+  padding: 10px 14px 14px; min-height: 0; position: relative; z-index: 1;
 }
-.panel-center {
+
+.screen-top {
+  flex: 0 0 58%; display: flex; gap: 10px; min-height: 0;
+}
+
+.map-area {
   flex: 1; display: flex; min-width: 0;
 }
 
+.panel-side {
+  width: 28%; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+}
+
+.screen-bottom {
+  flex: 1; display: flex; gap: 10px; min-height: 0;
+}
+
+// ---------- 通用卡片 ----------
 .panel-card {
-  background: rgba(10,22,46,0.7);
-  border: 1px solid rgba(0,212,255,0.12); border-radius: 4px;
+  background:
+    // 四角 HUD 折线 — 青蓝色
+    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 20px 2px no-repeat,
+    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 2px 20px no-repeat,
+    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 20px 2px no-repeat,
+    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 2px 20px no-repeat,
+    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 20px 2px no-repeat,
+    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 2px 20px no-repeat,
+    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 100% / 20px 2px no-repeat,
+    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 100% 100% / 2px 20px no-repeat,
+    $bg-card;
+  backdrop-filter: blur(6px);
+  border: 1px solid $border-glow; border-radius: 2px;
   display: flex; flex-direction: column; overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 2px 20px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba($cyan, 0.08),
+    0 0 40px rgba($cyan, 0.03),
+    inset 0 0 40px rgba($cyan, 0.02);
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+
+  &:hover {
+    border-color: rgba($cyan, 0.25);
+    box-shadow:
+      0 4px 25px rgba(0, 0, 0, 0.5),
+      0 0 20px rgba($cyan, 0.14),
+      0 0 50px rgba($cyan, 0.05),
+      inset 0 0 50px rgba($cyan, 0.03);
+  }
 
   .card-title {
-    height: 34px; line-height: 34px; padding: 0 12px;
-    font-size: 13px; font-weight: 600; color: #8ec8ff;
-    background: linear-gradient(90deg, rgba(0,212,255,0.08), transparent);
-    border-bottom: 1px solid rgba(0,212,255,0.08);
-    display: flex; align-items: center; gap: 6px; flex-shrink: 0;
-    .title-icon { color: #00d4ff; font-size: 14px; }
+    height: 34px; line-height: 34px; padding: 0 14px;
+    font-size: 13px; font-weight: 600; color: $text-bright; letter-spacing: 2px;
+    background: linear-gradient(90deg, rgba($cyan, 0.15) 0%, rgba($cyan, 0.03) 60%, transparent 100%);
+    border-bottom: 1px solid rgba($cyan, 0.1);
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+
+    // 发光装饰方块
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 16px;
+      background: $cyan;
+      box-shadow: 0 0 8px $cyan, 0 0 18px rgba($cyan, 0.6);
+      border-radius: 1px; flex-shrink: 0;
+      animation: dotPulse 2.5s ease-in-out infinite;
+    }
+
+    .title-icon {
+      color: $cyan; font-size: 14px;
+      text-shadow: 0 0 8px rgba($cyan, 0.6);
+    }
   }
 }
 
 .chart-card { flex: 1; min-height: 0; }
-.chart-box { flex: 1; min-height: 0; }
+.chart-box { flex: 1; min-height: 0; border-radius: 0 0 2px 2px; }
 
+// ---------- 气象面板 ----------
 .weather-panel {
-  height: 200px; flex-shrink: 0;
-  .weather-content { padding: 8px 12px; display: flex; flex-direction: column; height: 100%; }
+  height: 180px; flex-shrink: 0;
+
+  // 气象面板右下角用橙色
+  background:
+    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 20px 2px no-repeat,
+    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 2px 20px no-repeat,
+    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 20px 2px no-repeat,
+    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 2px 20px no-repeat,
+    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 20px 2px no-repeat,
+    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 2px 20px no-repeat,
+    // 右下角用橙色
+    linear-gradient(to left, rgba($orange, 0.6) 2px, transparent 2px) 100% 100% / 20px 2px no-repeat,
+    linear-gradient(to top, rgba($orange, 0.6) 2px, transparent 2px) 100% 100% / 2px 20px no-repeat,
+    $bg-card;
+
+  .weather-content { padding: 6px 12px; display: flex; flex-direction: column; height: 100%; }
   .weather-main {
     display: flex; align-items: center; gap: 10px; padding-bottom: 6px;
-    border-bottom: 1px solid rgba(0,212,255,0.08);
-    .weather-temp { font-size: 32px; font-weight: 700; color: #00ff88; font-family: 'Courier New', monospace; }
+    border-bottom: 1px solid rgba($cyan, 0.1);
+    .weather-temp {
+      font-size: 32px; font-weight: 700; color: $green;
+      font-family: 'Courier New', monospace;
+      text-shadow: 0 0 18px rgba($green, 0.7), 0 0 40px rgba($green, 0.35);
+    }
     .weather-desc { font-size: 13px; color: #8ec8ff; flex: 1; }
-    .weather-icon { width: 42px; height: 42px; }
+    .weather-icon { width: 38px; height: 38px; filter: drop-shadow(0 0 6px rgba($cyan, 0.5)); }
   }
   .weather-details {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; padding-top: 6px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; padding-top: 5px;
     .detail-item { display: flex; justify-content: space-between; font-size: 11px;
-      .label { color: #5a7a9a; } .value { color: #c0d8f0; font-weight: 500; }
+      .label { color: $text-dim; }
+      .value { color: $text-bright; font-weight: 500; }
     }
   }
 }
 
 .loading-placeholder {
   display: flex; align-items: center; justify-content: center;
-  height: 100%; color: #5a7a9a; font-size: 13px; gap: 6px;
+  height: 100%; color: $text-dim; font-size: 13px; gap: 6px; letter-spacing: 1px;
 }
 
+// ---------- 地图容器 ----------
 .map-wrapper {
   width: 100%; height: 100%; position: relative;
-  border: 1px solid rgba(0,212,255,0.12); border-radius: 4px; overflow: hidden;
+  border: 1px solid rgba($cyan, 0.15); border-radius: 2px; overflow: hidden;
+  box-shadow:
+    0 0 25px rgba($cyan, 0.08),
+    0 0 50px rgba(0, 0, 0, 0.35),
+    inset 0 0 60px rgba(0, 0, 0, 0.2);
+
+  // 左上角 — 青色
+  &::before {
+    content: ''; position: absolute;
+    top: -1px; left: -1px; width: 24px; height: 24px;
+    border-top: 2px solid $cyan; border-left: 2px solid $cyan;
+    box-shadow: 0 0 10px rgba($cyan, 0.5);
+    z-index: 11; pointer-events: none; border-radius: 2px 0 0 0;
+  }
+
+  // 右上角 — 橙色
+  &::after {
+    content: ''; position: absolute;
+    top: -1px; right: -1px; width: 24px; height: 24px;
+    border-top: 2px solid $orange; border-right: 2px solid $orange;
+    box-shadow: 0 0 10px rgba($orange, 0.5);
+    z-index: 11; pointer-events: none; border-radius: 0 2px 0 0;
+  }
+
   .map-container { width: 100%; height: 100%; }
+
   .map-overlay-top {
-    position: absolute; top: 10px; left: 10px; display: flex; gap: 10px; z-index: 10; pointer-events: none;
+    position: absolute; top: 14px; left: 14px;
+    display: flex; gap: 10px; z-index: 10; pointer-events: none;
+
     .stat-badge {
-      background: rgba(6,16,40,0.85); border: 1px solid rgba(0,212,255,0.2);
-      border-radius: 4px; padding: 6px 12px; display: flex; flex-direction: column; align-items: center;
-      .stat-num { font-size: 18px; font-weight: 700; font-family: 'Courier New', monospace; }
-      .stat-label { font-size: 10px; color: #5a7a9a; }
+      background: rgba(4, 12, 30, 0.9);
+      border: 1px solid rgba($cyan, 0.3); border-radius: 2px;
+      padding: 8px 18px;
+      display: flex; flex-direction: column; align-items: center;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4), 0 0 12px rgba($cyan, 0.06);
+      border-left: 2px solid $cyan;
+
+      // 第3个卡片左侧橙色强调
+      &:nth-child(3) { border-left-color: $orange; }
+
+      .stat-num {
+        font-size: 22px; font-weight: 700; font-family: 'Courier New', monospace;
+        text-shadow:
+          0 0 8px currentColor,
+          0 0 22px currentColor,
+          0 0 45px currentColor,
+          0 0 70px currentColor;
+        animation: neonPulse 3s ease-in-out infinite;
+      }
+      .stat-label {
+        font-size: 11px; color: #80b8d8; letter-spacing: 2px; margin-top: 3px;
+        text-transform: uppercase;
+      }
     }
   }
+
   .map-legend {
-    position: absolute; bottom: 10px; right: 10px;
-    background: rgba(6,16,40,0.85); border: 1px solid rgba(0,212,255,0.2);
-    border-radius: 4px; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; z-index: 10;
-    .legend-item { font-size: 11px; color: #8ec8ff; display: flex; align-items: center; gap: 6px;
-      .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    position: absolute; bottom: 14px; right: 14px;
+    background: rgba(4, 12, 30, 0.9);
+    border: 1px solid rgba($cyan, 0.25); border-radius: 2px;
+    padding: 8px 14px;
+    display: flex; flex-direction: column; gap: 5px; z-index: 10;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+    border-right: 2px solid $orange;
+
+    .legend-item {
+      font-size: 11px; color: #8ec8ff; display: flex; align-items: center; gap: 6px;
+      .dot {
+        width: 9px; height: 9px; border-radius: 50%; display: inline-block;
+        box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+      }
     }
   }
 }
