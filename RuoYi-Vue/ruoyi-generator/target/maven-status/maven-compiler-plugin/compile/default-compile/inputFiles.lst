@@ -1,13 +1,13 @@
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\config\GenConfig.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\controller\GenController.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTable.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTableColumn.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableColumnMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\GenTableColumnServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\GenTableServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableColumnService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\GenUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityInitializer.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\config\GenConfig.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\controller\GenController.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTable.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\domain\GenTableColumn.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableColumnMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\mapper\GenTableMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\GenTableColumnServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\GenTableServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableColumnService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\service\IGenTableService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\GenUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityInitializer.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-generator\src\main\java\com\ruoyi\generator\util\VelocityUtils.java

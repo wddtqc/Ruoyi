@@ -1,110 +1,110 @@
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Anonymous.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\DataScope.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\DataSource.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Excel.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Excels.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Log.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\RateLimiter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\RepeatSubmit.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Sensitive.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\config\RuoYiConfig.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\config\serializer\SensitiveJsonSerializer.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\CacheConstants.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\Constants.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\GenConstants.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\HttpStatus.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\ScheduleConstants.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\UserConstants.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\controller\BaseController.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\AjaxResult.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\BaseEntity.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDept.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDictData.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDictType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysMenu.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysRole.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysUser.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\LoginBody.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\LoginUser.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\RegisterBody.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\R.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\TreeEntity.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\TreeSelect.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\PageDomain.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\TableDataInfo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\TableSupport.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\redis\RedisCache.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\CharsetKit.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\Convert.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\StrFormatter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\BusinessStatus.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\BusinessType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\DataSourceType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\DesensitizedType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\HttpMethod.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\LimitType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\OperatorType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\UserStatus.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\base\BaseException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\DemoModeException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileNameLengthLimitExceededException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileSizeLimitExceededException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileUploadException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\InvalidExtensionException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\GlobalException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\job\TaskException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\ServiceException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\BlackListException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\CaptchaException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\CaptchaExpireException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserNotExistsException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserPasswordNotMatchException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserPasswordRetryLimitExceedException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\UtilException.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\PropertyPreExcludeFilter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RefererFilter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RepeatableFilter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RepeatedlyRequestWrapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\XssFilter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\XssHttpServletRequestWrapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\Arith.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\bean\BeanUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\bean\BeanValidators.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DateUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DesensitizedUtil.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DictUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ExceptionUtil.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileTypeUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileUploadUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\ImageUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\MimeTypeUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\html\EscapeUtil.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\html\HTMLFilter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\HttpHelper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\HttpUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\UserAgentUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ip\AddressUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ip\IpUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\LogUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\MessageUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\PageUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelHandlerAdapter.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelSheet.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelUtil.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\reflect\ReflectUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\SecurityUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ServletUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sign\Base64.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sign\Md5Utils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\spring\SpringUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sql\SqlUtil.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\StringUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\Threads.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\IdUtils.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\Seq.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\UUID.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\xss\Xss.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\xss\XssValidator.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Anonymous.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\DataScope.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\DataSource.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Excel.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Excels.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Log.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\RateLimiter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\RepeatSubmit.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\annotation\Sensitive.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\config\RuoYiConfig.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\config\serializer\SensitiveJsonSerializer.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\CacheConstants.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\Constants.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\GenConstants.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\HttpStatus.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\ScheduleConstants.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\constant\UserConstants.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\controller\BaseController.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\AjaxResult.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\BaseEntity.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDept.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDictData.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysDictType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysMenu.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysRole.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\entity\SysUser.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\LoginBody.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\LoginUser.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\model\RegisterBody.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\R.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\TreeEntity.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\domain\TreeSelect.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\PageDomain.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\TableDataInfo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\page\TableSupport.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\redis\RedisCache.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\CharsetKit.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\Convert.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\core\text\StrFormatter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\BusinessStatus.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\BusinessType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\DataSourceType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\DesensitizedType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\HttpMethod.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\LimitType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\OperatorType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\enums\UserStatus.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\base\BaseException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\DemoModeException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileNameLengthLimitExceededException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileSizeLimitExceededException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\FileUploadException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\file\InvalidExtensionException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\GlobalException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\job\TaskException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\ServiceException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\BlackListException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\CaptchaException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\CaptchaExpireException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserNotExistsException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserPasswordNotMatchException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\user\UserPasswordRetryLimitExceedException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\exception\UtilException.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\PropertyPreExcludeFilter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RefererFilter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RepeatableFilter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\RepeatedlyRequestWrapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\XssFilter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\filter\XssHttpServletRequestWrapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\Arith.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\bean\BeanUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\bean\BeanValidators.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DateUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DesensitizedUtil.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\DictUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ExceptionUtil.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileTypeUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileUploadUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\FileUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\ImageUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\file\MimeTypeUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\html\EscapeUtil.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\html\HTMLFilter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\HttpHelper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\HttpUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\http\UserAgentUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ip\AddressUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ip\IpUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\LogUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\MessageUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\PageUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelHandlerAdapter.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelSheet.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\poi\ExcelUtil.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\reflect\ReflectUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\SecurityUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\ServletUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sign\Base64.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sign\Md5Utils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\spring\SpringUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\sql\SqlUtil.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\StringUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\Threads.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\IdUtils.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\Seq.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\utils\uuid\UUID.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\xss\Xss.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-common\src\main\java\com\ruoyi\common\xss\XssValidator.java

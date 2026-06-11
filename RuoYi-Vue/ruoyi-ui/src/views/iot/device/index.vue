@@ -120,8 +120,8 @@
       <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
       <!-- 添加或修改设备对话框 -->
-      <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
-        <device-form ref="deviceForm" :device="form" @ok="getList" />
+      <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body @close="handleClose">
+        <device-form ref="deviceForm" :device-id="form.deviceId || 0" :device-info="form" @success="handleSuccess" @close="open = false" />
       </el-dialog>
 
       <!-- 设备详情对话框 -->
@@ -194,9 +194,25 @@ export default {
       this.$refs.queryForm && this.$refs.queryForm.resetFields();
       this.handleQuery();
     },
-    handleAdd() { this.form = {}; this.title = "添加设备"; this.open = true; },
-    handleUpdate(row) { this.form = { ...row }; this.title = "修改设备"; this.open = true; },
+    handleAdd() {
+      this.form = { deviceId: 0 };
+      this.title = "添加设备";
+      this.open = true;
+    },
+    handleUpdate(row) {
+      this.form = { ...row };
+      this.title = "修改设备";
+      this.open = true;
+    },
     handleDetail(row) { this.currentDeviceId = row.deviceId; this.openDetail = true; },
+    handleSuccess() {
+      this.open = false;
+      this.getList();
+      this.getStatistic();
+    },
+    handleClose() {
+      this.form = {};
+    },
     handleDelete(row) {
       const ids = row.deviceId || this.ids;
       this.$modal.confirm('是否确认删除设备编号为"' + ids + '"的数据项？').then(() => delDevice(ids))

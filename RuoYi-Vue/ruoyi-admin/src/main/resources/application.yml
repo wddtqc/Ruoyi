@@ -148,12 +148,11 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 
 
-# 物联网相关配置
-iot:
-  mqtt:
-    enabled: false
-    url: tcp://localhost:1883
-    clientId: ruoyi_iot_backend_service
-    username: admin
-    password: public
-    defaultTopic: lake_agriculture/+/telemetry
+# MQTT物联网配置
+mqtt:
+  broker-url: tcp://localhost:1883          # MQTT Broker地址（支持tcp://和ssl://）
+  client-id: ruoyi-iot-server               # 客户端ID（必须唯一）
+  username: admin                            # MQTT用户名（如不需要认证可留空）
+  password: public                           # MQTT密码（如不需要认证可留空）
+  subscribe-topics: /agriculture/sensor/upload  # 订阅主题（多个用逗号分隔）
+  qos: 1                                     # 消息质量等级（0=至多一次 1=至少一次 2=恰好一次）

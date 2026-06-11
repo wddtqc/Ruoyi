@@ -1,90 +1,147 @@
 package com.ruoyi.iot.config;
 
-import com.ruoyi.iot.processor.IotDataProcessor;
-import org.eclipse.paho.client.mqttv3.*;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
+import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
+import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHandler;
 
+/**
+ * MQTT配置类
+ * <p>
+ * 功能说明：
+ * 1. 配置MQTT客户端连接参数（Broker地址、端口、用户名、密码等）
+ * 2. 配置消息发布通道（mqttOutboundChannel）
+ * 3. 配置消息发布Handler（MqttPahoMessageHandler）
+ * </p>
+ *
+ * 配置说明：
+ * 在application.yml中配置以下参数：
+ * <pre>
+ * mqtt:
+ *   broker-url: tcp://127.0.0.1:1883       # MQTT Broker地址
+ *   client-id: ruoyi-iot-server            # 客户端ID（唯一标识）
+ *   username:                               # 用户名（可选，如不需要认证留空）
+ *   password:                               # 密码（可选，如不需要认证留空）
+ *   qos: 1                                  # 消息质量等级（0/1/2）
+ * </pre>
+ *
+ * @author ruoyi
+ */
 @Configuration
-@ConditionalOnProperty(prefix = "iot.mqtt", name = "enabled", havingValue = "true", matchIfMissing = false)
 public class MqttConfig {
 
     private static final Logger log = LoggerFactory.getLogger(MqttConfig.class);
 
-    @Value("${iot.mqtt.url}")
-    private String hostUrl;
+    @Value("${mqtt.broker-url:tcp://127.0.0.1:1883}")
+    private String brokerUrl;
 
-    @Value("${iot.mqtt.clientId}")
+    @Value("${mqtt.client-id:ruoyi-iot-server}")
     private String clientId;
 
-    @Value("${iot.mqtt.username:admin}")
+    @Value("${mqtt.username:}")
     private String username;
 
-    @Value("${iot.mqtt.password:public}")
+    @Value("${mqtt.password:}")
     private String password;
 
-    @Value("${iot.mqtt.defaultTopic}")
-    private String defaultTopic;
+    @Value("${mqtt.qos:1}")
+    private int qos;
 
+    /**
+     * MQTT客户端工厂
+     * <p>
+     * 配置MQTT连接参数，包括：
+     * - 自动重连
+     * - 清除会话标志
+     * - 连接超时时间
+     * - 心跳间隔
+     * </p>
+     */
     @Bean
-    public MqttClient mqttClient() {
-        // 声明为 final，确保匿名内部类中可以安全稳定地引用当前正在创建的这个对象
-        final MqttClient client;
-        try {
-            // 1. 初始化客户端
-            client = new MqttClient(hostUrl, clientId);
+    public MqttPahoClientFactory mqttClientFactory() {
+        DefaultMqttPahoClientFactory factory = new DefaultMqttPahoClientFactory();
+        MqttConnectOptions options = new MqttConnectOptions();
 
-            // 2. 配置连接认证参数
-            MqttConnectOptions options = new MqttConnectOptions();
-            options.setCleanSession(true);
-            options.setAutomaticReconnect(true); // 启用断线自动重连
+        // Broker地址（支持tcp://和ssl://）
+        options.setServerURIs(new String[]{brokerUrl});
+
+        // 用户名密码（如果Broker需要认证）
+        if (username != null && !username.trim().isEmpty()) {
             options.setUserName(username);
-            options.setPassword(password.toCharArray());
-            options.setConnectionTimeout(10);    // 超时时间
-            options.setKeepAliveInterval(20);    // 心跳间隔
-
-            // 3. 配置消息到达后的回调监听
-            client.setCallback(new MqttCallbackExtended() {
-                @Override
-                public void connectComplete(boolean reconnect, String serverURI) {
-                    log.info("🟢 [IoT] 成功连接至 EMQX 消息服务器 ({})", serverURI);
-                    try {
-                        // 🌟 修正：直接用当前初始化的 client 实例进行订阅，拒绝死循环调用！
-                        client.subscribe(defaultTopic, 1);
-                        log.info("🛰️ [IoT] 已成功订阅物联网专属主题: {}", defaultTopic);
-                    } catch (MqttException e) {
-                        log.error("❌ [IoT] 订阅主题失败: {}", e.getMessage());
-                    }
-                }
-
-                @Override
-                public void connectionLost(Throwable cause) {
-                    log.warn("🔴 [IoT] 与 EMQX 断开连接，系统正在自动尝试重连...");
-                }
-
-                @Override
-                public void messageArrived(String topic, MqttMessage message) {
-                    String payload = new String(message.getPayload());
-                    log.info("📥 [IoT] 收到上报数据 -> 主题: [{}], 字节大小: {}", topic, message.getPayload().length);
-                    IotDataProcessor.handleMessage(topic, payload);
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken token) {
-                }
-            });
-
-            // 4. 同步发起连接
-            client.connect(options);
-            return client;
-
-        } catch (MqttException e) {
-            log.error("💥 [IoT] 初始化 MQTT 客户端时发生严重异常: ", e);
         }
-        return null;
+        if (password != null && !password.trim().isEmpty()) {
+            options.setPassword(password.toCharArray());
+        }
+
+        // 连接参数
+        options.setCleanSession(true);        // 清除会话（true表示不保留历史消息）
+        options.setConnectionTimeout(30);      // 连接超时时间（秒）
+        options.setKeepAliveInterval(60);      // 心跳间隔（秒）
+        options.setAutomaticReconnect(true);   // 自动重连
+
+        factory.setConnectionOptions(options);
+
+        log.info("=== MQTT客户端工厂初始化完成 ===");
+        log.info("Broker地址: {}", brokerUrl);
+        log.info("客户端ID: {}", clientId);
+
+        return factory;
+    }
+
+    /**
+     * MQTT消息输出通道（核心Bean - 解决注入失败问题）
+     * <p>
+     * 这个Bean是 MqttPublisher 注入的关键！
+     * DirectChannel：同步直接通道，消息立即传递给订阅者
+     * </p>
+     */
+    @Bean
+    public MessageChannel mqttOutboundChannel() {
+        log.info("=== 创建MQTT输出通道Bean ===");
+        return new DirectChannel();
+    }
+
+    /**
+     * MQTT消息发布Handler（消息生产者）
+     * <p>
+     * 功能：
+     * 1. 从mqttOutboundChannel接收消息
+     * 2. 将消息发布到MQTT Broker的指定主题
+     * </p>
+     *
+     * @ServiceActivator：将此Handler绑定到mqttOutboundChannel通道
+     */
+    @Bean
+    @ServiceActivator(inputChannel = "mqttOutboundChannel")
+    public MessageHandler mqttOutbound() {
+        MqttPahoMessageHandler messageHandler =
+                new MqttPahoMessageHandler(
+                        clientId + "_outbound",  // 发布客户端ID（必须唯一）
+                        mqttClientFactory()
+                );
+
+        // 设置异步发送
+        messageHandler.setAsync(true);
+
+        // 设置默认主题（如果消息头中没有指定topic，则使用默认主题）
+        messageHandler.setDefaultTopic("/agriculture/sensor/upload");
+
+        // 设置默认QoS
+        messageHandler.setDefaultQos(qos);
+
+        log.info("=== MQTT发布者配置完成 ===");
+        log.info("默认主题: /agriculture/sensor/upload");
+        log.info("默认QoS: {}", qos);
+
+        return messageHandler;
     }
 }

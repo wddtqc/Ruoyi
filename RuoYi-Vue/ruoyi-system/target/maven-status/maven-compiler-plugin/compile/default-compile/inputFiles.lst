@@ -1,108 +1,108 @@
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureBaseinfo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureBatchTask.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureCropBatch.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureEmployee.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureGermplasm.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureGermplasmIntro.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureLand.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMachineInfo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMachineType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMaterialInfo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMaterialType.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgriculturePlantMethod.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureStandardJob.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysCache.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysConfig.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysLogininfor.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysNotice.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysNoticeRead.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysOperLog.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysPost.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleDept.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleMenu.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserOnline.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserPost.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserRole.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\MetaVo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\RouterVo.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureBaseinfoMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureBatchTaskMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureCropBatchMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureEmployeeMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureGermplasmIntroMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureGermplasmMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureLandMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMachineInfoMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMachineTypeMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMaterialInfoMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMaterialTypeMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgriculturePlantMethodMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureStandardJobMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysConfigMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDeptMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDictDataMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDictTypeMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysLogininforMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysMenuMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysNoticeMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysNoticeReadMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysOperLogMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysPostMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleDeptMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleMenuMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserPostMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserRoleMapper.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureBaseinfoService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureBatchTaskService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureCropBatchService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureEmployeeService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureGermplasmIntroService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureGermplasmService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureLandService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMachineInfoService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMachineTypeService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMaterialInfoService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMaterialTypeService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgriculturePlantMethodService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureStandardJobService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureBaseinfoServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureBatchTaskServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureCropBatchServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureEmployeeServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureGermplasmIntroServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureGermplasmServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureLandServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMachineInfoServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMachineTypeServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMaterialInfoServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMaterialTypeServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgriculturePlantMethodServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureStandardJobServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysConfigServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDeptServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDictDataServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDictTypeServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysLogininforServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysMenuServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysNoticeReadServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysNoticeServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysOperLogServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysPostServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysRoleServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysUserOnlineServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysUserServiceImpl.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysConfigService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDeptService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDictDataService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDictTypeService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysLogininforService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysMenuService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysNoticeReadService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysNoticeService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysOperLogService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysPostService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysRoleService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysUserOnlineService.java
-F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysUserService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureBaseinfo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureBatchTask.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureCropBatch.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureEmployee.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureGermplasm.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureGermplasmIntro.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureLand.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMachineInfo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMachineType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMaterialInfo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureMaterialType.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgriculturePlantMethod.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\AgricultureStandardJob.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysCache.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysConfig.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysLogininfor.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysNotice.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysNoticeRead.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysOperLog.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysPost.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleDept.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysRoleMenu.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserOnline.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserPost.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\SysUserRole.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\MetaVo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\domain\vo\RouterVo.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureBaseinfoMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureBatchTaskMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureCropBatchMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureEmployeeMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureGermplasmIntroMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureGermplasmMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureLandMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMachineInfoMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMachineTypeMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMaterialInfoMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureMaterialTypeMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgriculturePlantMethodMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\AgricultureStandardJobMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysConfigMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDeptMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDictDataMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysDictTypeMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysLogininforMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysMenuMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysNoticeMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysNoticeReadMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysOperLogMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysPostMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleDeptMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysRoleMenuMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserPostMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\mapper\SysUserRoleMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureBaseinfoService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureBatchTaskService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureCropBatchService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureEmployeeService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureGermplasmIntroService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureGermplasmService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureLandService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMachineInfoService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMachineTypeService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMaterialInfoService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureMaterialTypeService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgriculturePlantMethodService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\IAgricultureStandardJobService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureBaseinfoServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureBatchTaskServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureCropBatchServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureEmployeeServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureGermplasmIntroServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureGermplasmServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureLandServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMachineInfoServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMachineTypeServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMaterialInfoServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureMaterialTypeServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgriculturePlantMethodServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\AgricultureStandardJobServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysConfigServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDeptServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDictDataServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysDictTypeServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysLogininforServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysMenuServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysNoticeReadServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysNoticeServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysOperLogServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysPostServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysRoleServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysUserOnlineServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\impl\SysUserServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysConfigService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDeptService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDictDataService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysDictTypeService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysLogininforService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysMenuService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysNoticeReadService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysNoticeService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysOperLogService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysPostService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysRoleService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysUserOnlineService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-system\src\main\java\com\ruoyi\system\service\ISysUserService.java
