@@ -1,8 +1,10 @@
 package com.ruoyi.quartz.task;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.ruoyi.iot.mqtt.MqttPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ruoyi.common.utils.StringUtils;
 
@@ -20,19 +22,11 @@ public class RyTask
 {
     private static final Logger log = LoggerFactory.getLogger(RyTask.class);
 
-    /**
-     * MQTT发布主题
-     */
+    @Autowired
+    private MqttPublisher mqttPublisher;
+
     private static final String MQTT_TOPIC = "/agriculture/sensor/upload";
-
-    /**
-     * 默认设备编号
-     */
     private static final String DEFAULT_SERIAL_NUMBER = "NPK-TEST-001";
-
-    /**
-     * 异常数据触发概率（5%）
-     */
     private static final double ABNORMAL_PROBABILITY = 0.05;
 
     private final Random random = new Random();
@@ -80,7 +74,6 @@ public class RyTask
     {
         try
         {
-            // 如果传入的设备编号为空，使用默认值
             if (serialNumber == null || serialNumber.trim().isEmpty())
             {
                 serialNumber = DEFAULT_SERIAL_NUMBER;
@@ -88,18 +81,16 @@ public class RyTask
 
             log.info("========== 开始执行农业传感器数据模拟任务 ==========");
 
-            // 生成模拟数据JSON
             JSONObject sensorData = generateMockSensorData(serialNumber);
-
-            // 转换为JSON字符串
             String jsonMessage = sensorData.toJSONString();
 
             log.info("【模拟数据生成】设备编号: {}", serialNumber);
             log.info("【模拟数据内容】{}", jsonMessage);
-            log.info("【数据模拟完成】主题: {}, 消息长度: {} bytes", MQTT_TOPIC, jsonMessage.length());
-            log.info("【提示】当前为独立测试模式，数据已输出到日志");
-            log.info("========== 农业传感器数据模拟任务执行完成 ==========");
 
+            mqttPublisher.sendToMqtt(MQTT_TOPIC, jsonMessage, 1);
+
+            log.info("【数据发送完成】主题: {}, QoS: 1, 消息长度: {} bytes", MQTT_TOPIC, jsonMessage.length());
+            log.info("========== 农业传感器数据模拟任务执行完成 ==========");
         }
         catch (Exception e)
         {

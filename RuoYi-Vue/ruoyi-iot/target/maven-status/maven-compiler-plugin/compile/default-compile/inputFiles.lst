@@ -11,12 +11,14 @@ D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceAlert.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceRunningStatus.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotProduct.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotSensorData.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotThingsModelTemplate.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotCategoryMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceAlertMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceRunningStatusMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotProductMapper.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotSensorDataMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotThingsModelTemplateMapper.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttMessageListener.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttPublisher.java
@@ -27,6 +29,7 @@ D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceRunningStatusService.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceService.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotProductService.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotSensorDataService.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotThingsModelTemplateService.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotCategoryServiceImpl.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IoTDataProcessServiceImpl.java
@@ -34,6 +37,7 @@ D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceRunningStatusServiceImpl.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceServiceImpl.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotProductServiceImpl.java
+D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotSensorDataServiceImpl.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotThingsModelTemplateServiceImpl.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\task\MockSensorTask.java
 D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\Main.java

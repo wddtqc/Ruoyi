@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotSensorDataMapper">
+
+    <resultMap type="com.ruoyi.iot.domain.IotSensorData" id="IotSensorDataResult">
+        <id     property="id"               column="id"                />
+        <result property="serialNumber"     column="serial_number"     />
+        <result property="deviceType"       column="device_type"       />
+        <result property="humidity"         column="humidity"          />
+        <result property="temperature"      column="temperature"       />
+        <result property="soilPh"           column="soil_ph"           />
+        <result property="nitrogen"         column="nitrogen"          />
+        <result property="phosphorus"       column="phosphorus"        />
+        <result property="potassium"        column="potassium"         />
+        <result property="signalStrength"   column="signal_strength"   />
+        <result property="deviceTimestamp"  column="device_timestamp"  />
+        <result property="createTime"       column="create_time"       />
+    </resultMap>
+
+    <insert id="insertIotSensorData" parameterType="com.ruoyi.iot.domain.IotSensorData">
+        INSERT INTO iot_sensor_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="deviceType != null and deviceType != ''">device_type,</if>
+            <if test="humidity != null">humidity,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="soilPh != null">soil_ph,</if>
+            <if test="nitrogen != null">nitrogen,</if>
+            <if test="phosphorus != null">phosphorus,</if>
+            <if test="potassium != null">potassium,</if>
+            <if test="signalStrength != null">signal_strength,</if>
+            <if test="deviceTimestamp != null">device_timestamp,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="deviceType != null and deviceType != ''">#{deviceType},</if>
+            <if test="humidity != null">#{humidity},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="soilPh != null">#{soilPh},</if>
+            <if test="nitrogen != null">#{nitrogen},</if>
+            <if test="phosphorus != null">#{phosphorus},</if>
+            <if test="potassium != null">#{potassium},</if>
+            <if test="signalStrength != null">#{signalStrength},</if>
+            <if test="deviceTimestamp != null">#{deviceTimestamp},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+</mapper>
