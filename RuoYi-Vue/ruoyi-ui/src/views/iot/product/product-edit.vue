@@ -30,9 +30,6 @@
                         </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="8">
-                        <el-form-item label="启用授权" prop="networkMethod">
-                            <el-switch v-model="form.isAuthorize" @change="changeIsAuthorize(form.isAuthorize)" :active-value="1" :inactive-value="0" :disabled="form.status==2 || form.deviceType==3" />
-                        </el-form-item>
                         <el-form-item label="认证方式" prop="vertificateMethod">
                             <el-select v-model="form.vertificateMethod" placeholder="请选择认证方式" style="width:100%" :disabled="form.status==2 || form.deviceType==3">
                                 <el-option v-for="dict in dict.type.iot_vertificate_method" :key="dict.value" :label="dict.label" :value="parseInt(dict.value)"></el-option>
@@ -94,10 +91,6 @@
             <span slot="label"><span style="color:red;">* </span>产品模型</span>
             <product-things-model ref="productThingsModel" :product="form" />
         </el-tab-pane>
-        <el-tab-pane label="" name="productAuthorize" :disabled="form.productId==0" v-if="form.deviceType!==3">
-            <span slot="label">设备授权</span>
-            <product-authorize ref="productAuthorize" :product="form" />
-        </el-tab-pane>
 
         <el-tab-pane label="" name="alert" :disabled="form.productId==0" v-if="form.deviceType!==3">
             <span slot="label"> 告警配置</span>
@@ -147,7 +140,6 @@
 import productThingsModel from "./product-things-model";
 import productApp from "./product-app"
 import productAlert from "./product-alert"
-import productAuthorize from "./product-authorize"
 import imageUpload from "../../../components/ImageUpload/index"
 // import configSip from "../sip/config-sip";
 
@@ -169,7 +161,6 @@ export default {
         productThingsModel,
         productApp,
         productAlert,
-        productAuthorize,
         imageUpload,
         // configSip,
     },
@@ -283,7 +274,6 @@ export default {
                 categoryName: null,
                 status: 0,
                 tslJson: null,
-                isAuthorize: 0,
                 deviceType: 1,
                 networkMethod: 1,
                 vertificateMethod: 3,
@@ -375,19 +365,6 @@ export default {
             } else if (name == "password") {
                 this.passwordInputType = this.passwordInputType == "password" ? "text" : "password";
             }
-        },
-        // 授权码状态修改
-        changeIsAuthorize() {
-            let text = this.form.isAuthorize == "1" ? "启用" : "停用";
-            this.$modal.confirm('确认要' + text + '授权码吗？').then(() => {
-                if (this.form.productId != null && this.form.productId != 0) {
-                    updateProduct(this.form).then(response => {
-                        this.$modal.alertSuccess("授权码已" + text);
-                    });
-                }
-            }).catch(() => {
-                this.form.isAuthorize = 0;
-            });
         }
     }
 };
