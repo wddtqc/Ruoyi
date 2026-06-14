@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询批次任务日志列表
 export function listLog(query) {
   return request({
-    url: '/agriculture/log/list',
+    url: '/system/taskLog/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listLog(query) {
 // 查询批次任务日志详细
 export function getLog(logId) {
   return request({
-    url: '/agriculture/log/' + logId,
+    url: '/system/taskLog/' + logId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getLog(logId) {
 // 新增批次任务日志
 export function addLog(data) {
   return request({
-    url: '/agriculture/log',
+    url: '/system/taskLog',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addLog(data) {
 // 修改批次任务日志
 export function updateLog(data) {
   return request({
-    url: '/agriculture/log',
+    url: '/system/taskLog',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateLog(data) {
 // 删除批次任务日志
 export function delLog(logId) {
   return request({
-    url: '/agriculture/log/' + logId,
+    url: '/system/taskLog/' + logId,
     method: 'delete'
   })
 }

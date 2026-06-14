@@ -94,11 +94,6 @@
             <span slot="label"><span style="color:red;">* </span>产品模型</span>
             <product-things-model ref="productThingsModel" :product="form" />
         </el-tab-pane>
-        <el-tab-pane label="" name="productFirmware" :disabled="form.productId==0" v-if="form.deviceType!==3">
-            <span slot="label">固件管理</span>
-            <product-firmware ref="productFirmware" :product="form" />
-        </el-tab-pane>
-
         <el-tab-pane label="" name="productAuthorize" :disabled="form.productId==0" v-if="form.deviceType!==3">
             <span slot="label">设备授权</span>
             <product-authorize ref="productAuthorize" :product="form" />
@@ -150,7 +145,6 @@
 
 <script>
 import productThingsModel from "./product-things-model";
-import productFirmware from "./product-firmware";
 import productApp from "./product-app"
 import productAlert from "./product-alert"
 import productAuthorize from "./product-authorize"
@@ -176,7 +170,6 @@ export default {
         productApp,
         productAlert,
         productAuthorize,
-        productFirmware,
         imageUpload,
         // configSip,
     },

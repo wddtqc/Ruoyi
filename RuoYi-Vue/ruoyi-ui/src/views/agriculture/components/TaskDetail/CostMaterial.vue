@@ -329,7 +329,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       this.download(
-        "agriculture/costMaterial/export",
+        "system/costMaterial/export",
         {
           ...this.queryParams,
         },

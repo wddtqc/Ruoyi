@@ -310,7 +310,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       this.download(
-        "agriculture/costEmployee/export",
+        "system/costEmployee/export",
         {
           ...this.queryParams,
         },
