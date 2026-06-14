@@ -231,7 +231,7 @@ export default {
         isUploading: false,
         updateSupport: 0,
         headers: { Authorization: "Bearer " + getToken() },
-        url: process.env.VUE_APP_BASE_API + "/agriculture/land/importData",
+        url: process.env.VUE_APP_BASE_API + "/system/land/importData",
       },
       queryParams: {
         pageNum: 1,

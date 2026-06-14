@@ -189,7 +189,7 @@ export default {
   data() {
     return {
       // 上传接口地址
-      uploadAction: "/agriculture/germplasm/upload",
+      uploadAction: "/system/germplasm/upload",
       loading: true,
       ids: [],
       single: true,

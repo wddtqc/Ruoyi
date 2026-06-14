@@ -106,17 +106,6 @@ public class IotDeviceController extends BaseController {
     }
 
     /**
-     * 根据分组查询设备列表
-     */
-    @PreAuthorize("@ss.hasPermi('iot:device:list')")
-    @GetMapping("/listByGroup")
-    public TableDataInfo listByGroup(IotDevice iotDevice) {
-        startPage();
-        List<IotDevice> list = iotDeviceService.selectIotDeviceList(iotDevice);
-        return getDataTable(list);
-    }
-
-    /**
      * 生成设备编号
      */
     @PreAuthorize("@ss.hasPermi('iot:device:add')")

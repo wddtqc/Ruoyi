@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询批次任务工人列表
 export function listTaskEmployee(query) {
   return request({
-    url: '/agriculture/taskEmployee/list',
+    url: '/system/taskEmployee/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listTaskEmployee(query) {
 // 查询批次任务工人详细
 export function getTaskEmployee(id) {
   return request({
-    url: '/agriculture/taskEmployee/' + id,
+    url: '/system/taskEmployee/' + id,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getTaskEmployee(id) {
 // 新增批次任务工人
 export function addTaskEmployee(data) {
   return request({
-    url: '/agriculture/taskEmployee',
+    url: '/system/taskEmployee',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addTaskEmployee(data) {
 // 修改批次任务工人
 export function updateTaskEmployee(data) {
   return request({
-    url: '/agriculture/taskEmployee',
+    url: '/system/taskEmployee',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateTaskEmployee(data) {
 // 根据id删除批次任务工人
 export function delTaskEmployee(id) {
   return request({
-    url: '/agriculture/taskEmployee/' + id,
+    url: '/system/taskEmployee/' + id,
     method: 'delete'
   })
 }
@@ -46,7 +46,7 @@ export function delTaskEmployee(id) {
 // 根据taskId和employeeId删除批次任务工人
 export function delTaskEmployeeByTaskIdAndEmployeeId(taskId,employeeId) {
   return request({
-    url: '/agriculture/taskEmployee/' + taskId+'/'+employeeId,
+    url: '/system/taskEmployee/' + taskId+'/'+employeeId,
     method: 'delete'
   })
 }

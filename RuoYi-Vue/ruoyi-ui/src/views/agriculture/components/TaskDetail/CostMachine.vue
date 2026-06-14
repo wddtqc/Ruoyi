@@ -289,7 +289,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('agriculture/costMachine/export', {
+      this.download('system/costMachine/export', {
         ...this.queryParams
       }, `costMachine_${new Date().getTime()}.xlsx`)
     }

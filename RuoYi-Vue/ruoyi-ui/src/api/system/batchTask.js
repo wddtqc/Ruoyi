@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询批次任务列表
 export function listBatchTask(query) {
   return request({
-    url: '/agriculture/batchTask/list',
+    url: '/system/task/list',
     method: 'get',
     params: query
   })
@@ -12,7 +12,7 @@ export function listBatchTask(query) {
 // 查询批次任务详细
 export function getBatchTask(taskId) {
   return request({
-    url: '/agriculture/batchTask/' + taskId,
+    url: '/system/task/' + taskId,
     method: 'get'
   })
 }
@@ -20,7 +20,7 @@ export function getBatchTask(taskId) {
 // 新增批次任务
 export function addBatchTask(data) {
   return request({
-    url: '/agriculture/batchTask',
+    url: '/system/task',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addBatchTask(data) {
 // 修改批次任务
 export function updateBatchTask(data) {
   return request({
-    url: '/agriculture/batchTask',
+    url: '/system/task',
     method: 'put',
     data: data
   })
@@ -38,7 +38,7 @@ export function updateBatchTask(data) {
 // 删除批次任务
 export function delBatchTask(taskId) {
   return request({
-    url: '/agriculture/batchTask/' + taskId,
+    url: '/system/task/' + taskId,
     method: 'delete'
   })
 }

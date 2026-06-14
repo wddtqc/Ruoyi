@@ -262,7 +262,7 @@ export default {
   data() {
     return {
       // 上传接口地址
-      uploadAction: "/agriculture/germplasm/upload",
+      uploadAction: "/system/germplasm/upload",
       // 遮罩层
       loading: true,
       // 选中数组
