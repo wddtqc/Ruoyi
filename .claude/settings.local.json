@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(mvn clean *)",
-      "Bash(grep -E \"\\\\.\\(java|xml\\)$\")",
-      "Bash(xmllint --noout \"D:\\\\Program Files \\(x86\\)\\\\githubdesk_events\\\\Ruoyi\\\\RuoYi-Vue\\\\ruoyi-system\\\\src\\\\main\\\\resources\\\\mapper\\\\system\\\\AgricultureCostEmployeeMapper.xml\")"
-    ]
-  }
-}

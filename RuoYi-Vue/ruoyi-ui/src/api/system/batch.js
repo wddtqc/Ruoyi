@@ -42,3 +42,11 @@ export function delBatch(batchId) {
     method: 'delete'
   })
 }
+
+// 获取所有批次（不分页，用于大屏）
+export function getAllBatch() {
+  return request({
+    url: '/system/batch/all',
+    method: 'get'
+  })
+}

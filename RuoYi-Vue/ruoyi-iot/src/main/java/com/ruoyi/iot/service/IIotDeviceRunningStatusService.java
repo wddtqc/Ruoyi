@@ -64,4 +64,12 @@ public interface IIotDeviceRunningStatusService {
      * @return 结果
      */
     int deleteIotDeviceRunningStatusByIds(Long[] statusIds);
+
+    /**
+     * 根据设备ID删除运行状态
+     *
+     * @param deviceId 设备ID
+     * @return 结果
+     */
+    int deleteIotDeviceRunningStatusByDeviceId(Long deviceId);
 }

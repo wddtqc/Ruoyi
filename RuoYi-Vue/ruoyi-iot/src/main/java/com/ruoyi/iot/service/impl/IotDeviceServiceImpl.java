@@ -2,9 +2,11 @@ package com.ruoyi.iot.service.impl;
 
 import com.ruoyi.iot.domain.IotDevice;
 import com.ruoyi.iot.mapper.IotDeviceMapper;
+import com.ruoyi.iot.mapper.IotDeviceRunningStatusMapper;
 import com.ruoyi.iot.service.IIotDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +18,9 @@ public class IotDeviceServiceImpl implements IIotDeviceService {
 
     @Autowired
     private IotDeviceMapper iotDeviceMapper;
+
+    @Autowired
+    private IotDeviceRunningStatusMapper iotDeviceRunningStatusMapper;
 
     @Override
     public IotDevice selectIotDeviceById(Long deviceId) {
@@ -38,12 +43,20 @@ public class IotDeviceServiceImpl implements IIotDeviceService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteIotDeviceByIds(Long[] deviceIds) {
+        // 1. 级联删除运行状态
+        for (Long deviceId : deviceIds) {
+            iotDeviceRunningStatusMapper.deleteIotDeviceRunningStatusByDeviceId(deviceId);
+        }
+        // 2. 逻辑删除设备主表
         return iotDeviceMapper.deleteIotDeviceByIds(deviceIds);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteIotDeviceById(Long deviceId) {
+        iotDeviceRunningStatusMapper.deleteIotDeviceRunningStatusByDeviceId(deviceId);
         return iotDeviceMapper.deleteIotDeviceById(deviceId);
     }
 }

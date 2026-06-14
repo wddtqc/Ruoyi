@@ -3,12 +3,7 @@
     <!-- 顶部标题栏 -->
     <header class="screen-header">
       <div class="header-left">
-        <span class="back-btn" @click="$router.push('/index')">
-          <i class="el-icon-arrow-left"></i> 返回
-        </span>
-        <span class="header-line"></span>
         <h1>环湖智慧农业大数据监测平台</h1>
-        <span class="header-line"></span>
       </div>
       <div class="header-right">
         <span class="refresh-hint">数据刷新: {{ lastRefresh }}</span>
@@ -16,83 +11,75 @@
       </div>
     </header>
 
-    <!-- 主体内容区域 -->
+    <!-- 主体内容区域：地图为主，面板叠加 -->
     <main class="screen-main">
-      <!-- 上部：地图（左上）+ 右侧面板 -->
-      <div class="screen-top">
-        <!-- 地图区域 — 左上角 -->
-        <section class="map-area">
-          <div class="map-wrapper">
-            <div id="screenMap" class="map-container"></div>
-            <div class="map-overlay-top">
-              <div class="stat-badge" v-for="stat in overviewStats" :key="stat.label">
-                <span class="stat-num" :style="{ color: stat.color }">{{ stat.value }}</span>
-                <span class="stat-label">{{ stat.label }}</span>
-              </div>
-            </div>
-            <div class="map-legend">
-              <div class="legend-item" v-for="item in cropTypeLegend" :key="item.name">
-                <span class="dot" :style="{ background: item.color }"></span> {{ item.name }}
-              </div>
+      <!-- 地图：全屏主内容 -->
+      <section class="map-area">
+        <div class="map-wrapper">
+          <div id="screenMap" class="map-container"></div>
+          <div class="map-overlay-top">
+            <div class="stat-badge" v-for="stat in overviewStats" :key="stat.label">
+              <span class="stat-num" :style="{ color: stat.color }">{{ stat.value }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
             </div>
           </div>
-        </section>
-
-        <!-- 右侧面板 -->
-        <section class="panel-side">
-          <!-- 气象信息 -->
-          <div class="panel-card weather-panel">
-            <div class="card-title">
-              <span class="title-icon"><i class="el-icon-cloudy"></i></span>
-              实时气象监测 — 重庆财经学院
+          <div class="map-legend">
+            <div class="legend-item" v-for="item in cropTypeLegend" :key="item.name">
+              <span class="dot" :style="{ background: item.color }"></span> {{ item.name }}
             </div>
-            <div class="weather-content" v-if="weatherData">
-              <div class="weather-main">
-                <div class="weather-temp">{{ weatherData.main.temp }}°C</div>
-                <div class="weather-desc">{{ weatherData.weather[0].description }}</div>
-                <img :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" class="weather-icon" alt="weather" />
-              </div>
-              <div class="weather-details">
-                <div class="detail-item"><span class="label">体感温度</span><span class="value">{{ weatherData.main.feels_like }}°C</span></div>
-                <div class="detail-item"><span class="label">空气湿度</span><span class="value">{{ weatherData.main.humidity }}%</span></div>
-                <div class="detail-item"><span class="label">大气压</span><span class="value">{{ weatherData.main.pressure }} hPa</span></div>
-                <div class="detail-item"><span class="label">风速</span><span class="value">{{ weatherData.wind.speed }} m/s</span></div>
-                <div class="detail-item" v-if="weatherData.rain"><span class="label">降水量</span><span class="value">{{ weatherData.rain['1h'] || 0 }} mm</span></div>
-                <div class="detail-item"><span class="label">能见度</span><span class="value">{{ (weatherData.visibility / 1000).toFixed(1) }} km</span></div>
-              </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右侧叠加面板 -->
+      <aside class="overlay-sidebar">
+        <!-- 气象信息 -->
+        <div class="panel-card weather-panel">
+          <div class="card-title">
+            <span class="title-icon"><i class="el-icon-cloudy"></i></span>
+            气象监测
+          </div>
+          <div class="weather-content" v-if="weatherData">
+            <div class="weather-main">
+              <div class="weather-temp">{{ weatherData.main.temp }}°C</div>
+              <div class="weather-desc">{{ weatherData.weather[0].description }}</div>
+              <img :src="`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`" class="weather-icon" alt="weather" />
             </div>
-            <div class="loading-placeholder" v-else><i class="el-icon-loading"></i> 气象数据加载中...</div>
+            <div class="weather-details">
+              <div class="detail-item"><span class="label">体感温度</span><span class="value">{{ weatherData.main.feels_like }}°C</span></div>
+              <div class="detail-item"><span class="label">空气湿度</span><span class="value">{{ weatherData.main.humidity }}%</span></div>
+              <div class="detail-item"><span class="label">大气压</span><span class="value">{{ weatherData.main.pressure }} hPa</span></div>
+              <div class="detail-item"><span class="label">风速</span><span class="value">{{ weatherData.wind.speed }} m/s</span></div>
+              <div class="detail-item" v-if="weatherData.rain"><span class="label">降水量</span><span class="value">{{ weatherData.rain['1h'] || 0 }} mm</span></div>
+              <div class="detail-item"><span class="label">能见度</span><span class="value">{{ (weatherData.visibility / 1000).toFixed(1) }} km</span></div>
+            </div>
           </div>
+          <div class="loading-placeholder" v-else><i class="el-icon-loading"></i> 气象数据加载中...</div>
+        </div>
 
-          <!-- 作物种类占比 -->
-          <div class="panel-card chart-card">
-            <div class="card-title"><span class="title-icon"><i class="el-icon-pie-chart"></i></span> 作物种类占比</div>
-            <div ref="pieChart" class="chart-box"></div>
-          </div>
-
-          <!-- 温湿度趋势 -->
-          <div class="panel-card chart-card">
-            <div class="card-title"><span class="title-icon"><i class="el-icon-s-marketing"></i></span> 温湿度变化趋势</div>
-            <div ref="lineChart" class="chart-box"></div>
-          </div>
-        </section>
-      </div>
-
-      <!-- 下部：图表行 -->
-      <div class="screen-bottom">
-        <!-- 产量对比柱状图 -->
+        <!-- 作物种类占比 -->
         <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-s-data"></i></span> 各地块面积与产量对比</div>
+          <div class="card-title"><span class="title-icon"><i class="el-icon-pie-chart"></i></span> 作物占比</div>
+          <div ref="pieChart" class="chart-box pie-overflow"></div>
+        </div>
+
+        <!-- 温湿度趋势 -->
+        <div class="panel-card chart-card">
+          <div class="card-title"><span class="title-icon"><i class="el-icon-s-marketing"></i></span> 温湿度趋势</div>
+          <div ref="lineChart" class="chart-box"></div>
+        </div>
+      </aside>
+
+      <!-- 底部叠加图表条 -->
+      <div class="overlay-bottom">
+        <div class="panel-card chart-card">
+          <div class="card-title"><span class="title-icon"><i class="el-icon-s-data"></i></span> 面积与产量对比</div>
           <div ref="barChart" class="chart-box"></div>
         </div>
-
-        <!-- 土壤氮磷钾 -->
         <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-s-operation"></i></span> 各地块土壤氮磷钾含量 (mg/kg)</div>
+          <div class="card-title"><span class="title-icon"><i class="el-icon-s-operation"></i></span> 土壤氮磷钾 (mg/kg)</div>
           <div ref="npkChart" class="chart-box"></div>
         </div>
-
-        <!-- 土壤墒情仪表盘 -->
         <div class="panel-card chart-card">
           <div class="card-title"><span class="title-icon"><i class="el-icon-odometer"></i></span> 土壤墒情监测</div>
           <div ref="gaugeChart" class="chart-box"></div>
@@ -108,6 +95,10 @@ import AMapLoader from '@amap/amap-jsapi-loader'
 import amapConfig from '@/config/amap'
 import { getCurrentWeather } from '@/api/agriculture/weather'
 import { listAllLand } from '@/api/agriculture/screen'
+import { getLatestSensorData } from '@/api/iot/sensor'
+import { listAllDeviceShort } from '@/api/iot/device'
+import { getAllBatch } from '@/api/system/batch'
+import { getAllGermplasm } from '@/api/system/germplasm'
 
 // 颜色映射
 const CROP_COLORS = ['#00ff88', '#ff8c00', '#ff6b6b', '#45b7ff', '#a78bfa', '#f97316']
@@ -122,7 +113,12 @@ export default {
       clockTimer: null,
       weatherData: null,
       weatherTimer: null,
+      sensorTimer: null,
       landList: [],
+      sensorDataList: [],
+      deviceLandMap: {}, // serialNumber → landName
+      batchList: [],
+      germplasmList: [],
       map: null,
       AMapInstance: null,
       barChart: null, pieChart: null, gaugeChart: null, lineChart: null, npkChart: null,
@@ -136,13 +132,27 @@ export default {
     this.clockTimer = setInterval(() => this.updateClock(), 1000)
     this.fetchAllData()
     this.weatherTimer = setInterval(() => this.fetchWeather(), 10 * 60 * 1000)
+    this.sensorTimer = setInterval(() => this.fetchSensorData(), 30 * 1000)
     this.$nextTick(() => { this.loadAMap() })
     this.resizeHandler = () => this.handleResize()
     window.addEventListener('resize', this.resizeHandler)
   },
+  activated() {
+    // 路由切回时检查地图容器是否有效，若丢失则重新加载
+    const container = document.getElementById('screenMap')
+    const mapEl = container?.querySelector('.amap-container')
+    if (!mapEl && this.map) {
+      this.map.destroy()
+      this.map = null
+    }
+    if (!this.map) {
+      this.$nextTick(() => { this.loadAMap() })
+    }
+  },
   beforeDestroy() {
     clearInterval(this.clockTimer)
     clearInterval(this.weatherTimer)
+    clearInterval(this.sensorTimer)
     window.removeEventListener('resize', this.resizeHandler)
     if (this.map) this.map.destroy()
     this.barChart?.dispose(); this.pieChart?.dispose()
@@ -157,7 +167,38 @@ export default {
 
     // ========== 数据获取 ==========
     async fetchAllData() {
-      await Promise.all([this.fetchWeather(), this.fetchLandData()])
+      await this.loadDeviceLandMap()
+      // 批次数据必须在饼图初始化之前就绪
+      await this.fetchBatchData()
+      await Promise.all([this.fetchWeather(), this.fetchLandData(), this.fetchSensorData()])
+    },
+
+    async fetchBatchData() {
+      try {
+        const batchRes = await getAllBatch()
+        this.batchList = batchRes.data || []
+        const germplasmRes = await getAllGermplasm()
+        this.germplasmList = germplasmRes.data || []
+      } catch (e) {
+        this.batchList = []
+        this.germplasmList = []
+      }
+    },
+
+    async loadDeviceLandMap() {
+      try {
+        const res = await listAllDeviceShort()
+        const devices = res.data || []
+        const map = {}
+        devices.forEach(d => {
+          if (d.serialNumber && d.landName) {
+            map[d.serialNumber] = d.landName
+          }
+        })
+        this.deviceLandMap = map
+      } catch (e) {
+        this.deviceLandMap = {}
+      }
     },
 
     async fetchWeather() {
@@ -174,6 +215,20 @@ export default {
       }
     },
 
+    async fetchSensorData() {
+      try {
+        const res = await getLatestSensorData()
+        this.sensorDataList = res.data || []
+        // 刷新 NPK 图表
+        if (this.npkChart) {
+          this.initNpkChart()
+        }
+      } catch (e) {
+        console.warn('传感器数据获取失败', e)
+        this.sensorDataList = []
+      }
+    },
+
     async fetchLandData() {
       try {
         const res = await listAllLand()
@@ -185,6 +240,18 @@ export default {
         console.warn('地块数据获取失败，使用模拟数据', e)
         this.landList = this.getMockLandData()
       }
+      // 智能推断：如果后端 cropName 为空，从地块名称推断
+      this.landList.forEach(land => {
+        if (!land.cropName) {
+          const name = land.landName || ''
+          if (name.includes('水稻')) land.cropName = '水稻'
+          else if (name.includes('油菜')) land.cropName = '油菜'
+          else if (name.includes('大棚') || name.includes('蔬菜')) land.cropName = '蔬菜'
+          else if (name.includes('果园') || name.includes('果树')) land.cropName = '果树'
+          else if (name.includes('旱地') || name.includes('实验')) land.cropName = '其他'
+          else land.cropName = '未分类'
+        }
+      })
       this.buildCropColorMap()
       this.computeOverviewStats()
       this.$nextTick(() => {
@@ -231,7 +298,7 @@ export default {
     loadAMap() {
       window._AMapSecurityConfig = { securityJsCode: amapConfig.securityJsCode }
       AMapLoader.load({
-        key: amapConfig.key,
+        key: 'a52903e93211146ac0a0ef7c3f52e7d1',
         version: '2.0',
         plugins: ['AMap.Scale', 'AMap.TileLayer', 'AMap.Polygon', 'AMap.Marker', 'AMap.InfoWindow']
       }).then(AMap => {
@@ -377,6 +444,7 @@ export default {
       const yields = this.landList.map(l => Number(l.landArea || 0) * (yieldRates[l.cropName] || 0.5))
 
       this.barChart.setOption({
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'axis',
           backgroundColor: 'rgba(6,16,40,0.9)',
@@ -429,15 +497,28 @@ export default {
       this.pieChart = echarts.init(this.$refs.pieChart)
       const t = this.t()
       const cropArea = {}
-      this.landList.forEach(l => {
-        const name = l.cropName || '未分类'
-        cropArea[name] = (cropArea[name] || 0) + Number(l.landArea || 0)
-      })
+      if (this.batchList && this.batchList.length > 0) {
+        // 从批次数据聚合（按种质名称）
+        const nameMap = {}
+        this.germplasmList.forEach(g => { nameMap[g.germplasmId] = g.germplasmName })
+        this.batchList.forEach(b => {
+          const name = nameMap[b.germplasmId] || '未分类'
+          cropArea[name] = (cropArea[name] || 0) + Number(b.cropArea || 0)
+        })
+      } else {
+        // 回退：从地块数据聚合
+        this.landList.forEach(l => {
+          const name = l.cropName || '未分类'
+          cropArea[name] = (cropArea[name] || 0) + Number(l.landArea || 0)
+        })
+      }
       const data = Object.entries(cropArea).map(([name, value]) => ({ name, value }))
 
       this.pieChart.setOption({
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'item',
+          appendToBody: true,
           backgroundColor: 'rgba(6,16,40,0.9)',
           borderColor: 'rgba(0,212,255,0.3)',
           textStyle: { color: '#fff', fontSize: 12 },
@@ -460,31 +541,51 @@ export default {
       if (!this.$refs.npkChart) return
       this.npkChart = echarts.init(this.$refs.npkChart)
       const t = this.t()
-      const names = this.landList.map(l => l.landName.length > 5 ? l.landName.slice(0, 5) + '..' : l.landName)
 
-      // 基于地块面积和作物类型生成模拟NPK数据 (实际应来自土壤传感器)
-      const npkBase = {
-        '水稻': { n: 120, p: 18, k: 85 },
-        '油菜': { n: 95, p: 22, k: 70 },
-        '蔬菜': { n: 150, p: 35, k: 120 },
-        '果树': { n: 80, p: 15, k: 90 }
+      let names = []
+      let nData = []
+      let pData = []
+      let kData = []
+
+      // 优先使用真实传感器数据
+      if (this.sensorDataList && this.sensorDataList.length > 0) {
+        this.sensorDataList.forEach(sensor => {
+          const sn = sensor.serialNumber || ''
+          const landName = this.deviceLandMap[sn]
+          const name = landName || sn || '未知设备'
+          names.push(name.length > 8 ? name.slice(0, 8) + '..' : name)
+          nData.push(sensor.nitrogen || 0)
+          pData.push(sensor.phosphorus || 0)
+          kData.push(sensor.potassium || 0)
+        })
+      } else {
+        // 回退到地块模拟数据
+        names = this.landList.map(l => l.landName.length > 5 ? l.landName.slice(0, 5) + '..' : l.landName)
+
+        const npkBase = {
+          '水稻': { n: 120, p: 18, k: 85 },
+          '油菜': { n: 95, p: 22, k: 70 },
+          '蔬菜': { n: 150, p: 35, k: 120 },
+          '果树': { n: 80, p: 15, k: 90 }
+        }
+        const defaultNpk = { n: 100, p: 20, k: 80 }
+
+        nData = this.landList.map(l => {
+          const base = npkBase[l.cropName] || defaultNpk
+          return +(base.n + (Math.random() - 0.5) * 20).toFixed(1)
+        })
+        pData = this.landList.map(l => {
+          const base = npkBase[l.cropName] || defaultNpk
+          return +(base.p + (Math.random() - 0.5) * 5).toFixed(1)
+        })
+        kData = this.landList.map(l => {
+          const base = npkBase[l.cropName] || defaultNpk
+          return +(base.k + (Math.random() - 0.5) * 15).toFixed(1)
+        })
       }
-      const defaultNpk = { n: 100, p: 20, k: 80 }
-
-      const nData = this.landList.map(l => {
-        const base = npkBase[l.cropName] || defaultNpk
-        return +(base.n + (Math.random() - 0.5) * 20).toFixed(1)
-      })
-      const pData = this.landList.map(l => {
-        const base = npkBase[l.cropName] || defaultNpk
-        return +(base.p + (Math.random() - 0.5) * 5).toFixed(1)
-      })
-      const kData = this.landList.map(l => {
-        const base = npkBase[l.cropName] || defaultNpk
-        return +(base.k + (Math.random() - 0.5) * 15).toFixed(1)
-      })
 
       this.npkChart.setOption({
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'axis',
           backgroundColor: 'rgba(6,16,40,0.9)',
@@ -540,6 +641,7 @@ export default {
       }))
 
       this.gaugeChart.setOption({
+        backgroundColor: 'transparent',
         series: gaugeData.map((item, i) => ({
           type: 'gauge',
           center: [(i % 2 === 0 ? 25 : 75) + '%', i < 2 ? '28%' : '72%'],
@@ -572,6 +674,7 @@ export default {
       const humids = [75, 78, 80, 82, 83, 85, 82, 78, 72, 65, 60, 58, 55, 54, 53, 54, 56, 60, 65, 68, 70, 72, 73, 74]
 
       this.lineChart.setOption({
+        backgroundColor: 'transparent',
         tooltip: {
           trigger: 'axis',
           backgroundColor: 'rgba(6,16,40,0.9)',
@@ -632,6 +735,7 @@ export default {
     handleResize() {
       this.barChart?.resize(); this.pieChart?.resize()
       this.gaugeChart?.resize(); this.lineChart?.resize(); this.npkChart?.resize()
+      if (this.map) this.map.resize()
     }
   }
 }
@@ -655,12 +759,13 @@ $border-glow: rgba(0, 212, 255, 0.15);
 
 // ---------- 全局容器 ----------
 .screen-container {
-  width: 100vw; height: 100vh;
+  width: 100%;
+  min-height: calc(100vh - 84px); // 减去导航栏和标签栏的高度
   background: radial-gradient(ellipse at 50% 20%, #0d2048 0%, #0b1229 35%, #020818 70%, #000000 100%);
   display: flex; flex-direction: column; overflow: hidden;
   color: $text-bright;
   font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
-  position: fixed; top: 0; left: 0; z-index: 100;
+  position: relative;
 
   // 网格点阵背景（增强可见度）
   &::before {
@@ -766,49 +871,45 @@ $border-glow: rgba(0, 212, 255, 0.15);
   50% { text-shadow: 0 0 12px currentColor, 0 0 28px currentColor, 0 0 55px currentColor, 0 0 80px currentColor; }
 }
 
-// ---------- 主体布局 ----------
+// ---------- 主体布局（地图为主，面板叠加） ----------
 .screen-main {
-  flex: 1; display: flex; flex-direction: column; gap: 10px;
-  padding: 10px 14px 14px; min-height: 0; position: relative; z-index: 1;
+  flex: 1; position: relative; min-height: 0; z-index: 1;
+  padding: 10px 14px 14px;
 }
 
-.screen-top {
-  flex: 0 0 58%; display: flex; gap: 10px; min-height: 0;
-}
-
+// 地图占据整个主体区域
 .map-area {
-  flex: 1; display: flex; min-width: 0;
+  position: absolute; top: 10px; left: 14px; right: 14px; bottom: 10px;
+  z-index: 1;
 }
 
-.panel-side {
-  width: 28%; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0;
+// 右侧叠加面板
+.overlay-sidebar {
+  position: absolute; top: 14px; right: 20px; width: 260px; bottom: 224px;
+  z-index: 10; display: flex; flex-direction: column; gap: 8px;
+  pointer-events: auto;
+  background: transparent;
 }
 
-.screen-bottom {
-  flex: 1; display: flex; gap: 10px; min-height: 0;
+// 底部叠加图表条
+.overlay-bottom {
+  position: absolute; left: 20px; right: 20px; bottom: 18px; height: 200px;
+  z-index: 10; display: flex; gap: 8px;
+  pointer-events: auto;
 }
 
 // ---------- 通用卡片 ----------
 .panel-card {
-  background:
-    // 四角 HUD 折线 — 青蓝色
-    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 20px 2px no-repeat,
-    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 2px 20px no-repeat,
-    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 20px 2px no-repeat,
-    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 2px 20px no-repeat,
-    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 20px 2px no-repeat,
-    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 2px 20px no-repeat,
-    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 100% / 20px 2px no-repeat,
-    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 100% 100% / 2px 20px no-repeat,
-    $bg-card;
-  backdrop-filter: blur(6px);
-  border: 1px solid $border-glow; border-radius: 2px;
+  background: rgba(6, 16, 40, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba($cyan, 0.15); border-radius: 10px;
   display: flex; flex-direction: column; overflow: hidden;
   position: relative;
   box-shadow:
     0 2px 20px rgba(0, 0, 0, 0.4),
-    0 0 15px rgba($cyan, 0.08),
-    0 0 40px rgba($cyan, 0.03),
+    0 0 15px rgba($cyan, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
     inset 0 0 40px rgba($cyan, 0.02);
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
 
@@ -847,24 +948,11 @@ $border-glow: rgba(0, 212, 255, 0.15);
 }
 
 .chart-card { flex: 1; min-height: 0; }
-.chart-box { flex: 1; min-height: 0; border-radius: 0 0 2px 2px; }
+.chart-box { flex: 1; min-height: 0; border-radius: 0 0 10px 10px; }
 
 // ---------- 气象面板 ----------
 .weather-panel {
-  height: 180px; flex-shrink: 0;
-
-  // 气象面板右下角用橙色
-  background:
-    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 20px 2px no-repeat,
-    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 0 0 / 2px 20px no-repeat,
-    linear-gradient(to left, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 20px 2px no-repeat,
-    linear-gradient(to bottom, rgba($cyan, 0.6) 2px, transparent 2px) 100% 0 / 2px 20px no-repeat,
-    linear-gradient(to right, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 20px 2px no-repeat,
-    linear-gradient(to top, rgba($cyan, 0.6) 2px, transparent 2px) 0 100% / 2px 20px no-repeat,
-    // 右下角用橙色
-    linear-gradient(to left, rgba($orange, 0.6) 2px, transparent 2px) 100% 100% / 20px 2px no-repeat,
-    linear-gradient(to top, rgba($orange, 0.6) 2px, transparent 2px) 100% 100% / 2px 20px no-repeat,
-    $bg-card;
+  height: 170px; flex-shrink: 0;
 
   .weather-content { padding: 6px 12px; display: flex; flex-direction: column; height: 100%; }
   .weather-main {
@@ -895,7 +983,7 @@ $border-glow: rgba(0, 212, 255, 0.15);
 // ---------- 地图容器 ----------
 .map-wrapper {
   width: 100%; height: 100%; position: relative;
-  border: 1px solid rgba($cyan, 0.15); border-radius: 2px; overflow: hidden;
+  border: 1px solid rgba($cyan, 0.15); border-radius: 10px; overflow: hidden;
   box-shadow:
     0 0 25px rgba($cyan, 0.08),
     0 0 50px rgba(0, 0, 0, 0.35),
@@ -926,11 +1014,12 @@ $border-glow: rgba(0, 212, 255, 0.15);
     display: flex; gap: 10px; z-index: 10; pointer-events: none;
 
     .stat-badge {
-      background: rgba(4, 12, 30, 0.9);
-      border: 1px solid rgba($cyan, 0.3); border-radius: 2px;
+      background: rgba(4, 12, 30, 0.5);
+      border: 1px solid rgba($cyan, 0.2); border-radius: 10px;
       padding: 8px 18px;
       display: flex; flex-direction: column; align-items: center;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.4), 0 0 12px rgba($cyan, 0.06);
       border-left: 2px solid $cyan;
 
@@ -955,11 +1044,12 @@ $border-glow: rgba(0, 212, 255, 0.15);
 
   .map-legend {
     position: absolute; bottom: 14px; right: 14px;
-    background: rgba(4, 12, 30, 0.9);
-    border: 1px solid rgba($cyan, 0.25); border-radius: 2px;
+    background: rgba(4, 12, 30, 0.5);
+    border: 1px solid rgba($cyan, 0.2); border-radius: 10px;
     padding: 8px 14px;
     display: flex; flex-direction: column; gap: 5px; z-index: 10;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
     border-right: 2px solid $orange;
 
@@ -971,5 +1061,31 @@ $border-glow: rgba(0, 212, 255, 0.15);
       }
     }
   }
+}
+</style>
+
+<!-- 不带 scoped：穿透 ECharts canvas 和 Element UI 全局样式 -->
+<style>
+/* Element UI 对 <aside> 注入了 #EEF1F6 背景，必须覆盖 */
+aside.overlay-sidebar {
+  background: transparent !important;
+}
+.panel-card,
+.panel-card * {
+  background-color: transparent !important;
+}
+.panel-card {
+  background: rgba(6, 16, 40, 0.55) !important;
+}
+.panel-card .card-title {
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.15) 0%, rgba(0, 212, 255, 0.03) 60%, transparent 100%) !important;
+}
+.panel-card canvas {
+  background: transparent !important;
+}
+
+// 饼图容器允许 tooltip 溢出
+.pie-overflow {
+  overflow: visible !important;
 }
 </style>

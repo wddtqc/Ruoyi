@@ -68,7 +68,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/index'),
+        component: () => import('@/views/agriculture/screen/index'),
         name: 'Index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }
@@ -78,6 +78,7 @@ export const constantRoutes = [
     path: '/screen',
     component: () => import('@/views/agriculture/screen/index'),
     name: 'Screen',
+    hidden: true,
     meta: { title: '智慧农业大屏', icon: 'dashboard' }
   },
   {

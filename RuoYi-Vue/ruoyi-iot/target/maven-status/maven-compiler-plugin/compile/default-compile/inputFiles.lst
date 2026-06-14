@@ -1,43 +1,45 @@
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\config\MqttConfig.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotCategoryController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceAlertController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceRunningStatusController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotModelController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotProductController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotThingsModelTemplateController.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotCategory.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDevice.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceAlert.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceRunningStatus.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotProduct.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotSensorData.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotThingsModelTemplate.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotCategoryMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceAlertMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceRunningStatusMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotProductMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotSensorDataMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotThingsModelTemplateMapper.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttMessageListener.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttPublisher.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\processor\IotDataProcessor.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotCategoryService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIoTDataProcessService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceAlertService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceRunningStatusService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotProductService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotSensorDataService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotThingsModelTemplateService.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotCategoryServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IoTDataProcessServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceAlertServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceRunningStatusServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotProductServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotSensorDataServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotThingsModelTemplateServiceImpl.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\task\MockSensorTask.java
-D:\Program Files (x86)\githubdesk_events\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\Main.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\config\MqttConfig.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotCategoryController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceAlertController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotDeviceRunningStatusController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotModelController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotProductController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotSensorDataController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\controller\IotThingsModelTemplateController.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotCategory.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDevice.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceAlert.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotDeviceRunningStatus.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotProduct.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotSensorData.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\domain\IotThingsModelTemplate.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotCategoryMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceAlertMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotDeviceRunningStatusMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotProductMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotSensorDataMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mapper\IotThingsModelTemplateMapper.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttMessageListener.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttPublisher.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\mqtt\MqttSubscriber.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\processor\IotDataProcessor.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotCategoryService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIoTDataProcessService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceAlertService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceRunningStatusService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotDeviceService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotProductService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotSensorDataService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\IIotThingsModelTemplateService.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotCategoryServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IoTDataProcessServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceAlertServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceRunningStatusServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotDeviceServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotProductServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotSensorDataServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\service\impl\IotThingsModelTemplateServiceImpl.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\iot\task\MockSensorTask.java
+F:\作业\专业综合实践\5\Ruoyi\RuoYi-Vue\ruoyi-iot\src\main\java\com\ruoyi\Main.java
