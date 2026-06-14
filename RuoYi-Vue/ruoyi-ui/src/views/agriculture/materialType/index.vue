@@ -9,14 +9,6 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="排序" prop="orderNum">
-        <el-input
-          v-model="queryParams.orderNum"
-          placeholder="请输入排序"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -74,7 +66,6 @@
       <el-table-column label="农资类别ID" align="center" prop="materialTypeId" />
       <el-table-column label="农资类别名称" align="center" prop="materialTypeName" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -114,11 +105,6 @@
           <el-col :span="24">
             <el-form-item label="备注" prop="remark">
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" placeholder="请输入排序" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -170,11 +156,7 @@ export default {
       rules: {
         materialTypeName: [
           { required: true, message: "农资类别名称不能为空", trigger: "blur" }
-        ],
-        orderNum: [
-          { required: true, message: "排序不能为空", trigger: "blur" }
         ]
-        // 已移除：remark, status, createBy, delFlag 的强校验，防止表单拦截提交
       }
     }
   },

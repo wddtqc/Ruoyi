@@ -210,7 +210,7 @@
       <div style="height:550px; width:100%; overflow:auto; padding:10px;">
         <method v-if="mDialog.type == 'method'" :germplasm-id="mDialog.germplasmId"></method>
         <intro v-if="mDialog.type == 'intro'" :germplasm-id="mDialog.germplasmId"></intro>
-        <task v-if="mDialog.type == 'task'" :batchId="mDialog.batchId" :tableBorder="true"></task>
+        <task v-if="mDialog.type == 'task'" :batchId="mDialog.batchId" :batchHead="mDialog.batchHead" :tableBorder="true"></task>
       </div>
     </el-dialog>
   </div>
@@ -242,7 +242,8 @@ export default {
         title: '',
         type: '',
         germplasmId: null,
-        batchId: null
+        batchId: null,
+        batchHead: null
       },
       loading: true,
       ids: [],
@@ -425,6 +426,7 @@ export default {
     handleCommand(command, row) {
       this.mDialog.germplasmId = row.germplasmId;
       this.mDialog.batchId = row.batchId;
+      this.mDialog.batchHead = row.batchHead;
       this.mDialog.open = true;
 
       switch(command) {

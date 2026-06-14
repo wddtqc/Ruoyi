@@ -26,14 +26,6 @@
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="排序" prop="orderNum">
-          <el-input
-            v-model="queryParams.orderNum"
-            placeholder="请输入排序"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -98,8 +90,6 @@
         </el-table-column>
         <el-table-column label="描述" align="center" prop="methodDes" />
         <el-table-column label="备注" align="center" prop="remark" />
-        <el-table-column label="状态" align="center" prop="status" />
-        <el-table-column label="排序" align="center" prop="orderNum" />
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="220">
           <template slot-scope="scope">
             <el-button
@@ -161,18 +151,8 @@
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" placeholder="请输入排序" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="删除标志" prop="delFlag">
-              <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-            </el-form-item>
-          </el-col>
         </el-row>
-      </</el-form>
+      </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -186,10 +166,16 @@ import { listMethod, getMethod, delMethod, addMethod, updateMethod } from "@/api
 
 export default {
   name: "Method",
+  props: {
+    germplasmId: {
+      type: [Number, String],
+      default: null
+    }
+  },
   data() {
     return {
       // 上传接口地址
-      uploadAction: "/agriculture/germplasm/upload",
+      uploadAction: "/system/germplasm/upload",
       loading: true,
       ids: [],
       single: true,
@@ -242,6 +228,9 @@ export default {
     }
   },
   created() {
+    if (this.germplasmId) {
+      this.queryParams.germplasmId = this.germplasmId
+    }
     this.getList()
   },
   methods: {
@@ -297,6 +286,9 @@ export default {
     },
     handleAdd() {
       this.reset()
+      if (this.germplasmId) {
+        this.form.germplasmId = this.germplasmId
+      }
       this.open = true
       this.title = "添加种植方法"
     },

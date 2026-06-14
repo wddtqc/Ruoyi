@@ -64,7 +64,6 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -92,11 +91,6 @@
           <el-col :span="12">
             <el-form-item label="手机号码" prop="employeeTel">
               <el-input v-model="form.employeeTel" placeholder="请输入手机号码" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="排序" prop="orderNum">
-              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" placeholder="排序" style="width: 100%"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -191,8 +185,7 @@ export default {
         employeeTel: [{ required: true, message: "手机号码不能为空", trigger: "blur" }],
         employeeSex: [{ required: true, message: "性别不能为空", trigger: "change" }],
         employeeAddress: [{ required: true, message: "地址不能为空", trigger: "blur" }],
-        status: [{ required: true, message: "状态不能为空", trigger: "change" }],
-        orderNum: [{ required: true, message: "排序不能为空", trigger: "blur" }]
+        status: [{ required: true, message: "状态不能为空", trigger: "change" }]
       }
     }
   },

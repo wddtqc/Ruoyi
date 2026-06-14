@@ -105,7 +105,17 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="任务ID" align="center" prop="taskId" />
       <el-table-column label="批次ID" align="center" prop="batchId" />
-      <el-table-column label="任务负责人" align="center" prop="taskHead" />
+      <el-table-column label="任务负责人" align="center" prop="taskHead">
+        <template slot-scope="scope">
+          <data-tag
+            :options="userList"
+            :value="scope.row.taskHead"
+            labelName="userName"
+            valueName="userId"
+            type="notag"
+          />
+        </template>
+      </el-table-column>
       <el-table-column label="任务名称" align="center" prop="taskName" />
       <el-table-column label="计划开始日期" align="center" prop="planStart" width="180">
         <template slot-scope="scope">
@@ -135,7 +145,11 @@
       </el-table-column>
       <el-table-column label="视频资料" align="center" prop="taskVideos" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="状态" align="center" prop="status">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.agriculture_batch_task_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
       <el-table-column label="排序" align="center" prop="orderNum" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -172,6 +186,30 @@
           <el-col :span="24">
             <el-form-item label="任务名称" prop="taskName">
               <el-input v-model="form.taskName" placeholder="请输入任务名称" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="任务负责人" prop="taskHead">
+              <el-select v-model.number="form.taskHead" placeholder="请选择任务负责人">
+                <el-option
+                  v-for="user in userList"
+                  :key="user.userId"
+                  :label="user.nickName"
+                  :value="Number(user.userId)"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="任务状态" prop="status">
+              <el-select v-model="form.status" placeholder="请选择任务状态">
+                <el-option
+                  v-for="dict in dict.type.agriculture_batch_task_status"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -234,16 +272,6 @@
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" placeholder="请输入排序" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="删除标志" prop="delFlag">
-              <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -256,13 +284,29 @@
 
 <script>
 import { listTask, getTask, delTask, addTask, updateTask } from "@/api/system/task"
+import { listUser } from "@/api/system/user"
 
 export default {
   name: "Task",
+  dicts: ['agriculture_batch_task_status'],
+  props: {
+    batchId: {
+      type: String,
+      default: null
+    },
+    batchHead: {
+      type: [Number, String],
+      default: null
+    },
+    tableBorder: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       // 上传接口地址
-      uploadAction: "/agriculture/germplasm/upload",
+      uploadAction: "/system/germplasm/upload",
       // 遮罩层
       loading: true,
       // 选中数组
@@ -277,6 +321,8 @@ export default {
       total: 0,
       // 批次任务表格数据
       taskList: [],
+      // 用户列表
+      userList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -327,9 +373,19 @@ export default {
     }
   },
   created() {
+    if (this.batchId) {
+      this.queryParams.batchId = this.batchId
+    }
+    this.getUserList()
     this.getList()
   },
   methods: {
+    /** 获取用户列表 */
+    getUserList() {
+      return listUser().then(response => {
+        this.userList = response.rows
+      })
+    },
     /** 查询批次任务列表 */
     getList() {
       this.loading = true
@@ -388,6 +444,12 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
+      if (this.batchId) {
+        this.form.batchId = this.batchId
+      }
+      if (this.batchHead) {
+        this.form.taskHead = Number(this.batchHead)
+      }
       this.open = true
       this.title = "添加批次任务"
     },
@@ -395,11 +457,24 @@ export default {
     handleUpdate(row) {
       this.reset()
       const taskId = row.taskId || this.ids
-      getTask(taskId).then(response => {
-        this.form = response.data
+      Promise.all([
+        this.getUserList(),
+        getTask(taskId)
+      ]).then(([_, taskRes]) => {
+        this.form = taskRes.data
+        // 类型转换：确保负责人ID为数字类型
+        this.form.taskHead = this.toNumber(this.form.taskHead)
         this.open = true
         this.title = "修改批次任务"
+      }).catch(err => {
+        this.$modal.msgError("加载数据失败：" + (err.message || "未知错误"))
       })
+    },
+    /** 安全的类型转换：String → Number */
+    toNumber(value) {
+      if (value == null || value === '') return null
+      const num = Number(value)
+      return isNaN(num) ? null : num
     },
     /** 提交按钮 */
     submitForm() {

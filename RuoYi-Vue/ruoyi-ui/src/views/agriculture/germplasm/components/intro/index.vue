@@ -156,16 +156,6 @@
               <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
             </el-form-item>
           </el-col>
-          <el-col :span="24">
-            <el-form-item label="排序" prop="orderNum">
-              <el-input v-model="form.orderNum" placeholder="请输入排序" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="24">
-            <el-form-item label="删除标志" prop="delFlag">
-              <el-input v-model="form.delFlag" placeholder="请输入删除标志" />
-            </el-form-item>
-          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -181,10 +171,16 @@ import { listIntro, getIntro, delIntro, addIntro, updateIntro } from "@/api/syst
 
 export default {
   name: "Intro",
+  props: {
+    germplasmId: {
+      type: [Number, String],
+      default: null
+    }
+  },
   data() {
     return {
       // 上传接口地址
-      uploadAction: "/agriculture/germplasm/upload",
+      uploadAction: "/system/germplasm/upload",
       // 遮罩层
       loading: true,
       // 选中数组
@@ -249,6 +245,9 @@ export default {
     }
   },
   created() {
+    if (this.germplasmId) {
+      this.queryParams.germplasmId = this.germplasmId
+    }
     this.getList()
   },
   methods: {
@@ -304,6 +303,9 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset()
+      if (this.germplasmId) {
+        this.form.germplasmId = this.germplasmId
+      }
       this.open = true
       this.title = "添加种质介绍"
     },

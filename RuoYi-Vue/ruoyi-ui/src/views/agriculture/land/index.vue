@@ -97,7 +97,12 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="种植作物" align="center" prop="cropName" />
+        <el-table-column label="种植作物" align="center" prop="cropName">
+          <template slot-scope="scope">
+            <span v-if="scope.row.cropName">{{ scope.row.cropName }}</span>
+            <span v-else style="color: #909399;">暂无种植</span>
+          </template>
+        </el-table-column>
         <el-table-column
           label="操作"
           align="center"
