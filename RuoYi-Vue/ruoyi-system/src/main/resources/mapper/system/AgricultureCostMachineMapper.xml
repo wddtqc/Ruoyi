@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AgricultureCostMachineMapper">
+
+    <resultMap type="AgricultureCostMachine" id="AgricultureCostMachineResult">
+        <result property="costId"    column="cost_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="machineId"    column="machine_id"    />
+        <result property="machineName"    column="machine_name"    />
+        <result property="machineType"    column="machine_type"    />
+        <result property="machineModel"    column="machine_model"    />
+        <result property="useHours"    column="use_hours"    />
+        <result property="useDate"    column="use_date"    />
+        <result property="hourlyCost"    column="hourly_cost"    />
+        <result property="fuelCost"    column="fuel_cost"    />
+        <result property="maintenanceCost"    column="maintenance_cost"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="operatorName"    column="operator_name"    />
+        <result property="isRental"    column="is_rental"    />
+        <result property="paymentStatus"    column="payment_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectAgricultureCostMachineVo">
+        select
+            cm.cost_id, cm.task_id, cm.batch_id, cm.machine_id,
+            COALESCE(cm.machine_name, mi.machine_name) as machine_name,
+            cm.machine_type, cm.machine_model, cm.use_hours, cm.use_date,
+            cm.hourly_cost, cm.fuel_cost, cm.maintenance_cost, cm.total_cost,
+            cm.operator_name, cm.is_rental, cm.payment_status, cm.remark, cm.status, cm.order_num,
+            cm.create_by, cm.create_time, cm.update_by, cm.update_time, cm.del_flag
+        from agriculture_cost_machine cm
+        left join agriculture_machine_info mi on cm.machine_id = mi.machine_id
+    </sql>
+
+    <select id="selectAgricultureCostMachineList" parameterType="AgricultureCostMachine" resultMap="AgricultureCostMachineResult">
+        <include refid="selectAgricultureCostMachineVo"/>
+        <where>
+            <if test="taskId != null "> and cm.task_id = #{taskId}</if>
+            <if test="batchId != null "> and cm.batch_id = #{batchId}</if>
+            <if test="machineId != null "> and cm.machine_id = #{machineId}</if>
+            <if test="machineName != null  and machineName != ''"> and COALESCE(cm.machine_name, mi.machine_name) like concat('%', #{machineName}, '%')</if>
+            <if test="machineType != null  and machineType != ''"> and cm.machine_type = #{machineType}</if>
+            <if test="useDate != null "> and cm.use_date = #{useDate}</if>
+            <if test="operatorName != null  and operatorName != ''"> and cm.operator_name like concat('%', #{operatorName}, '%')</if>
+            <if test="isRental != null  and isRental != ''"> and cm.is_rental = #{isRental}</if>
+            <if test="paymentStatus != null  and paymentStatus != ''"> and cm.payment_status = #{paymentStatus}</if>
+            <if test="status != null  and status != ''"> and cm.status = #{status}</if>
+        </where>
+        order by cm.use_date desc
+    </select>
+
+    <select id="selectAgricultureCostMachineByCostId" parameterType="Long" resultMap="AgricultureCostMachineResult">
+        <include refid="selectAgricultureCostMachineVo"/>
+        where cm.cost_id = #{costId}
+    </select>
+
+    <insert id="insertAgricultureCostMachine" parameterType="AgricultureCostMachine" useGeneratedKeys="true" keyProperty="costId">
+        insert into agriculture_cost_machine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="batchId != null">batch_id,</if>
+            <if test="machineId != null">machine_id,</if>
+            <if test="machineName != null and machineName != ''">machine_name,</if>
+            <if test="machineType != null and machineType != ''">machine_type,</if>
+            <if test="machineModel != null and machineModel != ''">machine_model,</if>
+            <if test="useHours != null">use_hours,</if>
+            <if test="useDate != null">use_date,</if>
+            <if test="hourlyCost != null">hourly_cost,</if>
+            <if test="fuelCost != null">fuel_cost,</if>
+            <if test="maintenanceCost != null">maintenance_cost,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="operatorName != null and operatorName != ''">operator_name,</if>
+            <if test="isRental != null and isRental != ''">is_rental,</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="batchId != null">#{batchId},</if>
+            <if test="machineId != null">#{machineId},</if>
+            <if test="machineName != null and machineName != ''">#{machineName},</if>
+            <if test="machineType != null and machineType != ''">#{machineType},</if>
+            <if test="machineModel != null and machineModel != ''">#{machineModel},</if>
+            <if test="useHours != null">#{useHours},</if>
+            <if test="useDate != null">#{useDate},</if>
+            <if test="hourlyCost != null">#{hourlyCost},</if>
+            <if test="fuelCost != null">#{fuelCost},</if>
+            <if test="maintenanceCost != null">#{maintenanceCost},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="operatorName != null and operatorName != ''">#{operatorName},</if>
+            <if test="isRental != null and isRental != ''">#{isRental},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">#{paymentStatus},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgricultureCostMachine" parameterType="AgricultureCostMachine">
+        update agriculture_cost_machine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="machineId != null">machine_id = #{machineId},</if>
+            <if test="machineName != null and machineName != ''">machine_name = #{machineName},</if>
+            <if test="machineType != null and machineType != ''">machine_type = #{machineType},</if>
+            <if test="machineModel != null and machineModel != ''">machine_model = #{machineModel},</if>
+            <if test="useHours != null">use_hours = #{useHours},</if>
+            <if test="useDate != null">use_date = #{useDate},</if>
+            <if test="hourlyCost != null">hourly_cost = #{hourlyCost},</if>
+            <if test="fuelCost != null">fuel_cost = #{fuelCost},</if>
+            <if test="maintenanceCost != null">maintenance_cost = #{maintenanceCost},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="operatorName != null and operatorName != ''">operator_name = #{operatorName},</if>
+            <if test="isRental != null and isRental != ''">is_rental = #{isRental},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status = #{paymentStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where cost_id = #{costId}
+    </update>
+
+    <delete id="deleteAgricultureCostMachineByCostId" parameterType="Long">
+        delete from agriculture_cost_machine where cost_id = #{costId}
+    </delete>
+
+    <delete id="deleteAgricultureCostMachineByCostIds" parameterType="Long">
+        delete from agriculture_cost_machine where cost_id in
+        <foreach item="costId" collection="array" open="(" separator="," close=")">
+            #{costId}
+        </foreach>
+    </delete>
+</mapper>

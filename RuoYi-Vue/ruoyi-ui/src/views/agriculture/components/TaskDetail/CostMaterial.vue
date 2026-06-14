@@ -13,37 +13,44 @@
       :data="costMaterialList"
       class="margin-top-10"
     >
-      <el-table-column label="农资" align="center" prop="materialId">
-        <template v-slot:default="scope">
-          <data-tag
-            :options="materialInfoList"
-            :value="scope.row.materialId"
-            labelName="materialName"
-            valueName="materialId"
-            type="notag"
-          />
+      <el-table-column label="物料名称" align="center" prop="materialName">
+        <template slot-scope="scope">
+          <span>{{ scope.row.materialName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="使用数量" align="center" prop="materialCount" />
-      <el-table-column label="计量单位" align="center" prop="measureUnit" />
+      <el-table-column label="物料规格" align="center" prop="materialSpec">
+        <template slot-scope="scope">
+          <span>{{ scope.row.materialSpec }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="使用数量" align="center" prop="useQuantity">
+        <template slot-scope="scope">
+          <span>{{ scope.row.useQuantity }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="计量单位" align="center" prop="materialUnit">
+        <template slot-scope="scope">
+          <span>{{ scope.row.materialUnit }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="单价" align="center" prop="unitPrice">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unitPrice }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="总成本" align="center" prop="totalCost">
+        <template slot-scope="scope">
+          <span>{{ scope.row.totalCost }}</span>
+        </template>
+      </el-table-column>
       <el-table-column
-        label="开始日期"
+        label="使用日期"
         align="center"
-        prop="workingStart"
+        prop="useDate"
         width="180"
       >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingStart, "{y}-{m}-{d}") }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="结束日期"
-        align="center"
-        prop="workingFinish"
-        width="180"
-      >
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingFinish, "{y}-{m}-{d}") }}</span>
+          <span>{{ parseTime(scope.row.useDate, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -56,7 +63,7 @@
             @click="handleAdd"
             v-hasPermi="['agriculture:costMaterial:add']"
             class="cursor-pointer"
-            >新增</el-tag
+          >新增</el-tag
           >
         </template>
         <template slot-scope="scope">
@@ -66,7 +73,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['agriculture:costMaterial:edit']"
-            >修改</el-button
+          >修改</el-button
           >
           <el-button
             size="mini"
@@ -74,7 +81,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['agriculture:costMaterial:remove']"
-            >删除</el-button
+          >删除</el-button
           >
         </template>
       </el-table-column>
@@ -95,6 +102,7 @@
             v-model="form.materialId"
             placeholder="请选择农资"
             class="display-block"
+            @change="handleMaterialChange"
           >
             <el-option
               v-for="item in materialInfoList"
@@ -105,31 +113,29 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="使用数量" prop="materialCount">
-          <el-input v-model="form.materialCount" placeholder="请输入使用数量" />
+        <el-form-item label="物料规格" prop="materialSpec">
+          <el-input v-model="form.materialSpec" placeholder="请输入物料规格" />
         </el-form-item>
-        <el-form-item label="计量单位" prop="measureUnit">
-          <el-input v-model="form.measureUnit" placeholder="请输入计量单位" />
+        <el-form-item label="使用数量" prop="useQuantity">
+          <el-input v-model="form.useQuantity" placeholder="请输入使用数量" @input="calculateTotalCost" />
         </el-form-item>
-        <el-form-item label="开始日期" prop="workingStart">
+        <el-form-item label="计量单位" prop="materialUnit">
+          <el-input v-model="form.materialUnit" placeholder="请输入计量单位" />
+        </el-form-item>
+        <el-form-item label="单价" prop="unitPrice">
+          <el-input v-model="form.unitPrice" placeholder="请输入单价" @input="calculateTotalCost" />
+        </el-form-item>
+        <el-form-item label="总成本" prop="totalCost">
+          <el-input v-model="form.totalCost" placeholder="自动计算" disabled />
+        </el-form-item>
+        <el-form-item label="使用日期" prop="useDate">
           <el-date-picker
             clearable
             class="w100"
-            v-model="form.workingStart"
+            v-model="form.useDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="选择开始日期"
-          >
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束日期" prop="workingFinish">
-          <el-date-picker
-            clearable
-            class="w100"
-            v-model="form.workingFinish"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择结束日期"
+            placeholder="选择使用日期"
           >
           </el-date-picker>
         </el-form-item>
@@ -150,7 +156,7 @@ import {
   addCostMaterial,
   updateCostMaterial,
 } from "@/api/system/costMaterial";
-import { listMaterialInfo } from "@/api/system/materialinfo";
+import { listInfo } from "@/api/system/materialinfo";
 import { addLog } from "@/api/system/log";
 
 export default {
@@ -197,17 +203,14 @@ export default {
         materialId: [
           { required: true, message: "农资ID不能为空", trigger: "blur" },
         ],
-        materialCount: [
+        useQuantity: [
           { required: true, message: "使用数量不能为空", trigger: "blur" },
         ],
-        measureUnit: [
+        materialUnit: [
           { required: true, message: "计量单位不能为空", trigger: "blur" },
         ],
-        workingStart: [
-          { required: true, message: "开始日期不能为空", trigger: "blur" },
-        ],
-        workingFinish: [
-          { required: true, message: "结束日期不能为空", trigger: "blur" },
+        useDate: [
+          { required: true, message: "使用日期不能为空", trigger: "blur" },
         ],
       },
     };
@@ -228,7 +231,7 @@ export default {
     },
     /** 查询农资列表 */
     getMaterialInfoList() {
-      listMaterialInfo().then((response) => {
+      listInfo().then((response) => {
         this.materialInfoList = response.rows;
       });
     },
@@ -242,11 +245,18 @@ export default {
       this.form = {
         costId: null,
         taskId: this.taskId,
+        batchId: null,
         materialId: null,
-        materialCount: null,
-        measureUnit: null,
-        workingStart: null,
-        workingFinish: null,
+        materialName: null,
+        materialType: null,
+        materialSpec: null,
+        materialUnit: null,
+        useQuantity: null,
+        useDate: null,
+        unitPrice: null,
+        totalCost: null,
+        supplierName: null,
+        paymentStatus: "0",
         remark: null,
         status: "0",
         orderNum: null,
@@ -270,8 +280,8 @@ export default {
     },
     /** 插入任务日志 */
     addTaskLog(des){
-        addLog({ taskId: this.taskId,operDes:des })
-        this.$emit('log')
+      addLog({ taskId: this.taskId,operDes:des })
+      this.$emit('log')
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -288,6 +298,21 @@ export default {
         this.open = true;
         this.title = "修改农资用量";
       });
+    },
+    /** 选择农资时自动填充相关信息 */
+    handleMaterialChange(materialId) {
+      const material = this.materialInfoList.find(item => item.materialId === materialId);
+      if (material) {
+        this.form.materialName = material.materialName;
+        this.form.materialSpec = material.materialSpec || '';
+        this.form.materialUnit = material.materialUnit || '';
+      }
+    },
+    /** 计算总成本 */
+    calculateTotalCost() {
+      const useQuantity = parseFloat(this.form.useQuantity) || 0;
+      const unitPrice = parseFloat(this.form.unitPrice) || 0;
+      this.form.totalCost = (useQuantity * unitPrice).toFixed(2);
     },
     /** 提交按钮 */
     submitForm() {
@@ -329,7 +354,7 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       this.download(
-        "system/costMaterial/export",
+        "agriculture/costMaterial/export",
         {
           ...this.queryParams,
         },

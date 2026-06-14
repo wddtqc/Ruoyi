@@ -23,25 +23,26 @@
             />
           </template>
       </el-table-column>
-      <el-table-column label="工时" align="center" prop="workingHours" />
+      <el-table-column label="工时" align="center" prop="workHours" />
       <el-table-column
-        label="开始日期"
+        label="工作日期"
         align="center"
-        prop="workingStart"
+        prop="workDate"
         width="180"
       >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingStart, "{y}-{m}-{d}") }}</span>
+          <span>{{ parseTime(scope.row.workDate, "{y}-{m}-{d}") }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="结束日期"
-        align="center"
-        prop="workingFinish"
-        width="180"
-      >
+      <el-table-column label="小时工资" align="center" prop="hourlyWage" />
+      <el-table-column label="总成本" align="center" prop="totalCost" />
+      <el-table-column label="补贴金额" align="center" prop="subsidyAmount" />
+      <el-table-column label="实际支付" align="center" prop="actualPayment" />
+      <el-table-column label="支付状态" align="center" prop="paymentStatus">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingFinish, "{y}-{m}-{d}") }}</span>
+          <span v-if="scope.row.paymentStatus === '0'">未支付</span>
+          <span v-else-if="scope.row.paymentStatus === '1'">已支付</span>
+          <span v-else>{{ scope.row.paymentStatus }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -99,34 +100,49 @@
           </el-select>
 
         </el-form-item>
-        <el-form-item label="工时" prop="workingHours">
-          <el-input v-model="form.workingHours" placeholder="请输入工时"  >
+        <el-form-item label="工作时长" prop="workHours">
+          <el-input v-model="form.workHours" placeholder="请输入工作时长"  >
               <template v-slot:append>
-                  天
+                  小时
               </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="开始日期" prop="workingStart">
+        <el-form-item label="工作日期" prop="workDate">
           <el-date-picker
             class="w100"
             clearable
-            v-model="form.workingStart"
+            v-model="form.workDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="选择开始日期"
+            placeholder="选择工作日期"
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="结束日期" prop="workingFinish">
-          <el-date-picker
-          class="w100"
-            clearable
-            v-model="form.workingFinish"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择结束日期"
-          >
-          </el-date-picker>
+        <el-form-item label="小时工资" prop="hourlyWage">
+          <el-input v-model="form.hourlyWage" placeholder="请输入小时工资">
+            <template v-slot:append>元/小时</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="总成本" prop="totalCost">
+          <el-input v-model="form.totalCost" placeholder="请输入总成本">
+            <template v-slot:append>元</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="补贴金额" prop="subsidyAmount">
+          <el-input v-model="form.subsidyAmount" placeholder="请输入补贴金额">
+            <template v-slot:append>元</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="实际支付" prop="actualPayment">
+          <el-input v-model="form.actualPayment" placeholder="请输入实际支付金额">
+            <template v-slot:append>元</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="支付状态" prop="paymentStatus">
+          <el-select v-model="form.paymentStatus" placeholder="请选择支付状态" class="w100">
+            <el-option label="未支付" value="0"></el-option>
+            <el-option label="已支付" value="1"></el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -180,33 +196,38 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        taskId:this.taskId
+        taskId: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
         employeeId: [
-          { required: true, message: "雇员ID不能为空", trigger: "blur" },
+          { required: true, message: "雇员不能为空", trigger: "blur" },
         ],
-        workingHours: [
-          { required: true, message: "工时不能为空", trigger: "blur" },
+        workHours: [
+          { required: true, message: "工作时长不能为空", trigger: "blur" },
         ],
-        workingStart: [
-          { required: true, message: "开始日期不能为空", trigger: "blur" },
-        ],
-        workingFinish: [
-          { required: true, message: "结束日期不能为空", trigger: "blur" },
-        ],
-        delFlag: [
-          { required: true, message: "删除标志不能为空", trigger: "blur" },
+        workDate: [
+          { required: true, message: "工作日期不能为空", trigger: "blur" },
         ],
       },
     };
   },
+  watch: {
+    taskId: {
+      handler(newVal) {
+        if (newVal) {
+          this.queryParams.taskId = newVal;
+          this.getList();
+          this.getTaskEmployeeList();
+        }
+      },
+      immediate: true
+    }
+  },
   created() {
-    this.getList();
-    this.getTaskEmployeeList();
+    // 移除这里的调用，改由watch触发
   },
   methods: {
     /** 查询人工工时列表 */
@@ -235,9 +256,13 @@ export default {
         costId: null,
         taskId: this.taskId,
         employeeId: null,
-        workingHours: null,
-        workingStart: null,
-        workingFinish: null,
+        workHours: null,
+        workDate: null,
+        hourlyWage: null,
+        totalCost: null,
+        subsidyAmount: null,
+        actualPayment: null,
+        paymentStatus: "0",
         remark: null,
         status: "0",
         orderNum: null,
@@ -251,7 +276,7 @@ export default {
     },
       /** 插入任务日志 */
     async addTaskLog(des){
-        await addLog({ taskId: this.taskId,operDes:des });
+        await addLog({ taskId: this.taskId, logContent: des });
         this.$emit('log')
     },
     /** 新增按钮操作 */

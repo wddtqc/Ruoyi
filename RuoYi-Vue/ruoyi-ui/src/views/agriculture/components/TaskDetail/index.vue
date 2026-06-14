@@ -76,23 +76,22 @@
           <template #label>
             <i class="el-icon-document-checked"></i> 任务信息
           </template>
-          <div>任务详情：</div>
+          <div class="flex aic jcsb margin-bottom-10">
+            <span class="font-weight-bold">任务详情：</span>
+            <span
+              v-if="!remarkOpen"
+              class="font-color-primary cursor-point"
+              @click="remarkOpen = true"
+            >
+              <i class="el-icon-edit"></i> {{ form.remark ? '编辑' : '添加描述' }}
+            </span>
+          </div>
           <template v-if="!remarkOpen">
-            <div v-if="form.remark" class="margin-top-15">
+            <div v-if="form.remark" class="padding-10 background-color-gray border-radius-5">
               {{ form.remark }}
-              <span
-                class="font-color-primary margin-left-10 cursor-point"
-                @click="remarkOpen = true"
-                >编辑</span
-              >
             </div>
-            <div v-if="!form.remark" class="margin-top-15">
-              --暂无描述--
-              <span
-                class="font-color-primary margin-left-10 cursor-point"
-                @click="remarkOpen = true"
-                >添加描述</span
-              >
+            <div v-if="!form.remark" class="padding-10 background-color-gray border-radius-5 font-color-info">
+              暂无描述
             </div>
           </template>
           <template v-if="remarkOpen">
@@ -134,7 +133,7 @@
           <div class="height-150 overflow-auto">
             <div class="line-height-30" v-for="(item, index) in logList" :key="index">
               {{ index + 1 }}、{{ item.createTime }} ，
-              由<span class="font-color-warning font-weight-bold padding-lr-5">{{ item.operName }}</span><span>{{item.operDes}}</span>
+              由<span class="font-color-warning font-weight-bold padding-lr-5">{{ item.operName || $store.getters.nickName }}</span><span>{{ item.logContent || item.operDes }}</span>
             </div>
           </div>
         </el-tab-pane>
@@ -335,7 +334,7 @@ export default {
     },
     /** 插入任务日志 */
     async addTaskLog(des){
-        await addLog({ taskId: this.taskId,operDes:des });
+        await addLog({ taskId: this.taskId, logContent: des });
         this.getLoglist()
     },
     /** 提交按钮 */

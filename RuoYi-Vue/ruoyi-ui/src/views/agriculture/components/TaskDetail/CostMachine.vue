@@ -8,36 +8,38 @@
     >
     </el-alert>
     <el-table v-loading="loading" :data="costMachineList"  class="margin-top-10" >
-      <el-table-column label="机械" align="center" prop="machineId" >
-          <template v-slot:default="scope">
-            <data-tag
-              :options="machineInfoList"
-              :value="scope.row.machineId"
-              labelName="machineName"
-              valueName="machineId"
-              type="notag"
-            />
-          </template>
-      </el-table-column>
-      <el-table-column label="机械数量" align="center" prop="machineCount" />
-      <el-table-column label="工时" align="center" prop="workingHours" />
-      <el-table-column label="开始日期" align="center" prop="workingStart" width="180">
+      <el-table-column label="机械名称" align="center" prop="machineName">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingStart, '{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.machineName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="结束日期" align="center" prop="workingFinish" width="180">
+      <el-table-column label="使用时长(小时)" align="center" prop="useHours">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.workingFinish, '{y}-{m}-{d}') }}</span>
+          <span>{{ scope.row.useHours }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="小时成本" align="center" prop="hourlyCost">
+        <template slot-scope="scope">
+          <span>{{ scope.row.hourlyCost }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="总成本" align="center" prop="totalCost">
+        <template slot-scope="scope">
+          <span>{{ scope.row.totalCost }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="使用日期" align="center" prop="useDate" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.useDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template #header>
+        <template #header>
           <el-tag
             @click="handleAdd"
             v-hasPermi="['agriculture:costMachine:add']"
             class="cursor-pointer"
-            >新增</el-tag
+          >新增</el-tag
           >
         </template>
         <template slot-scope="scope">
@@ -70,35 +72,30 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="机械ID" prop="machineId">
-          <el-select v-model="form.machineId" placeholder="请选择机械" class="display-block">
-              <el-option v-for="item in machineInfoList"
-                  :key="item.machineId"
-                  :label="item.machineName"
-                  :value="item.machineId">
-              </el-option>
+          <el-select v-model="form.machineId" placeholder="请选择机械" class="display-block" @change="handleMachineChange">
+            <el-option v-for="item in machineInfoList"
+                       :key="item.machineId"
+                       :label="item.machineName"
+                       :value="item.machineId">
+            </el-option>
           </el-select>
 
         </el-form-item>
-        <el-form-item label="机械数量" prop="machineCount">
-          <el-input v-model="form.machineCount" placeholder="请输入机械数量" />
+        <el-form-item label="使用时长" prop="useHours">
+          <el-input v-model="form.useHours" placeholder="请输入使用时长(小时)" @input="calculateTotalCost" />
         </el-form-item>
-        <el-form-item label="工时" prop="workingHours">
-          <el-input v-model="form.workingHours" placeholder="请输入工时" />
+        <el-form-item label="小时成本" prop="hourlyCost">
+          <el-input v-model="form.hourlyCost" placeholder="请输入小时成本(元/小时)" @input="calculateTotalCost" />
         </el-form-item>
-        <el-form-item label="开始日期" prop="workingStart">
+        <el-form-item label="总成本" prop="totalCost">
+          <el-input v-model="form.totalCost" placeholder="自动计算" disabled />
+        </el-form-item>
+        <el-form-item label="使用日期" prop="useDate">
           <el-date-picker clearable class="w100"
-            v-model="form.workingStart"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择开始日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束日期" prop="workingFinish">
-          <el-date-picker clearable s class="w100"
-            v-model="form.workingFinish"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择结束日期">
+                          v-model="form.useDate"
+                          type="date"
+                          value-format="yyyy-MM-dd"
+                          placeholder="选择使用日期">
           </el-date-picker>
         </el-form-item>
       </el-form>
@@ -112,15 +109,15 @@
 
 <script>
 import { listCostMachine, getCostMachine, delCostMachine, addCostMachine, updateCostMachine } from "@/api/system/costMachine";
-import { listMachineInfo } from "@/api/system/machineinfo";
+import {listInfo} from "@/api/system/machineinfo";
 import { addLog } from "@/api/system/log";
 
 export default {
   name: "CostMachine",
   props:{
-      taskId:{
-          type:[Number,String]
-      }
+    taskId:{
+      type:[Number,String]
+    }
   },
   data() {
     return {
@@ -147,7 +144,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-         taskId:this.taskId
+        taskId:this.taskId
       },
       // 表单参数
       form: {},
@@ -159,20 +156,11 @@ export default {
         machineId: [
           { required: true, message: "机械ID不能为空", trigger: "blur" }
         ],
-        machineCount: [
-          { required: true, message: "机械数量不能为空", trigger: "blur" }
+        useHours: [
+          { required: true, message: "使用时长不能为空", trigger: "blur" }
         ],
-        workingHours: [
-          { required: true, message: "工时不能为空", trigger: "blur" }
-        ],
-        workingStart: [
-          { required: true, message: "开始日期不能为空", trigger: "blur" }
-        ],
-        workingFinish: [
-          { required: true, message: "结束日期不能为空", trigger: "blur" }
-        ],
-        delFlag: [
-          { required: true, message: "删除标志不能为空", trigger: "blur" }
+        useDate: [
+          { required: true, message: "使用日期不能为空", trigger: "blur" }
         ]
       }
     };
@@ -193,9 +181,9 @@ export default {
     },
     /** 查询解携列表 */
     getMachineInfList(){
-        listMachineInfo().then(response=>{
-            this.machineInfoList = response.rows;
-        });
+      listInfo().then(response=>{
+        this.machineInfoList = response.rows;
+      });
     },
     // 取消按钮
     cancel() {
@@ -207,11 +195,20 @@ export default {
       this.form = {
         costId: null,
         taskId: this.taskId,
+        batchId: null,
         machineId: null,
-        machineCount: null,
-        workingHours: null,
-        workingStart: null,
-        workingFinish: null,
+        machineName: null,
+        machineType: null,
+        machineModel: null,
+        useHours: null,
+        useDate: null,
+        hourlyCost: null,
+        fuelCost: null,
+        maintenanceCost: null,
+        totalCost: null,
+        operatorName: null,
+        isRental: "0",
+        paymentStatus: "0",
         remark: null,
         status: "0",
         orderNum: null,
@@ -235,8 +232,8 @@ export default {
     },
     /** 插入任务日志 */
     addTaskLog(des){
-        addLog({ taskId: this.taskId,operDes:des })
-        this.$emit('log')
+      addLog({ taskId: this.taskId,operDes:des })
+      this.$emit('log')
     },
     /** 新增按钮操作 */
     handleAdd() {
@@ -253,6 +250,19 @@ export default {
         this.open = true;
         this.title = "修改机械工时";
       });
+    },
+    /** 选择机械时自动填充相关信息 */
+    handleMachineChange(machineId) {
+      const machine = this.machineInfoList.find(item => item.machineId === machineId);
+      if (machine) {
+        this.form.machineName = machine.machineName;
+      }
+    },
+    /** 计算总成本 */
+    calculateTotalCost() {
+      const useHours = parseFloat(this.form.useHours) || 0;
+      const hourlyCost = parseFloat(this.form.hourlyCost) || 0;
+      this.form.totalCost = (useHours * hourlyCost).toFixed(2);
     },
     /** 提交按钮 */
     submitForm() {
@@ -289,7 +299,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/costMachine/export', {
+      this.download('agriculture/costMachine/export', {
         ...this.queryParams
       }, `costMachine_${new Date().getTime()}.xlsx`)
     }

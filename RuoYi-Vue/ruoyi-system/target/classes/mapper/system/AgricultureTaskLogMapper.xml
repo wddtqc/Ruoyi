@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AgricultureTaskLogMapper">
+
+    <resultMap type="AgricultureTaskLog" id="AgricultureTaskLogResult">
+        <result property="logId"    column="log_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="logType"    column="log_type"    />
+        <result property="logContent"    column="log_content"    />
+        <result property="executePerson"    column="execute_person"    />
+        <result property="executeTime"    column="execute_time"    />
+        <result property="executeResult"    column="execute_result"    />
+        <result property="executeStatus"    column="execute_status"    />
+        <result property="logImages"    column="log_images"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="operName"    column="oper_name"    />
+        <result property="operDes"    column="oper_des"    />
+    </resultMap>
+
+    <sql id="selectAgricultureTaskLogVo">
+        select
+            tl.log_id, tl.task_id, tl.batch_id, tl.log_type, tl.log_content,
+            tl.execute_person, tl.execute_time, tl.execute_result, tl.execute_status,
+            tl.log_images, tl.remark, tl.status, tl.order_num,
+            tl.create_by, tl.create_time, tl.update_by, tl.update_time, tl.del_flag,
+            u.nick_name as oper_name,
+            tl.log_content as oper_des
+        from agriculture_task_log tl
+        left join sys_user u on tl.create_by = u.user_id
+    </sql>
+
+    <select id="selectAgricultureTaskLogList" parameterType="AgricultureTaskLog" resultMap="AgricultureTaskLogResult">
+        <include refid="selectAgricultureTaskLogVo"/>
+        <where>
+            <if test="taskId != null "> and tl.task_id = #{taskId}</if>
+            <if test="batchId != null "> and tl.batch_id = #{batchId}</if>
+            <if test="logType != null  and logType != ''"> and tl.log_type = #{logType}</if>
+            <if test="logContent != null  and logContent != ''"> and tl.log_content like concat('%', #{logContent}, '%')</if>
+            <if test="executePerson != null "> and tl.execute_person = #{executePerson}</if>
+            <if test="executeTime != null "> and tl.execute_time = #{executeTime}</if>
+            <if test="executeResult != null  and executeResult != ''"> and tl.execute_result like concat('%', #{executeResult}, '%')</if>
+            <if test="executeStatus != null  and executeStatus != ''"> and tl.execute_status = #{executeStatus}</if>
+            <if test="status != null  and status != ''"> and tl.status = #{status}</if>
+        </where>
+        order by tl.create_time desc
+    </select>
+
+    <select id="selectAgricultureTaskLogByLogId" parameterType="Long" resultMap="AgricultureTaskLogResult">
+        <include refid="selectAgricultureTaskLogVo"/>
+        where tl.log_id = #{logId}
+    </select>
+
+    <insert id="insertAgricultureTaskLog" parameterType="AgricultureTaskLog" useGeneratedKeys="true" keyProperty="logId">
+        insert into agriculture_task_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="batchId != null">batch_id,</if>
+            <if test="logType != null and logType != ''">log_type,</if>
+            <if test="logContent != null and logContent != ''">log_content,</if>
+            <if test="executePerson != null">execute_person,</if>
+            <if test="executeTime != null">execute_time,</if>
+            <if test="executeResult != null and executeResult != ''">execute_result,</if>
+            <if test="executeStatus != null and executeStatus != ''">execute_status,</if>
+            <if test="logImages != null">log_images,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="batchId != null">#{batchId},</if>
+            <if test="logType != null and logType != ''">#{logType},</if>
+            <if test="logContent != null and logContent != ''">#{logContent},</if>
+            <if test="executePerson != null">#{executePerson},</if>
+            <if test="executeTime != null">#{executeTime},</if>
+            <if test="executeResult != null and executeResult != ''">#{executeResult},</if>
+            <if test="executeStatus != null and executeStatus != ''">#{executeStatus},</if>
+            <if test="logImages != null">#{logImages},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgricultureTaskLog" parameterType="AgricultureTaskLog">
+        update agriculture_task_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="logType != null and logType != ''">log_type = #{logType},</if>
+            <if test="logContent != null and logContent != ''">log_content = #{logContent},</if>
+            <if test="executePerson != null">execute_person = #{executePerson},</if>
+            <if test="executeTime != null">execute_time = #{executeTime},</if>
+            <if test="executeResult != null and executeResult != ''">execute_result = #{executeResult},</if>
+            <if test="executeStatus != null and executeStatus != ''">execute_status = #{executeStatus},</if>
+            <if test="logImages != null">log_images = #{logImages},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where log_id = #{logId}
+    </update>
+
+    <delete id="deleteAgricultureTaskLogByLogId" parameterType="Long">
+        delete from agriculture_task_log where log_id = #{logId}
+    </delete>
+
+    <delete id="deleteAgricultureTaskLogByLogIds" parameterType="Long">
+        delete from agriculture_task_log where log_id in
+        <foreach item="logId" collection="array" open="(" separator="," close=")">
+            #{logId}
+        </foreach>
+    </delete>
+</mapper>

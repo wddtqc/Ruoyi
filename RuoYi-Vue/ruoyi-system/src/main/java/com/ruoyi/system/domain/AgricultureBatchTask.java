@@ -75,6 +75,34 @@ public class AgricultureBatchTask extends BaseEntity
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
+    /** 地块名称 */
+    @Excel(name = "地块名称")
+    private String landName;
+
+    /** 批次名称 */
+    @Excel(name = "批次名称")
+    private String batchName;
+
+    public void setLandName(String landName)
+    {
+        this.landName = landName;
+    }
+
+    public String getLandName()
+    {
+        return landName;
+    }
+
+    public void setBatchName(String batchName)
+    {
+        this.batchName = batchName;
+    }
+
+    public String getBatchName()
+    {
+        return batchName;
+    }
+
     public void setTaskId(String taskId) 
     {
         this.taskId = taskId;

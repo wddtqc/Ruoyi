@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AgricultureCostMaterialMapper">
+
+    <resultMap type="AgricultureCostMaterial" id="AgricultureCostMaterialResult">
+        <result property="costId"    column="cost_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="materialId"    column="material_id"    />
+        <result property="materialName"    column="material_name"    />
+        <result property="materialType"    column="material_type"    />
+        <result property="materialSpec"    column="material_spec"    />
+        <result property="materialUnit"    column="material_unit"    />
+        <result property="useQuantity"    column="use_quantity"    />
+        <result property="useDate"    column="use_date"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="supplierName"    column="supplier_name"    />
+        <result property="paymentStatus"    column="payment_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectAgricultureCostMaterialVo">
+        select
+            cm.cost_id, cm.task_id, cm.batch_id, cm.material_id,
+            COALESCE(cm.material_name, mi.material_name) as material_name,
+            cm.material_type, cm.material_spec, cm.material_unit, cm.use_quantity, cm.use_date,
+            cm.unit_price, cm.total_cost, cm.supplier_name, cm.payment_status, cm.remark, cm.status, cm.order_num,
+            cm.create_by, cm.create_time, cm.update_by, cm.update_time, cm.del_flag
+        from agriculture_cost_material cm
+        left join agriculture_material_info mi on cm.material_id = mi.material_id
+    </sql>
+
+    <select id="selectAgricultureCostMaterialList" parameterType="AgricultureCostMaterial" resultMap="AgricultureCostMaterialResult">
+        <include refid="selectAgricultureCostMaterialVo"/>
+        <where>
+            <if test="taskId != null "> and cm.task_id = #{taskId}</if>
+            <if test="batchId != null "> and cm.batch_id = #{batchId}</if>
+            <if test="materialId != null "> and cm.material_id = #{materialId}</if>
+            <if test="materialName != null  and materialName != ''"> and COALESCE(cm.material_name, mi.material_name) like concat('%', #{materialName}, '%')</if>
+            <if test="materialType != null  and materialType != ''"> and cm.material_type = #{materialType}</if>
+            <if test="useDate != null "> and cm.use_date = #{useDate}</if>
+            <if test="supplierName != null  and supplierName != ''"> and cm.supplier_name like concat('%', #{supplierName}, '%')</if>
+            <if test="paymentStatus != null  and paymentStatus != ''"> and cm.payment_status = #{paymentStatus}</if>
+            <if test="status != null  and status != ''"> and cm.status = #{status}</if>
+        </where>
+        order by cm.use_date desc
+    </select>
+
+    <select id="selectAgricultureCostMaterialByCostId" parameterType="Long" resultMap="AgricultureCostMaterialResult">
+        <include refid="selectAgricultureCostMaterialVo"/>
+        where cm.cost_id = #{costId}
+    </select>
+
+    <insert id="insertAgricultureCostMaterial" parameterType="AgricultureCostMaterial" useGeneratedKeys="true" keyProperty="costId">
+        insert into agriculture_cost_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="batchId != null">batch_id,</if>
+            <if test="materialId != null">material_id,</if>
+            <if test="materialName != null and materialName != ''">material_name,</if>
+            <if test="materialType != null and materialType != ''">material_type,</if>
+            <if test="materialSpec != null and materialSpec != ''">material_spec,</if>
+            <if test="materialUnit != null and materialUnit != ''">material_unit,</if>
+            <if test="useQuantity != null">use_quantity,</if>
+            <if test="useDate != null">use_date,</if>
+            <if test="unitPrice != null">unit_price,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="supplierName != null and supplierName != ''">supplier_name,</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="batchId != null">#{batchId},</if>
+            <if test="materialId != null">#{materialId},</if>
+            <if test="materialName != null and materialName != ''">#{materialName},</if>
+            <if test="materialType != null and materialType != ''">#{materialType},</if>
+            <if test="materialSpec != null and materialSpec != ''">#{materialSpec},</if>
+            <if test="materialUnit != null and materialUnit != ''">#{materialUnit},</if>
+            <if test="useQuantity != null">#{useQuantity},</if>
+            <if test="useDate != null">#{useDate},</if>
+            <if test="unitPrice != null">#{unitPrice},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="supplierName != null and supplierName != ''">#{supplierName},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">#{paymentStatus},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgricultureCostMaterial" parameterType="AgricultureCostMaterial">
+        update agriculture_cost_material
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="materialId != null">material_id = #{materialId},</if>
+            <if test="materialName != null and materialName != ''">material_name = #{materialName},</if>
+            <if test="materialType != null and materialType != ''">material_type = #{materialType},</if>
+            <if test="materialSpec != null and materialSpec != ''">material_spec = #{materialSpec},</if>
+            <if test="materialUnit != null and materialUnit != ''">material_unit = #{materialUnit},</if>
+            <if test="useQuantity != null">use_quantity = #{useQuantity},</if>
+            <if test="useDate != null">use_date = #{useDate},</if>
+            <if test="unitPrice != null">unit_price = #{unitPrice},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="supplierName != null and supplierName != ''">supplier_name = #{supplierName},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status = #{paymentStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where cost_id = #{costId}
+    </update>
+
+    <delete id="deleteAgricultureCostMaterialByCostId" parameterType="Long">
+        delete from agriculture_cost_material where cost_id = #{costId}
+    </delete>
+
+    <delete id="deleteAgricultureCostMaterialByCostIds" parameterType="Long">
+        delete from agriculture_cost_material where cost_id in
+        <foreach item="costId" collection="array" open="(" separator="," close=")">
+            #{costId}
+        </foreach>
+    </delete>
+</mapper>

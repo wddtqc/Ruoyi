@@ -26,13 +26,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="delFlag"    column="del_flag"    />
     </resultMap>
 
+    <resultMap type="AgricultureBatchTask" id="AgricultureBatchTaskExtendResult" extends="AgricultureBatchTaskResult">
+        <result property="landName"    column="land_name"    />
+        <result property="batchName"    column="batch_name"    />
+    </resultMap>
+
     <sql id="selectAgricultureBatchTaskVo">
         select task_id, batch_id, task_head, task_name, plan_start, plan_finish, actual_start, actual_finish, task_detail, task_images, task_videos, remark, status, order_num, create_by, create_time, update_by, update_time, del_flag from agriculture_batch_task
     </sql>
 
+    <sql id="selectAgricultureBatchTaskExtendVo">
+        select
+            t.task_id, t.batch_id, t.task_head, t.task_name,
+            t.plan_start, t.plan_finish, t.actual_start, t.actual_finish,
+            t.task_detail, t.task_images, t.task_videos, t.remark, t.status, t.order_num,
+            t.create_by, t.create_time, t.update_by, t.update_time, t.del_flag,
+            b.batch_name,
+            l.land_name
+        from agriculture_batch_task t
+        left join agriculture_crop_batch b on t.batch_id = b.batch_id
+        left join agriculture_land l on b.land_id = l.land_id
+    </sql>
+
     <select id="selectAgricultureBatchTaskList" parameterType="AgricultureBatchTask" resultMap="AgricultureBatchTaskResult">
         <include refid="selectAgricultureBatchTaskVo"/>
-        <where>  
+        <where>
             <if test="batchId != null  and batchId != ''"> and batch_id = #{batchId}</if>
             <if test="taskHead != null  and taskHead != ''"> and task_head = #{taskHead}</if>
             <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
@@ -47,10 +65,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="orderNum != null "> and order_num = #{orderNum}</if>
         </where>
     </select>
-    
-    <select id="selectAgricultureBatchTaskByTaskId" parameterType="String" resultMap="AgricultureBatchTaskResult">
-        <include refid="selectAgricultureBatchTaskVo"/>
-        where task_id = #{taskId}
+
+    <select id="selectAgricultureBatchTaskByTaskId" parameterType="String" resultMap="AgricultureBatchTaskExtendResult">
+        <include refid="selectAgricultureBatchTaskExtendVo"/>
+        where t.task_id = #{taskId}
     </select>
 
     <insert id="insertAgricultureBatchTask" parameterType="AgricultureBatchTask" useGeneratedKeys="true" keyProperty="taskId">

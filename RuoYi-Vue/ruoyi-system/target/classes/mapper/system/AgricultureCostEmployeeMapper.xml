@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AgricultureCostEmployeeMapper">
+
+    <resultMap type="AgricultureCostEmployee" id="AgricultureCostEmployeeResult">
+        <result property="costId"    column="cost_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="batchId"    column="batch_id"    />
+        <result property="employeeId"    column="employee_id"    />
+        <result property="employeeName"    column="employee_name"    />
+        <result property="workType"    column="work_type"    />
+        <result property="workHours"    column="work_hours"    />
+        <result property="workDate"    column="work_date"    />
+        <result property="hourlyWage"    column="hourly_wage"    />
+        <result property="totalCost"    column="total_cost"    />
+        <result property="subsidyAmount"    column="subsidy_amount"    />
+        <result property="actualPayment"    column="actual_payment"    />
+        <result property="paymentStatus"    column="payment_status"    />
+        <result property="remark"    column="remark"    />
+        <result property="status"    column="status"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+
+    <sql id="selectAgricultureCostEmployeeVo">
+        select
+            ce.cost_id, ce.task_id, ce.batch_id, ce.employee_id,
+            COALESCE(ce.employee_name, e.employee_name) as employee_name,
+            ce.work_type, ce.work_hours, ce.work_date, ce.hourly_wage, ce.total_cost,
+            ce.subsidy_amount, ce.actual_payment, ce.payment_status, ce.remark, ce.status, ce.order_num,
+            ce.create_by, ce.create_time, ce.update_by, ce.update_time, ce.del_flag
+        from agriculture_cost_employee ce
+        left join agriculture_employee e on ce.employee_id = e.employee_id
+    </sql>
+
+    <select id="selectAgricultureCostEmployeeList" parameterType="AgricultureCostEmployee" resultMap="AgricultureCostEmployeeResult">
+        <include refid="selectAgricultureCostEmployeeVo"/>
+        <where>
+            ce.del_flag = '0'
+            <if test="taskId != null "> and ce.task_id = #{taskId}</if>
+            <if test="batchId != null "> and ce.batch_id = #{batchId}</if>
+            <if test="employeeId != null "> and ce.employee_id = #{employeeId}</if>
+            <if test="employeeName != null  and employeeName != ''"> and COALESCE(ce.employee_name, e.employee_name) like concat('%', #{employeeName}, '%')</if>
+            <if test="workType != null  and workType != ''"> and ce.work_type = #{workType}</if>
+            <if test="workDate != null "> and ce.work_date = #{workDate}</if>
+            <if test="paymentStatus != null  and paymentStatus != ''"> and ce.payment_status = #{paymentStatus}</if>
+            <if test="status != null  and status != ''"> and ce.status = #{status}</if>
+        </where>
+        order by ce.work_date desc
+    </select>
+
+    <select id="selectAgricultureCostEmployeeByCostId" parameterType="Long" resultMap="AgricultureCostEmployeeResult">
+        <include refid="selectAgricultureCostEmployeeVo"/>
+        where ce.cost_id = #{costId}
+    </select>
+
+    <insert id="insertAgricultureCostEmployee" parameterType="AgricultureCostEmployee" useGeneratedKeys="true" keyProperty="costId">
+        insert into agriculture_cost_employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">task_id,</if>
+            <if test="batchId != null">batch_id,</if>
+            <if test="employeeId != null">employee_id,</if>
+            <if test="employeeName != null and employeeName != ''">employee_name,</if>
+            <if test="workType != null and workType != ''">work_type,</if>
+            <if test="workHours != null">work_hours,</if>
+            <if test="workDate != null">work_date,</if>
+            <if test="hourlyWage != null">hourly_wage,</if>
+            <if test="totalCost != null">total_cost,</if>
+            <if test="subsidyAmount != null">subsidy_amount,</if>
+            <if test="actualPayment != null">actual_payment,</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="orderNum != null">order_num,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null and delFlag != ''">del_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null">#{taskId},</if>
+            <if test="batchId != null">#{batchId},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="employeeName != null and employeeName != ''">#{employeeName},</if>
+            <if test="workType != null and workType != ''">#{workType},</if>
+            <if test="workHours != null">#{workHours},</if>
+            <if test="workDate != null">#{workDate},</if>
+            <if test="hourlyWage != null">#{hourlyWage},</if>
+            <if test="totalCost != null">#{totalCost},</if>
+            <if test="subsidyAmount != null">#{subsidyAmount},</if>
+            <if test="actualPayment != null">#{actualPayment},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">#{paymentStatus},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="orderNum != null">#{orderNum},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">#{delFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgricultureCostEmployee" parameterType="AgricultureCostEmployee">
+        update agriculture_cost_employee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="batchId != null">batch_id = #{batchId},</if>
+            <if test="employeeId != null">employee_id = #{employeeId},</if>
+            <if test="employeeName != null and employeeName != ''">employee_name = #{employeeName},</if>
+            <if test="workType != null and workType != ''">work_type = #{workType},</if>
+            <if test="workHours != null">work_hours = #{workHours},</if>
+            <if test="workDate != null">work_date = #{workDate},</if>
+            <if test="hourlyWage != null">hourly_wage = #{hourlyWage},</if>
+            <if test="totalCost != null">total_cost = #{totalCost},</if>
+            <if test="subsidyAmount != null">subsidy_amount = #{subsidyAmount},</if>
+            <if test="actualPayment != null">actual_payment = #{actualPayment},</if>
+            <if test="paymentStatus != null and paymentStatus != ''">payment_status = #{paymentStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="orderNum != null">order_num = #{orderNum},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null and delFlag != ''">del_flag = #{delFlag},</if>
+        </trim>
+        where cost_id = #{costId}
+    </update>
+
+    <delete id="deleteAgricultureCostEmployeeByCostId" parameterType="Long">
+        delete from agriculture_cost_employee where cost_id = #{costId}
+    </delete>
+
+    <delete id="deleteAgricultureCostEmployeeByCostIds" parameterType="Long">
+        delete from agriculture_cost_employee where cost_id in
+        <foreach item="costId" collection="array" open="(" separator="," close=")">
+            #{costId}
+        </foreach>
+    </delete>
+</mapper>
