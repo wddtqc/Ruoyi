@@ -109,7 +109,8 @@
           >
             <point-select
               v-model="form.coordinate"
-              :disabled="form.locationWay != 3"
+              @land-matched="handleLandMatched"
+              @open-click="form.locationWay = 3"
             ></point-select>
           </el-form-item>
           <el-form-item label="所在地址" prop="networkAddress">
@@ -253,11 +254,11 @@ export default {
           },
           {
             validator: (rule, value, callback) => {
-              let reg = /^[0-9a-zA-Z]+$/;
+              if (!value) return callback();
+              let reg = /^[0-9a-zA-Z\-]+$/;
               if (!reg.test(value)) {
-                callback(new Error('设备编号只能是字母和数字'));
+                callback(new Error('设备编号只能是字母、数字和短横线'));
               }
-
               callback();
             },
             trigger: 'blur',
@@ -425,6 +426,11 @@ export default {
     /** 处理地块下拉change */
     handleLandChange(e){
        this.form.landName = this.landList.find(item=>item.landId==e).landName;
+    },
+    /** 坐标选择后自动匹配地块 */
+    handleLandMatched(landId){
+      this.form.landId = landId
+      this.form.landName = this.landList.find(item=>item.landId==landId)?.landName || ''
     },
     /** 提交按钮 */
     submitForm() {

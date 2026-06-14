@@ -12,6 +12,10 @@
       <template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
+        <el-tooltip content="智慧农业大屏" effect="dark" placement="bottom">
+          <agriculture-screen id="agriculture-screen" class="right-menu-item hover-effect" />
+        </el-tooltip>
+
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
           <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -68,6 +72,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
+import AgricultureScreen from '@/components/RuoYi/Screen'
 import HeaderNotice from './HeaderNotice'
 
 export default {
@@ -82,6 +87,7 @@ export default {
     Search,
     RuoYiGit,
     RuoYiDoc,
+    AgricultureScreen,
     HeaderNotice
   },
   computed: {

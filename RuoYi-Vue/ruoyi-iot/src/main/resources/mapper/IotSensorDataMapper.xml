@@ -49,4 +49,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </trim>
     </insert>
 
+    <!-- 查询最新的传感器数据（按设备分组，每个设备取最新一条） -->
+    <select id="selectLatestSensorData" resultMap="IotSensorDataResult">
+        SELECT t1.*
+        FROM iot_sensor_data t1
+        INNER JOIN (
+            SELECT serial_number, MAX(create_time) as max_time
+            FROM iot_sensor_data
+            GROUP BY serial_number
+        ) t2 ON t1.serial_number = t2.serial_number AND t1.create_time = t2.max_time
+        ORDER BY t1.create_time DESC
+    </select>
+
+    <!-- 查询指定设备的最新传感器数据 -->
+    <select id="selectLatestBySerialNumber" resultMap="IotSensorDataResult">
+        SELECT *
+        FROM iot_sensor_data
+        WHERE serial_number = #{serialNumber}
+        ORDER BY create_time DESC
+        LIMIT 1
+    </select>
+
 </mapper>

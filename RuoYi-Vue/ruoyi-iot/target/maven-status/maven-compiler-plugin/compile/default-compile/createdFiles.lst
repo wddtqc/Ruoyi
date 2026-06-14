@@ -17,6 +17,7 @@ com\ruoyi\iot\domain\IotDevice.class
 com\ruoyi\iot\mapper\IotDeviceRunningStatusMapper.class
 com\ruoyi\Main.class
 com\ruoyi\iot\mapper\IotDeviceMapper.class
+com\ruoyi\iot\controller\IotSensorDataController.class
 com\ruoyi\iot\domain\IotThingsModelTemplate.class
 com\ruoyi\iot\service\IIoTDataProcessService.class
 com\ruoyi\iot\domain\IotDeviceAlert.class
@@ -24,6 +25,7 @@ com\ruoyi\iot\controller\IotCategoryController.class
 com\ruoyi\iot\service\impl\IotProductServiceImpl.class
 com\ruoyi\iot\controller\IotThingsModelTemplateController.class
 com\ruoyi\iot\mapper\IotThingsModelTemplateMapper.class
+com\ruoyi\iot\mqtt\MqttSubscriber$1.class
 com\ruoyi\iot\service\IIotSensorDataService.class
 com\ruoyi\iot\controller\IotProductController.class
 com\ruoyi\iot\service\impl\IotDeviceServiceImpl.class
@@ -32,6 +34,7 @@ com\ruoyi\iot\config\MqttConfig.class
 com\ruoyi\iot\service\impl\IotDeviceAlertServiceImpl.class
 com\ruoyi\iot\service\impl\IotSensorDataServiceImpl.class
 com\ruoyi\iot\service\IIotProductService.class
+com\ruoyi\iot\mqtt\MqttSubscriber.class
 com\ruoyi\iot\domain\IotDeviceRunningStatus.class
 com\ruoyi\iot\service\IIotDeviceRunningStatusService.class
 com\ruoyi\iot\mapper\IotSensorDataMapper.class

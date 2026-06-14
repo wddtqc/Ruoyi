@@ -48,6 +48,11 @@ public class IotDeviceRunningStatusServiceImpl implements IIotDeviceRunningStatu
     }
 
     @Override
+    public int deleteIotDeviceRunningStatusByDeviceId(Long deviceId) {
+        return iotDeviceRunningStatusMapper.deleteIotDeviceRunningStatusByDeviceId(deviceId);
+    }
+
+    @Override
     public int deleteIotDeviceRunningStatusByIds(Long[] statusIds) {
         return iotDeviceRunningStatusMapper.deleteIotDeviceRunningStatusByIds(statusIds);
     }

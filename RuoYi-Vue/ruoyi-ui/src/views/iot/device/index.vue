@@ -8,14 +8,14 @@
         <el-form-item label="设备编号" prop="serialNumber">
           <el-input v-model="queryParams.serialNumber" placeholder="请输入设备编号" clearable size="small" @keyup.enter.native="handleQuery" />
         </el-form-item>
-        <el-form-item label="设备状态" prop="status">
-          <el-select v-model="queryParams.status" placeholder="设备状态" clearable size="small">
-            <el-option v-for="dict in dict.type.iot_device_status" :key="dict.value" :label="dict.label" :value="parseInt(dict.value)" />
-          </el-select>
-        </el-form-item>
         <el-form-item label="设备类型" prop="deviceType">
           <el-select v-model="queryParams.deviceType" placeholder="设备类型" clearable size="small">
             <el-option v-for="dict in dict.type.iot_device_type" :key="dict.value" :label="dict.label" :value="parseInt(dict.value)" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="运行状态" prop="status">
+          <el-select v-model="queryParams.status" placeholder="运行状态" clearable size="small">
+            <el-option label="在线" :value="3" /><el-option label="离线" :value="4" />
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -31,47 +31,36 @@
     <el-card style="padding-bottom:100px;">
       <!-- 统计卡片 -->
       <el-row :gutter="20" style="margin-bottom:15px;">
-        <el-col :span="6">
-          <el-card shadow="never" style="border-left:4px solid #409EFF;">
-            <div style="display:flex;justify-content:space-between;">
-              <div>
-                <div style="font-size:12px;color:#999;">设备总数</div>
-                <div style="font-size:24px;font-weight:bold;">{{ statistic.total }}</div>
-              </div>
-              <i class="el-icon-monitor" style="font-size:36px;color:#409EFF;line-height:48px;"></i>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="never" style="border-left:4px solid #67C23A;">
             <div style="display:flex;justify-content:space-between;">
               <div>
-                <div style="font-size:12px;color:#999;">在线</div>
-                <div style="font-size:24px;font-weight:bold;color:#67C23A;">{{ statistic.online }}</div>
+                <div style="font-size:12px;color:#999;">在线设备</div>
+                <div style="font-size:24px;font-weight:bold;color:#67C23A;">{{ onlineCount }}</div>
               </div>
               <i class="el-icon-success" style="font-size:36px;color:#67C23A;line-height:48px;"></i>
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="never" style="border-left:4px solid #F56C6C;">
             <div style="display:flex;justify-content:space-between;">
               <div>
-                <div style="font-size:12px;color:#999;">离线</div>
-                <div style="font-size:24px;font-weight:bold;color:#F56C6C;">{{ statistic.offline }}</div>
+                <div style="font-size:12px;color:#999;">离线设备</div>
+                <div style="font-size:24px;font-weight:bold;color:#F56C6C;">{{ offlineCount }}</div>
               </div>
               <i class="el-icon-warning" style="font-size:36px;color:#F56C6C;line-height:48px;"></i>
             </div>
           </el-card>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="8">
           <el-card shadow="never" style="border-left:4px solid #E6A23C;">
             <div style="display:flex;justify-content:space-between;">
               <div>
-                <div style="font-size:12px;color:#999;">待处理告警</div>
-                <div style="font-size:24px;font-weight:bold;color:#E6A23C;">{{ statistic.alertCount }}</div>
+                <div style="font-size:12px;color:#999;">在线率</div>
+                <div style="font-size:24px;font-weight:bold;color:#E6A23C;">{{ (onlineCount + offlineCount) > 0 ? Math.round((onlineCount / (onlineCount + offlineCount)) * 100) : 0 }}%</div>
               </div>
-              <i class="el-icon-bell" style="font-size:36px;color:#E6A23C;line-height:48px;"></i>
+              <i class="el-icon-data-line" style="font-size:36px;color:#E6A23C;line-height:48px;"></i>
             </div>
           </el-card>
         </el-col>
@@ -92,18 +81,31 @@
           </template>
         </el-table-column>
         <el-table-column label="所在地块" align="center" prop="landName" min-width="100" />
-        <el-table-column label="设备状态" align="center" prop="status" width="100">
+        <el-table-column label="运行状态" align="center" width="80">
           <template slot-scope="scope">
-            <el-tag :type="statusType(scope.row.status)" size="small" effect="dark">
-              {{ statusLabel(scope.row.status) }}
-            </el-tag>
+            <el-tag :type="scope.row.status == 3 ? 'success' : 'danger'" size="small" effect="dark" style="width:55px;">{{ scope.row.status == 3 ? '在线' : '离线' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="固件版本" align="center" prop="firmwareVersion" width="100" />
-        <el-table-column label="激活时间" align="center" prop="activeTime" width="160">
+        <el-table-column label="信号强度" align="center" width="100">
           <template slot-scope="scope">
-            <span>{{ parseTime(scope.row.activeTime, '{y}-{m}-{d} {h}:{i}') }}</span>
+            <span v-if="scope.row.rssi != null" :style="{color: scope.row.rssi >= -60 ? '#67C23A' : scope.row.rssi >= -80 ? '#E6A23C' : '#F56C6C'}">{{ scope.row.rssi }} dBm</span>
+            <span v-else>-</span>
           </template>
+        </el-table-column>
+        <el-table-column label="设备影子" align="center" width="80">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isShadow != null" :type="scope.row.isShadow == 1 ? 'success' : 'info'" size="mini">{{ scope.row.isShadow == 1 ? '是' : '否' }}</el-tag>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="最后上线" align="center" prop="onlineTime" width="155">
+          <template slot-scope="scope"><span>{{ parseTime(scope.row.onlineTime) || '-' }}</span></template>
+        </el-table-column>
+        <el-table-column label="最后离线" align="center" prop="offlineTime" width="155">
+          <template slot-scope="scope"><span>{{ parseTime(scope.row.offlineTime) || '-' }}</span></template>
+        </el-table-column>
+        <el-table-column label="更新时间" align="center" prop="updateTime" width="155">
+          <template slot-scope="scope"><span>{{ parseTime(scope.row.updateTime) || '-' }}</span></template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="260">
           <template slot-scope="scope">
@@ -132,13 +134,12 @@
 
 <script>
 import { listDevice, delDevice } from "@/api/iot/device";
-import { listAlert } from "@/api/iot/alert";
 import DeviceForm from "./device-form.vue";
 import DeviceDetail from "./device-detail.vue";
 
 export default {
   name: "Device",
-  dicts: ["iot_device_status", "iot_device_type"],
+  dicts: ["iot_device_type"],
   components: { DeviceForm, DeviceDetail },
   data() {
     return {
@@ -149,11 +150,13 @@ export default {
       showSearch: true,
       total: 0,
       deviceList: [],
-      statistic: { total: 0, online: 0, offline: 0, alertCount: 0 },
+      onlineCount: 0,
+      offlineCount: 0,
       title: "",
       open: false,
       openDetail: false,
       currentDeviceId: null,
+      timer: null,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -169,25 +172,42 @@ export default {
   },
   created() {
     this.getList();
-    this.getStatistic();
+  },
+  beforeDestroy() {
+    if (this.timer) { clearInterval(this.timer); this.timer = null; }
   },
   methods: {
     getList() {
       this.loading = true;
-      listDevice(this.queryParams).then(response => {
-        this.deviceList = response.rows;
-        this.total = response.total;
+      listDevice(this.queryParams).then(res => {
+        const devices = res.rows || [];
+        this.total = res.total;
+        this.deviceList = devices.map(d => ({
+          deviceId: d.deviceId,
+          deviceName: d.deviceName,
+          serialNumber: d.serialNumber,
+          productName: d.productName,
+          deviceType: d.deviceType,
+          landName: d.landName,
+          status: d.status
+        }));
+        this.calcStat();
         this.loading = false;
+        if (!this.timer) this.startTimer();
       }).catch(() => { this.loading = false; });
     },
-    getStatistic() {
-      listDevice({ pageNum: 1, pageSize: 1 }).then(res => { this.statistic.total = res.total; });
-      listDevice({ pageNum: 1, pageSize: 1, status: 3 }).then(res => { this.statistic.online = res.total; });
-      listDevice({ pageNum: 1, pageSize: 1, status: 4 }).then(res => { this.statistic.offline = res.total; });
-      listAlert({ pageNum: 1, pageSize: 1, status: 0 }).then(res => { this.statistic.alertCount = res.total; });
+    calcStat() {
+      const online = this.deviceList.filter(s => s.status == 3).length;
+      const offline = this.deviceList.filter(s => s.status == 4).length;
+      this.onlineCount = online;
+      this.offlineCount = offline;
     },
-    statusType(status) { const m = {1:'warning',2:'info',3:'success',4:'danger'}; return m[status]||'info'; },
-    statusLabel(status) { const m = {1:'未激活',2:'禁用',3:'在线',4:'离线'}; return m[status]||'未知'; },
+    startTimer() {
+      if (this.timer) clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.getList();
+      }, 30000);
+    },
     handleQuery() { this.queryParams.pageNum = 1; this.getList(); },
     resetQuery() {
       this.queryParams.productId = this.$route.query && this.$route.query.productId ? parseInt(this.$route.query.productId) : null;
@@ -208,7 +228,6 @@ export default {
     handleSuccess() {
       this.open = false;
       this.getList();
-      this.getStatistic();
     },
     handleClose() {
       this.form = {};
@@ -216,7 +235,7 @@ export default {
     handleDelete(row) {
       const ids = row.deviceId || this.ids;
       this.$modal.confirm('是否确认删除设备编号为"' + ids + '"的数据项？').then(() => delDevice(ids))
-        .then(() => { this.getList(); this.getStatistic(); this.$modal.msgSuccess("删除成功"); }).catch(() => {});
+        .then(() => { this.getList(); this.$modal.msgSuccess("删除成功"); }).catch(() => {});
     },
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.deviceId);

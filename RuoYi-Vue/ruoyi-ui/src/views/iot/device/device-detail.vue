@@ -7,7 +7,7 @@
           <el-descriptions-item label="设备名称" :span="1">{{ device.deviceName }}</el-descriptions-item>
           <el-descriptions-item label="设备编号" :span="1">{{ device.serialNumber }}</el-descriptions-item>
           <el-descriptions-item label="设备状态" :span="1">
-            <el-tag :type="statusType(device.status)" size="small" effect="dark">{{ statusLabel(device.status) }}</el-tag>
+            <el-tag :type="runStatus.status == 3 ? 'success' : 'danger'" size="small" effect="dark">{{ runStatus.status == 3 ? '在线' : '离线' }}</el-tag>
           </el-descriptions-item>
           <el-descriptions-item label="设备类型" :span="1">
             <dict-tag :options="dict.type.iot_device_type" :value="device.deviceType" />

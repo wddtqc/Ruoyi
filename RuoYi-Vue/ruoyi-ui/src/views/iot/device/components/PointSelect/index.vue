@@ -1,6 +1,6 @@
 <template>
     <div class="map_demo" ref="myMap">
-        <el-input readonly @click.native="disabled?null:initMap()" :value="value" :disabled="disabled" style="width:100%" prefix-icon="el-icon-location-information" placeholder="请选择坐标"></el-input>
+        <el-input readonly @click.native="handleOpen()" :value="value" style="width:100%" prefix-icon="el-icon-location-information" placeholder="请选择坐标"></el-input>
         <el-dialog title="位置选择" v-show="visible" :visible="true" width="800px" :close-on-click-modal="false" :modal="false" @close="visible=false;pointShow=false">
             <div class="boxCon">
                 <div id="indexMap" class="indexMap"></div>
@@ -91,7 +91,8 @@ export default {
       pointShow:false,
       container:null,
       marker:[],
-      markerInfo:null
+      markerInfo:null,
+      loadingMap:false
     }
   },
   // async mounted() {
@@ -126,13 +127,45 @@ export default {
     }
   },
   methods: {
+    handleOpen(){
+      this.$emit('open-click')
+      // 若 AMap 实例存在但地图 DOM 已丢失（路由切换导致），则重置实例
+      if (this.AMap) {
+        const container = document.getElementById('pointSelectMap')
+        if (container && !container.querySelector('.amap-container')) {
+          this.AMap = null
+          this.map = null
+        }
+      }
+      if (!this.AMap) {
+        this.loadingMap = true
+        AMapLoader.load({
+          key: 'a52903e93211146ac0a0ef7c3f52e7d1',
+          version: '2.0',
+          plugins: [
+            'AMap.PlaceSearch',
+            'AMap.Geocoder',
+            'AMap.AutoComplete',
+            'AMap.ToolBar'
+          ]
+        }).then(AMap => {
+          this.AMap = AMap
+          this.loadingMap = false
+          this.initMap()
+        }).catch(() => {
+          this.loadingMap = false
+          this.$message.error('地图加载失败')
+        })
+      } else {
+        this.initMap()
+      }
+    },
     /** 初始化map */
     async initMap() {
       this.map = new this.AMap.Map("indexMap", {
         //设置地图容器id
-        mapStyle: "amap://styles/802500eb9c17892dd91047988cc1ece1",
-        zoom: 15, //初始化地图级别
-        center: [120.15066,33.349802], //初始化地图中心点位置
+        zoom: 15,
+        center: [106.525447,29.343613],
         layers: [
           new this.AMap.TileLayer.Satellite()
         ],
@@ -327,9 +360,26 @@ export default {
         this.markerInfo=lnglat.lng+","+lnglat.lat
     },
     confirm(){
+        // 先自动匹配地块，再更新坐标值
+        this.autoMatchLand()
         this.$emit("input",this.markerInfo)
         this.pointShow=false
         this.visible=false
+    },
+    autoMatchLand(){
+      if (!this.markerInfo || this.overlayGroup.length === 0) return
+      const [lng, lat] = this.markerInfo.split(',').map(Number)
+      const pointLngLat = new this.AMap.LngLat(lng, lat)
+      let matchedLand = null
+      for (const polygon of this.overlayGroup) {
+        if (polygon.contains(pointLngLat)) {
+          matchedLand = polygon.getExtData()
+          break
+        }
+      }
+      if (matchedLand) {
+        this.$emit('land-matched', matchedLand.landId)
+      }
     }
   }
 };

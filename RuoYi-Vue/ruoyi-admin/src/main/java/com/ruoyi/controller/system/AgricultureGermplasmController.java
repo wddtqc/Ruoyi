@@ -55,6 +55,16 @@ public class AgricultureGermplasmController extends BaseController
     }
 
     /**
+     * 获取所有种质（不分页，用于大屏）
+     */
+    @GetMapping("/all")
+    public AjaxResult all(AgricultureGermplasm agricultureGermplasm)
+    {
+        List<AgricultureGermplasm> list = agricultureGermplasmService.selectAgricultureGermplasmList(agricultureGermplasm);
+        return success(list);
+    }
+
+    /**
      * 导出种质列表
      */
     @PreAuthorize("@ss.hasPermi('system:germplasm:export')")

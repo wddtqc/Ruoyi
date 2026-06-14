@@ -47,6 +47,16 @@ public class AgricultureCropBatchController extends BaseController
     }
 
     /**
+     * 获取所有作物批次（不含分页，用于大屏）
+     */
+    @GetMapping("/all")
+    public AjaxResult all(AgricultureCropBatch agricultureCropBatch)
+    {
+        List<AgricultureCropBatch> list = agricultureCropBatchService.selectAgricultureCropBatchList(agricultureCropBatch);
+        return success(list);
+    }
+
+    /**
      * 导出作物批次列表
      */
     @PreAuthorize("@ss.hasPermi('system:batch:export')")

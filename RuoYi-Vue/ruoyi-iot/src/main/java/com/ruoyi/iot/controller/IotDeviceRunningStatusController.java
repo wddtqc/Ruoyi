@@ -49,7 +49,13 @@ public class IotDeviceRunningStatusController extends BaseController {
     @PreAuthorize("@ss.hasPermi('iot:device:query')")
     @GetMapping("/device/{deviceId}")
     public AjaxResult getByDeviceIdPath(@PathVariable Long deviceId) {
-        return success(iotDeviceRunningStatusService.selectIotDeviceRunningStatusByDeviceId(deviceId));
+        IotDeviceRunningStatus status = iotDeviceRunningStatusService.selectIotDeviceRunningStatusByDeviceId(deviceId);
+        if (status == null) {
+            status = new IotDeviceRunningStatus();
+            status.setDeviceId(deviceId);
+            status.setStatus(4); // 默认离线
+        }
+        return success(status);
     }
 
     /**
@@ -58,7 +64,13 @@ public class IotDeviceRunningStatusController extends BaseController {
     @PreAuthorize("@ss.hasPermi('iot:device:query')")
     @GetMapping("/getByDeviceId")
     public AjaxResult getByDeviceId(@RequestParam Long deviceId) {
-        return success(iotDeviceRunningStatusService.selectIotDeviceRunningStatusByDeviceId(deviceId));
+        IotDeviceRunningStatus status = iotDeviceRunningStatusService.selectIotDeviceRunningStatusByDeviceId(deviceId);
+        if (status == null) {
+            status = new IotDeviceRunningStatus();
+            status.setDeviceId(deviceId);
+            status.setStatus(4); // 默认离线
+        }
+        return success(status);
     }
 
     /**

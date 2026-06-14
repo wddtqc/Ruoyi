@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(mvn clean *)",
-      "Bash(grep -E \"\\\\.\\(java|xml\\)$\")"
+      "Bash(grep -E \"\\\\.\\(java|xml\\)$\")",
+      "Bash(xargs grep -l \"sensor\\\\|monitor\\\\|传感\")",
+      "Bash(xargs grep -l \"农业传感器\\\\|sensor\\\\|Sensor\")",
+      "Bash(xargs grep -l \"IotSensorData\\\\|SensorData\")"
     ]
   }
 }

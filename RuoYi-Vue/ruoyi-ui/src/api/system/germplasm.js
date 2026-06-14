@@ -42,3 +42,11 @@ export function delGermplasm(germplasmId) {
     method: 'delete'
   })
 }
+
+// 获取所有种质（不分页，用于大屏）
+export function getAllGermplasm() {
+  return request({
+    url: '/system/germplasm/all',
+    method: 'get'
+  })
+}
