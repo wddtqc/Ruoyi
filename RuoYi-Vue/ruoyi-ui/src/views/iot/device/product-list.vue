@@ -6,6 +6,12 @@
             <el-form-item label="产品名称" prop="productName">
                 <el-input v-model="queryParams.productName" placeholder="请输入产品名称" clearable size="small" @keyup.enter.native="handleQuery" />
             </el-form-item>
+            <el-form-item label="产品状态" prop="status">
+                <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small" style="width: 120px">
+                    <el-option label="未发布" :value="1" />
+                    <el-option label="已发布" :value="2" />
+                </el-select>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                 <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -19,6 +25,12 @@
                 </template>
             </el-table-column>
             <el-table-column label="产品名称" align="center" prop="productName" />
+            <el-table-column label="产品状态" align="center" prop="status" width="100">
+                <template slot-scope="scope">
+                    <el-tag v-if="scope.row.status === 1" type="info" size="small">未发布</el-tag>
+                    <el-tag v-else-if="scope.row.status === 2" type="success" size="small">已发布</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="分类名称" align="center" prop="categoryName" />
             <el-table-column label="租户名称" align="center" prop="tenantName" />
             <el-table-column label="认证方式" align="center" prop="status">
@@ -83,11 +95,25 @@ export default {
                 tenantId: null,
                 tenantName: null,
                 isSys: null,
-                status: 2, //已发布
+                status: null, //不限制状态，可以选择未发布和已发布的产品
                 deviceType: null,
                 networkMethod: null,
             },
         };
+    },
+    watch: {
+        // 监听弹窗打开状态，打开时自动加载数据
+        open(val) {
+            if (val) {
+                // 重置查询条件到初始状态
+                this.queryParams.pageNum = 1;
+                this.queryParams.productName = null;
+                this.getList();
+            } else {
+                // 关闭时清空选中的产品
+                this.product = {};
+            }
+        }
     },
     created() {
 
@@ -103,6 +129,10 @@ export default {
                     this.setRadioSelected(this.productId);
                 }
                 this.loading = false;
+            }).catch(error => {
+                this.loading = false;
+                this.$message.error('获取产品列表失败，请检查权限或稍后重试');
+                console.error('获取产品列表失败:', error);
             });
         },
         /** 搜索按钮操作 */
@@ -134,6 +164,10 @@ export default {
         },
         /**确定选择产品，产品传递给父组件 */
         confirmSelectProduct() {
+            if (!this.product || !this.product.productId) {
+                this.$message.warning('请先选择一个产品');
+                return;
+            }
             this.$emit('productEvent', this.product);
             this.open = false;
         },

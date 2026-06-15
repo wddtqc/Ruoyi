@@ -111,7 +111,9 @@ public class IotDeviceController extends BaseController {
     @PreAuthorize("@ss.hasPermi('iot:device:add')")
     @GetMapping("/generator")
     public AjaxResult generator() {
-        return success("DEV" + System.currentTimeMillis());
+        // 生成格式：DEV + 时间戳 + 4位随机数
+        String serialNumber = "DEV" + System.currentTimeMillis() + String.format("%04d", (int)(Math.random() * 10000));
+        return AjaxResult.success("生成成功", serialNumber);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.ruoyi.quartz.task;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.iot.mqtt.MqttPublisher;
+import com.ruoyi.iot.service.IIotWaterQualityDataService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class RyTask
 
     @Autowired
     private MqttPublisher mqttPublisher;
+
+    @Autowired
+    private IIotWaterQualityDataService waterQualityDataService;
 
     private static final String MQTT_TOPIC = "/agriculture/sensor/upload";
     private static final String DEFAULT_SERIAL_NUMBER = "NPK-TEST-001";
@@ -246,5 +250,209 @@ public class RyTask
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(scale, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    // ==================== 水质监测设备数据模拟方法 ====================
+
+    private static final String WATER_MQTT_TOPIC = "/agriculture/water/upload";
+    private static final String DEFAULT_WATER_DEVICE = "DEV17814946377282952";
+
+    /**
+     * 模拟水质监测数据推送（无参数版本）
+     * <p>
+     * 若依后台调用目标字符串：ryTask.mockWaterQualityData()
+     * </p>
+     */
+    public void mockWaterQualityData()
+    {
+        mockWaterQualityData(DEFAULT_WATER_DEVICE);
+    }
+
+    /**
+     * 模拟水质监测数据推送（带设备编号参数）
+     * <p>
+     * 若依后台调用目标字符串：ryTask.mockWaterQualityData('DEV17814946377282952')
+     * <p>
+     * 模拟水质监测四个核心参数：
+     * - 水温：0-50℃
+     * - pH值：0-14
+     * - 溶解氧：0-20 mg/L
+     * - 浊度：0-1000 NTU
+     * </p>
+     *
+     * @param serialNumber 设备编号
+     */
+    public void mockWaterQualityData(String serialNumber)
+    {
+        try
+        {
+            if (serialNumber == null || serialNumber.trim().isEmpty())
+            {
+                serialNumber = DEFAULT_WATER_DEVICE;
+            }
+
+            log.info("========== 开始执行水质监测数据模拟任务 ==========");
+
+            JSONObject waterData = generateMockWaterQualityData(serialNumber);
+            String jsonMessage = waterData.toJSONString();
+
+            log.info("【模拟数据生成】设备编号: {}", serialNumber);
+            log.info("【模拟数据内容】{}", jsonMessage);
+
+            // 1. 发送到MQTT
+            mqttPublisher.sendToMqtt(WATER_MQTT_TOPIC, jsonMessage, 1);
+            log.info("【数据发送完成】主题: {}, QoS: 1, 消息长度: {} bytes", WATER_MQTT_TOPIC, jsonMessage.length());
+
+            // 2. 保存到数据库
+            int saveResult = waterQualityDataService.saveWaterQualityDataFromMqtt(jsonMessage);
+            if (saveResult > 0) {
+                log.info("【数据入库成功】设备: {}, 水温: {}℃, pH: {}, 溶解氧: {}mg/L, 浊度: {}NTU",
+                        serialNumber,
+                        waterData.getDouble("water_temperature"),
+                        waterData.getDouble("water_ph"),
+                        waterData.getDouble("dissolved_oxygen"),
+                        waterData.getDouble("turbidity"));
+            } else {
+                log.warn("【数据入库失败】设备: {}", serialNumber);
+            }
+
+            log.info("========== 水质监测数据模拟任务执行完成 ==========");
+        }
+        catch (Exception e)
+        {
+            log.error("【任务执行失败】水质监测数据模拟任务异常", e);
+            throw new RuntimeException("模拟水质监测数据推送失败: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 批量模拟多个水质监测设备的数据推送
+     * <p>
+     * 若依后台调用目标字符串：ryTask.mockMultiWaterDeviceData('DEV001,DEV002,DEV003')
+     * </p>
+     *
+     * @param serialNumbers 设备编号列表（逗号分隔）
+     */
+    public void mockMultiWaterDeviceData(String serialNumbers)
+    {
+        if (serialNumbers == null || serialNumbers.trim().isEmpty())
+        {
+            log.warn("设备编号列表为空，跳过批量模拟");
+            return;
+        }
+
+        String[] deviceArray = serialNumbers.split(",");
+        log.info("========== 开始批量模拟 {} 个水质设备的数据 ==========", deviceArray.length);
+
+        for (String serialNumber : deviceArray)
+        {
+            mockWaterQualityData(serialNumber.trim());
+        }
+
+        log.info("========== 批量模拟完成，共处理 {} 个水质设备 ==========", deviceArray.length);
+    }
+
+    /**
+     * 生成模拟水质监测数据（JSON格式）
+     * <p>
+     * 正常水质数据范围：
+     * - 水温：15-25℃（适宜养殖温度）
+     * - pH值：6.5-8.5（适宜pH范围）
+     * - 溶解氧：5-10 mg/L（正常溶氧水平）
+     * - 浊度：0-50 NTU（清澈水质）
+     *
+     * 异常数据（8%概率）：
+     * - 高温异常：水温 > 35℃
+     * - pH异常：pH < 5.5 或 pH > 9.5
+     * - 缺氧异常：溶解氧 < 3 mg/L
+     * - 浑浊异常：浊度 > 200 NTU
+     * </p>
+     *
+     * @param serialNumber 设备编号
+     * @return 模拟数据的JSON对象
+     */
+    private JSONObject generateMockWaterQualityData(String serialNumber)
+    {
+        JSONObject data = new JSONObject();
+
+        // 设备基本信息
+        data.put("serialNumber", serialNumber);
+        data.put("timestamp", System.currentTimeMillis());
+        data.put("deviceType", "WATER_QUALITY_MONITOR");
+
+        // 判断是否生成异常数据（8%概率）
+        boolean isAbnormal = random.nextDouble() < 0.08;
+
+        double waterTemperature;  // 水温 (℃)
+        double waterPH;           // pH值
+        double dissolvedOxygen;   // 溶解氧 (mg/L)
+        double turbidity;         // 浊度 (NTU)
+
+        if (isAbnormal)
+        {
+            // 生成异常数据（用于触发告警测试）
+            int abnormalType = random.nextInt(4);
+
+            switch (abnormalType)
+            {
+                case 0: // 高温异常
+                    waterTemperature = randomDouble(35.0, 45.0);
+                    waterPH = randomDouble(6.5, 8.5);
+                    dissolvedOxygen = randomDouble(5.0, 10.0);
+                    turbidity = randomDouble(0.0, 50.0);
+                    log.warn("【异常数据生成】水温过高 -> 水温={}℃", round(waterTemperature, 1));
+                    break;
+
+                case 1: // pH异常
+                    waterTemperature = randomDouble(15.0, 25.0);
+                    waterPH = random.nextBoolean() ? randomDouble(3.0, 5.5) : randomDouble(9.5, 11.0);
+                    dissolvedOxygen = randomDouble(5.0, 10.0);
+                    turbidity = randomDouble(0.0, 50.0);
+                    log.warn("【异常数据生成】pH值异常 -> pH={}", round(waterPH, 1));
+                    break;
+
+                case 2: // 缺氧异常
+                    waterTemperature = randomDouble(15.0, 25.0);
+                    waterPH = randomDouble(6.5, 8.5);
+                    dissolvedOxygen = randomDouble(0.5, 3.0);
+                    turbidity = randomDouble(0.0, 50.0);
+                    log.warn("【异常数据生成】溶解氧不足 -> 溶解氧={}mg/L", round(dissolvedOxygen, 1));
+                    break;
+
+                case 3: // 浑浊异常
+                    waterTemperature = randomDouble(15.0, 25.0);
+                    waterPH = randomDouble(6.5, 8.5);
+                    dissolvedOxygen = randomDouble(5.0, 10.0);
+                    turbidity = randomDouble(200.0, 500.0);
+                    log.warn("【异常数据生成】水体浑浊 -> 浊度={}NTU", round(turbidity, 1));
+                    break;
+
+                default:
+                    waterTemperature = randomDouble(15.0, 25.0);
+                    waterPH = randomDouble(6.5, 8.5);
+                    dissolvedOxygen = randomDouble(5.0, 10.0);
+                    turbidity = randomDouble(0.0, 50.0);
+            }
+        }
+        else
+        {
+            // 生成正常范围内的数据
+            waterTemperature = randomDouble(15.0, 25.0);    // 正常水温
+            waterPH = randomDouble(6.5, 8.5);               // 正常pH值
+            dissolvedOxygen = randomDouble(5.0, 10.0);      // 正常溶解氧
+            turbidity = randomDouble(0.0, 50.0);            // 正常浊度
+        }
+
+        // 保留一位小数并放入JSON
+        data.put("water_temperature", round(waterTemperature, 1));
+        data.put("water_ph", round(waterPH, 1));
+        data.put("dissolved_oxygen", round(dissolvedOxygen, 1));
+        data.put("turbidity", round(turbidity, 1));
+
+        // 附加信息
+        data.put("signalStrength", random.nextInt(20) - 90);  // 信号强度 -90 ~ -70 dBm
+        data.put("batteryLevel", random.nextInt(30) + 70);    // 电池电量 70% ~ 100%
+
+        return data;
     }
 }

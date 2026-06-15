@@ -223,18 +223,31 @@ export default {
       if (productThingsModelsJson) {
         try {
           const parsed = typeof productThingsModelsJson === 'string' ? JSON.parse(productThingsModelsJson) : productThingsModelsJson;
-          if (Array.isArray(parsed)) {
-            parsed.forEach(item => {
-              modelDefs[item.identifier] = { name: item.name || item.identifier, unit: item.unit || '', datatype: item.datatype || 'string' };
-            });
-          }
-        } catch(e) { console.warn('产品物模型定义解析失败', e); }
+          // 支持 {properties: [...]} 或直接 [...] 格式
+          const properties = parsed.properties || (Array.isArray(parsed) ? parsed : []);
+          properties.forEach(item => {
+            const identifier = item.id || item.identifier;
+            const datatype = item.datatype || {};
+            modelDefs[identifier] = {
+              name: item.name || identifier,
+              unit: datatype.unit || item.unit || '',
+              datatype: datatype.type || item.datatype || 'string',
+              isMonitor: item.isMonitor || item.isTop || 0  // 是否监控字段
+            };
+          });
+        } catch(e) {
+          console.warn('产品物模型定义解析失败', e);
+        }
       }
+
       // 2. 解析运行状态值
       const statusValues = {};
       if (this.runStatus.thingsModelValue) {
         try {
-          const tm = typeof this.runStatus.thingsModelValue === 'string' ? JSON.parse(this.runStatus.thingsModelValue) : this.runStatus.thingsModelValue;
+          const tm = typeof this.runStatus.thingsModelValue === 'string'
+            ? JSON.parse(this.runStatus.thingsModelValue)
+            : this.runStatus.thingsModelValue;
+
           Object.keys(tm).forEach(key => {
             const val = tm[key];
             if (typeof val === 'object' && val !== null) {
@@ -243,15 +256,51 @@ export default {
               statusValues[key] = val;
             }
           });
-        } catch(e) { console.warn('物模型运行值解析失败', e); }
+        } catch(e) {
+          console.warn('物模型运行值解析失败', e);
+        }
       }
-      // 3. 合并：以产品定义为主，未定义的标识符直接用id作为名称
-      const allKeys = new Set([...Object.keys(modelDefs), ...Object.keys(statusValues)]);
-      allKeys.forEach(key => {
-        const def = modelDefs[key] || { name: key, unit: '' };
-        const value = statusValues[key] !== undefined ? statusValues[key] : '-';
-        this.thingsModelList.push({ identifier: key, name: def.name, value: value, unit: def.unit });
-      });
+
+      // 3. 合并显示逻辑
+      if (Object.keys(modelDefs).length > 0) {
+        // 如果有产品定义，优先显示定义中的字段（且有值的）
+        Object.keys(modelDefs).forEach(key => {
+          if (statusValues[key] !== undefined && statusValues[key] !== null && statusValues[key] !== '') {
+            const def = modelDefs[key];
+            this.thingsModelList.push({
+              identifier: key,
+              name: def.name,
+              value: statusValues[key],
+              unit: def.unit
+            });
+          }
+        });
+
+        // 如果产品定义中的字段都没有值，则显示所有上报的字段
+        if (this.thingsModelList.length === 0 && Object.keys(statusValues).length > 0) {
+          Object.keys(statusValues).forEach(key => {
+            const def = modelDefs[key] || { name: key, unit: '' };
+            this.thingsModelList.push({
+              identifier: key,
+              name: def.name,
+              value: statusValues[key],
+              unit: def.unit
+            });
+          });
+        }
+      } else {
+        // 没有产品定义，显示所有上报的字段
+        Object.keys(statusValues).forEach(key => {
+          if (statusValues[key] !== undefined && statusValues[key] !== null && statusValues[key] !== '') {
+            this.thingsModelList.push({
+              identifier: key,
+              name: key,
+              value: statusValues[key],
+              unit: ''
+            });
+          }
+        });
+      }
     },
     statusType(s) { const m={1:'warning',2:'info',3:'success',4:'danger'}; return m[s]||'info'; },
     statusLabel(s) { const m={1:'未激活',2:'禁用',3:'在线',4:'离线'}; return m[s]||'未知'; },

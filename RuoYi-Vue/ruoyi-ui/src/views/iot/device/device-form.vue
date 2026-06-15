@@ -34,7 +34,7 @@
               <el-button
                 v-if="form.deviceType !== 3"
                 slot="append"
-                @click="generateNum"
+                @click.prevent="generateNum"
                 :loading="genDisabled"
                 :disabled="form.status != 1"
                 >生成
@@ -92,7 +92,7 @@
               clearable
               size="small"
               style="width: 100%"
-
+              @change="handleLocationWayChange"
             >
               <el-option
                 v-for="dict in dict.type.iot_location_way"
@@ -110,15 +110,26 @@
             <point-select
               v-model="form.coordinate"
               @land-matched="handleLandMatched"
-              @open-click="form.locationWay = 3"
+              @open-click="handleMapOpen"
             ></point-select>
+            <div style="font-size: 12px; color: #909399; margin-top: 4px;">
+              <template v-if="form.locationWay === 1">提示：自动定位模式，设备将自动上报位置信息</template>
+              <template v-else-if="form.locationWay === 2">提示：手动定位模式，请输入经纬度坐标（格式：经度,纬度）</template>
+              <template v-else-if="form.locationWay === 3">提示：地图选点模式，点击地图图标选择位置</template>
+            </div>
           </el-form-item>
           <el-form-item label="所在地址" prop="networkAddress">
             <el-input
               v-model="form.networkAddress"
               placeholder="请输入设备所在地址"
               :disabled="form.locationWay != 3"
-            />
+            >
+              <template slot="append" v-if="form.locationWay != 3">
+                <el-tooltip content="选择地图选点定位方式后可编辑" placement="top">
+                  <i class="el-icon-question"></i>
+                </el-tooltip>
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item label="地块" prop="landId">
             <el-select
@@ -250,7 +261,7 @@ export default {
           {
             required: true,
             message: '设备编号不能为空',
-            trigger: 'blur',
+            trigger: 'change',
           },
           {
             validator: (rule, value, callback) => {
@@ -350,7 +361,6 @@ export default {
     /**选择产品 */
     selectProduct() {
       this.$refs.productList.open = true;
-      this.$refs.productList.getList();
     },
     /**获取选中的产品 */
     getProductData(product) {
@@ -370,14 +380,34 @@ export default {
     // 生成随机字母和数字
     generateNum() {
       if (!this.form.productId || this.form.productId == 0) {
-        this.$modal.alertError('请先选择产品');
+        this.$modal.msgWarning('请先选择产品');
         return;
       }
+      // 清除该字段的验证状态
+      this.$refs.form.clearValidate('serialNumber');
       this.genDisabled = true;
       generatorDeviceNum().then((response) => {
-        this.form.serialNumber = response.data;
-        this.$refs.genSerInput.focus();
+        console.log('生成设备编号返回:', response);
+
+        // 若依框架返回格式: {code: 200, msg: "生成成功", data: "DEV..."}
+        // 优先从 data 字段获取设备编号
+        let serialNumber = response.data || response.msg;
+
+        if (serialNumber && serialNumber.startsWith('DEV')) {
+          this.form.serialNumber = serialNumber;
+          this.$nextTick(() => {
+            this.$refs.genSerInput.focus();
+          });
+          this.$modal.msgSuccess('生成设备编号成功');
+        } else {
+          this.$modal.msgError('生成设备编号失败：返回数据格式错误');
+          console.error('返回数据:', response);
+        }
         this.genDisabled = false;
+      }).catch((error) => {
+        this.genDisabled = false;
+        console.error('生成设备编号失败:', error);
+        this.$modal.msgError('生成设备编号失败：' + (error.message || '请稍后重试'));
       });
     },
     genSipID() {
@@ -426,6 +456,18 @@ export default {
     /** 处理地块下拉change */
     handleLandChange(e){
        this.form.landName = this.landList.find(item=>item.landId==e).landName;
+    },
+    /** 定位方式变化处理 */
+    handleLocationWayChange(value) {
+      // 切换到非地图选点方式时，清空地址输入
+      if (value !== 3) {
+        // this.form.networkAddress = null; // 可选：是否清空地址
+      }
+    },
+    /** 打开地图选点 */
+    handleMapOpen() {
+      // 自动切换到地图选点模式
+      this.form.locationWay = 3;
     },
     /** 坐标选择后自动匹配地块 */
     handleLandMatched(landId){

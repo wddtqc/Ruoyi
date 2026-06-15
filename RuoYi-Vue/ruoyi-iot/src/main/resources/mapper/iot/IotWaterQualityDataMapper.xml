@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.iot.mapper.IotWaterQualityDataMapper">
+
+    <resultMap type="com.ruoyi.iot.domain.IotWaterQualityData" id="IotWaterQualityDataResult">
+        <result property="id"    column="id"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="waterTemperature"    column="water_temperature"    />
+        <result property="waterPh"    column="water_ph"    />
+        <result property="dissolvedOxygen"    column="dissolved_oxygen"    />
+        <result property="turbidity"    column="turbidity"    />
+        <result property="signalStrength"    column="signal_strength"    />
+        <result property="batteryLevel"    column="battery_level"    />
+        <result property="deviceTimestamp"    column="device_timestamp"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectIotWaterQualityDataVo">
+        select id, serial_number, device_type, water_temperature, water_ph, dissolved_oxygen,
+               turbidity, signal_strength, battery_level, device_timestamp, create_time
+        from iot_water_quality_data
+    </sql>
+
+    <select id="selectIotWaterQualityDataList" parameterType="com.ruoyi.iot.domain.IotWaterQualityData" resultMap="IotWaterQualityDataResult">
+        <include refid="selectIotWaterQualityDataVo"/>
+        <where>
+            <if test="serialNumber != null and serialNumber != ''">
+                AND serial_number = #{serialNumber}
+            </if>
+            <if test="deviceType != null and deviceType != ''">
+                AND device_type = #{deviceType}
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''">
+                AND create_time &gt;= #{params.beginTime}
+            </if>
+            <if test="params.endTime != null and params.endTime != ''">
+                AND create_time &lt;= #{params.endTime}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="selectIotWaterQualityDataById" parameterType="Long" resultMap="IotWaterQualityDataResult">
+        <include refid="selectIotWaterQualityDataVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectLatestDataBySerialNumber" parameterType="String" resultMap="IotWaterQualityDataResult">
+        <include refid="selectIotWaterQualityDataVo"/>
+        where serial_number = #{serialNumber}
+        order by create_time desc
+        limit 1
+    </select>
+
+    <insert id="insertIotWaterQualityData" parameterType="com.ruoyi.iot.domain.IotWaterQualityData">
+        insert into iot_water_quality_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="serialNumber != null and serialNumber != ''">serial_number,</if>
+            <if test="deviceType != null and deviceType != ''">device_type,</if>
+            <if test="waterTemperature != null">water_temperature,</if>
+            <if test="waterPh != null">water_ph,</if>
+            <if test="dissolvedOxygen != null">dissolved_oxygen,</if>
+            <if test="turbidity != null">turbidity,</if>
+            <if test="signalStrength != null">signal_strength,</if>
+            <if test="batteryLevel != null">battery_level,</if>
+            <if test="deviceTimestamp != null">device_timestamp,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="serialNumber != null and serialNumber != ''">#{serialNumber},</if>
+            <if test="deviceType != null and deviceType != ''">#{deviceType},</if>
+            <if test="waterTemperature != null">#{waterTemperature},</if>
+            <if test="waterPh != null">#{waterPh},</if>
+            <if test="dissolvedOxygen != null">#{dissolvedOxygen},</if>
+            <if test="turbidity != null">#{turbidity},</if>
+            <if test="signalStrength != null">#{signalStrength},</if>
+            <if test="batteryLevel != null">#{batteryLevel},</if>
+            <if test="deviceTimestamp != null">#{deviceTimestamp},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <insert id="batchInsertIotWaterQualityData" parameterType="java.util.List">
+        insert into iot_water_quality_data
+        (serial_number, device_type, water_temperature, water_ph, dissolved_oxygen,
+         turbidity, signal_strength, battery_level, device_timestamp, create_time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.serialNumber}, #{item.deviceType}, #{item.waterTemperature}, #{item.waterPh},
+             #{item.dissolvedOxygen}, #{item.turbidity}, #{item.signalStrength}, #{item.batteryLevel},
+             #{item.deviceTimestamp}, sysdate())
+        </foreach>
+    </insert>
+
+    <update id="updateIotWaterQualityData" parameterType="com.ruoyi.iot.domain.IotWaterQualityData">
+        update iot_water_quality_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serialNumber != null and serialNumber != ''">serial_number = #{serialNumber},</if>
+            <if test="deviceType != null and deviceType != ''">device_type = #{deviceType},</if>
+            <if test="waterTemperature != null">water_temperature = #{waterTemperature},</if>
+            <if test="waterPh != null">water_ph = #{waterPh},</if>
+            <if test="dissolvedOxygen != null">dissolved_oxygen = #{dissolvedOxygen},</if>
+            <if test="turbidity != null">turbidity = #{turbidity},</if>
+            <if test="signalStrength != null">signal_strength = #{signalStrength},</if>
+            <if test="batteryLevel != null">battery_level = #{batteryLevel},</if>
+            <if test="deviceTimestamp != null">device_timestamp = #{deviceTimestamp},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIotWaterQualityDataById" parameterType="Long">
+        delete from iot_water_quality_data where id = #{id}
+    </delete>
+
+    <delete id="deleteIotWaterQualityDataByIds" parameterType="Long">
+        delete from iot_water_quality_data where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
