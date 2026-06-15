@@ -29,40 +29,46 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
+        <!-- 运行状态扩展字段 -->
+        <result property="rssi" column="rssi"/>
+        <result property="onlineTime" column="online_time"/>
+        <result property="offlineTime" column="offline_time"/>
     </resultMap>
 
     <sql id="selectIotDeviceVo">
-        select device_id, device_name, product_id, product_name, serial_number,
-               status, device_type, firmware_version, coordinate, network_address,
-               network_ip, location_way, land_id, land_name, is_shadow,
-               tenant_id, tenant_name, active_time, del_flag,
-               create_by, create_time, update_by, update_time, remark
-        from iot_device
+        select d.device_id, d.device_name, d.product_id, d.product_name, d.serial_number,
+               COALESCE(rs.status, d.status) as status, d.device_type, d.firmware_version, d.coordinate, d.network_address,
+               d.network_ip, d.location_way, d.land_id, d.land_name, d.is_shadow,
+               d.tenant_id, d.tenant_name, d.active_time, d.del_flag,
+               d.create_by, d.create_time, d.update_by, COALESCE(rs.update_time, d.update_time) as update_time, d.remark,
+               rs.rssi, rs.online_time, rs.offline_time
+        from iot_device d
+        left join iot_device_running_status rs on d.device_id = rs.device_id
     </sql>
 
     <select id="selectIotDeviceById" parameterType="Long" resultMap="IotDeviceResult">
         <include refid="selectIotDeviceVo"/>
-        where device_id = #{deviceId}
+        where d.device_id = #{deviceId}
     </select>
 
     <select id="selectIotDeviceList" parameterType="IotDevice" resultMap="IotDeviceResult">
         <include refid="selectIotDeviceVo"/>
         <where>
-            AND del_flag = '0'
+            AND d.del_flag = '0'
             <if test="deviceName != null and deviceName != ''">
-                AND device_name like concat('%', #{deviceName}, '%')
+                AND d.device_name like concat('%', #{deviceName}, '%')
             </if>
             <if test="serialNumber != null and serialNumber != ''">
-                AND serial_number like concat('%', #{serialNumber}, '%')
+                AND d.serial_number like concat('%', #{serialNumber}, '%')
             </if>
             <if test="status != null">
-                AND status = #{status}
+                AND COALESCE(rs.status, d.status) = #{status}
             </if>
             <if test="deviceType != null">
-                AND device_type = #{deviceType}
+                AND d.device_type = #{deviceType}
             </if>
             <if test="productId != null">
-                AND product_id = #{productId}
+                AND d.product_id = #{productId}
             </if>
         </where>
     </select>

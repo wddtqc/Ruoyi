@@ -180,17 +180,8 @@ export default {
     getList() {
       this.loading = true;
       listDevice(this.queryParams).then(res => {
-        const devices = res.rows || [];
+        this.deviceList = res.rows || [];
         this.total = res.total;
-        this.deviceList = devices.map(d => ({
-          deviceId: d.deviceId,
-          deviceName: d.deviceName,
-          serialNumber: d.serialNumber,
-          productName: d.productName,
-          deviceType: d.deviceType,
-          landName: d.landName,
-          status: d.status
-        }));
         this.calcStat();
         this.loading = false;
         if (!this.timer) this.startTimer();

@@ -80,6 +80,16 @@ public class IotDevice extends BaseEntity {
     /** 激活时间 */
     private Date activeTime;
 
+    // ========== 运行状态扩展字段（来自iot_device_running_status表） ==========
+    /** 信号强度(dBm) */
+    private Integer rssi;
+
+    /** 最后上线时间 */
+    private Date onlineTime;
+
+    /** 最后离线时间 */
+    private Date offlineTime;
+
     public Long getDeviceId() {
         return deviceId;
     }
@@ -230,6 +240,30 @@ public class IotDevice extends BaseEntity {
 
     public void setActiveTime(Date activeTime) {
         this.activeTime = activeTime;
+    }
+
+    public Integer getRssi() {
+        return rssi;
+    }
+
+    public void setRssi(Integer rssi) {
+        this.rssi = rssi;
+    }
+
+    public Date getOnlineTime() {
+        return onlineTime;
+    }
+
+    public void setOnlineTime(Date onlineTime) {
+        this.onlineTime = onlineTime;
+    }
+
+    public Date getOfflineTime() {
+        return offlineTime;
+    }
+
+    public void setOfflineTime(Date offlineTime) {
+        this.offlineTime = offlineTime;
     }
 
     @Override

@@ -78,13 +78,20 @@ public class IoTDataProcessServiceImpl implements IIoTDataProcessService {
 
             log.info("【步骤1】解析JSON完成 -> 设备编号: {}", serialNumber);
 
-            // 提取传感器数值
+            // 提取传感器数值（兼容土壤传感器和水质监测设备）
             Double humidity = sensorData.getDouble("humidity");         // 土壤湿度
             Double nitrogen = sensorData.getDouble("nitrogen");         // 氮含量
             Double phosphorus = sensorData.getDouble("phosphorus");     // 磷含量
             Double potassium = sensorData.getDouble("potassium");       // 钾含量
             Double temperature = sensorData.getDouble("temperature");   // 环境温度
             Double soilPH = sensorData.getDouble("soilPH");            // 土壤pH
+
+            // 水质监测设备字段
+            Double waterTemperature = sensorData.getDouble("water_temperature");  // 水温
+            Double waterPh = sensorData.getDouble("water_ph");                    // 水体pH
+            Double dissolvedOxygen = sensorData.getDouble("dissolved_oxygen");    // 溶解氧
+            Double turbidity = sensorData.getDouble("turbidity");                 // 浊度
+
             Integer signalStrength = sensorData.getInteger("signalStrength"); // 信号强度
 
             // =====================================================
@@ -121,14 +128,22 @@ public class IoTDataProcessServiceImpl implements IIoTDataProcessService {
             // =====================================================
             // 第四步：更新设备运行状态表（iot_device_running_status）
             // =====================================================
-            // 构造物模型实时值JSON（只保留核心传感器数据）
+            // 构造物模型实时值JSON（保留所有传感器数据）
             JSONObject thingsModelValue = new JSONObject();
-            thingsModelValue.put("humidity", humidity);
-            thingsModelValue.put("nitrogen", nitrogen);
-            thingsModelValue.put("phosphorus", phosphorus);
-            thingsModelValue.put("potassium", potassium);
-            thingsModelValue.put("temperature", temperature);
-            thingsModelValue.put("soilPH", soilPH);
+
+            // 土壤传感器数据
+            if (humidity != null) thingsModelValue.put("humidity", humidity);
+            if (nitrogen != null) thingsModelValue.put("nitrogen", nitrogen);
+            if (phosphorus != null) thingsModelValue.put("phosphorus", phosphorus);
+            if (potassium != null) thingsModelValue.put("potassium", potassium);
+            if (temperature != null) thingsModelValue.put("temperature", temperature);
+            if (soilPH != null) thingsModelValue.put("soilPH", soilPH);
+
+            // 水质监测数据
+            if (waterTemperature != null) thingsModelValue.put("water_temperature", waterTemperature);
+            if (waterPh != null) thingsModelValue.put("water_ph", waterPh);
+            if (dissolvedOxygen != null) thingsModelValue.put("dissolved_oxygen", dissolvedOxygen);
+            if (turbidity != null) thingsModelValue.put("turbidity", turbidity);
 
             // 查询是否已存在运行状态记录
             IotDeviceRunningStatus existingStatus = iotDeviceRunningStatusMapper.selectIotDeviceRunningStatusByDeviceId(deviceId);

@@ -43,6 +43,11 @@ public class MqttMessageListener {
     private static final String TOPIC_SENSOR_UPLOAD = "/agriculture/sensor/upload";
 
     /**
+     * 水质监测数据上报主题
+     */
+    private static final String TOPIC_WATER_UPLOAD = "/agriculture/water/upload";
+
+    /**
      * 处理MQTT消息的核心方法
      * <p>
      * 该方法由MqttConfig中的MessageHandler调用，
@@ -62,6 +67,9 @@ public class MqttMessageListener {
             if (topic.equals(TOPIC_SENSOR_UPLOAD)) {
                 // 处理农业传感器数据上报
                 handleSensorUpload(payload);
+            } else if (topic.equals(TOPIC_WATER_UPLOAD)) {
+                // 处理水质监测数据上报
+                handleWaterQualityUpload(payload);
             } else {
                 log.warn("未知的MQTT主题: {}", topic);
             }
@@ -136,6 +144,45 @@ public class MqttMessageListener {
             log.error("传感器数据处理失败，发生未知异常 -> payload: {}", payload, e);
             // 这里可以根据业务需要决定是否重新抛出异常
             // throw e; // 如果需要让上层感知异常，可以取消注释
+        }
+    }
+
+    /**
+     * 处理水质监测数据上报
+     * <p>
+     * 业务流程：
+     * 1. 解析水质监测数据JSON
+     * 2. 更新设备运行状态（在线状态、信号强度等）
+     * 3. 保存水质数据到数据库
+     * </p>
+     *
+     * @param payload JSON格式的水质监测数据
+     */
+    private void handleWaterQualityUpload(String payload) {
+        try {
+            log.info("开始处理水质监测数据上报");
+
+            // 解析JSON数据
+            JSONObject jsonObject = JSON.parseObject(payload);
+            String serialNumber = jsonObject.getString("serialNumber");
+
+            if (serialNumber == null || serialNumber.trim().isEmpty()) {
+                log.error("设备编号为空，无法处理水质数据: {}", payload);
+                return;
+            }
+
+            // 调用通用的IoT数据处理服务更新设备状态
+            // 该方法会完成：设备查询 -> 状态更新 -> 告警触发
+            ioTDataProcessService.processSensorData(payload);
+
+            log.info("水质监测数据处理完成 -> 设备序列号: {}", serialNumber);
+
+        } catch (com.alibaba.fastjson2.JSONException e) {
+            log.error("JSON 解析失败，请检查 payload 格式是否正确 -> 原始数据: {}", payload, e);
+        } catch (NullPointerException e) {
+            log.error("数据字段缺失或为空，无法完成映射 -> payload: {}", payload, e);
+        } catch (Exception e) {
+            log.error("水质监测数据处理失败，发生未知异常 -> payload: {}", payload, e);
         }
     }
 }
