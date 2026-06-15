@@ -257,7 +257,7 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('system/type/export', {
+      this.download('system/machine/type/export', {
         ...this.queryParams
       }, `type_${new Date().getTime()}.xlsx`)
     }
