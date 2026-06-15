@@ -92,6 +92,12 @@ public class IoTDataProcessServiceImpl implements IIoTDataProcessService {
             Double dissolvedOxygen = sensorData.getDouble("dissolved_oxygen");    // 溶解氧
             Double turbidity = sensorData.getDouble("turbidity");                 // 浊度
 
+            // 气象检测设备字段
+            Integer airHumidity = sensorData.getInteger("air_humidity");          // 空气湿度
+            Integer light = sensorData.getInteger("light");                       // 光照强度
+            Integer co2 = sensorData.getInteger("co2");                           // CO2浓度
+            Double airTemperature = sensorData.getDouble("air_temperature");      // 气温
+
             Integer signalStrength = sensorData.getInteger("signalStrength"); // 信号强度
 
             // =====================================================
@@ -144,6 +150,12 @@ public class IoTDataProcessServiceImpl implements IIoTDataProcessService {
             if (waterPh != null) thingsModelValue.put("water_ph", waterPh);
             if (dissolvedOxygen != null) thingsModelValue.put("dissolved_oxygen", dissolvedOxygen);
             if (turbidity != null) thingsModelValue.put("turbidity", turbidity);
+
+            // 气象检测数据
+            if (airHumidity != null) thingsModelValue.put("air_humidity", airHumidity);
+            if (light != null) thingsModelValue.put("light", light);
+            if (co2 != null) thingsModelValue.put("co2", co2);
+            if (airTemperature != null) thingsModelValue.put("air_temperature", airTemperature);
 
             // 查询是否已存在运行状态记录
             IotDeviceRunningStatus existingStatus = iotDeviceRunningStatusMapper.selectIotDeviceRunningStatusByDeviceId(deviceId);

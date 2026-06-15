@@ -455,4 +455,179 @@ public class RyTask
 
         return data;
     }
+
+    // ==================== 气象检测设备数据模拟方法 ====================
+
+    private static final String WEATHER_MQTT_TOPIC = "/agriculture/weather/upload";
+    private static final String DEFAULT_WEATHER_DEVICE = "DEV17815203599686074";
+
+    /**
+     * 模拟气象检测数据推送（无参数版本）
+     * <p>
+     * 若依后台调用目标字符串：ryTask.mockWeatherData()
+     * </p>
+     */
+    public void mockWeatherData()
+    {
+        mockWeatherData(DEFAULT_WEATHER_DEVICE);
+    }
+
+    /**
+     * 模拟气象检测数据推送（带设备编号参数）
+     * <p>
+     * 若依后台调用目标字符串：ryTask.mockWeatherData('DEV17815203599686074')
+     * <p>
+     * 模拟气象检测四个核心参数：
+     * - 空气湿度：0-100 %RH
+     * - 光照强度：0-200000 lux
+     * - CO2浓度：0-5000 ppm
+     * - 气温：-20-60 ℃
+     * </p>
+     *
+     * @param serialNumber 设备编号
+     */
+    public void mockWeatherData(String serialNumber)
+    {
+        try
+        {
+            if (serialNumber == null || serialNumber.trim().isEmpty())
+            {
+                serialNumber = DEFAULT_WEATHER_DEVICE;
+            }
+
+            log.info("========== 开始执行气象检测数据模拟任务 ==========");
+
+            JSONObject weatherData = generateMockWeatherData(serialNumber);
+            String jsonMessage = weatherData.toJSONString();
+
+            log.info("【模拟数据生成】设备编号: {}", serialNumber);
+            log.info("【模拟数据内容】{}", jsonMessage);
+
+            // 发送到MQTT
+            mqttPublisher.sendToMqtt(WEATHER_MQTT_TOPIC, jsonMessage, 1);
+            log.info("【数据发送完成】主题: {}, QoS: 1, 消息长度: {} bytes", WEATHER_MQTT_TOPIC, jsonMessage.length());
+
+            log.info("========== 气象检测数据模拟任务执行完成 ==========");
+        }
+        catch (Exception e)
+        {
+            log.error("【任务执行失败】气象检测数据模拟任务异常", e);
+            throw new RuntimeException("模拟气象检测数据推送失败: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 生成模拟气象检测数据（JSON格式）
+     * <p>
+     * 正常气象数据范围：
+     * - 空气湿度：30-80 %RH（适宜农业环境）
+     * - 光照强度：10000-100000 lux（正常日照）
+     * - CO2浓度：300-1000 ppm（正常大气环境）
+     * - 气温：10-35 ℃（适宜作物生长温度）
+     *
+     * 异常数据（5%概率）：
+     * - 高温异常：气温 > 40℃
+     * - 低温异常：气温 < 0℃
+     * - 高湿异常：湿度 > 90%
+     * - CO2异常：CO2 > 2000 ppm
+     * </p>
+     *
+     * @param serialNumber 设备编号
+     * @return 模拟数据的JSON对象
+     */
+    private JSONObject generateMockWeatherData(String serialNumber)
+    {
+        JSONObject data = new JSONObject();
+
+        // 设备基本信息
+        data.put("serialNumber", serialNumber);
+        data.put("timestamp", System.currentTimeMillis());
+        data.put("deviceType", "WEATHER_STATION");
+
+        // 判断是否生成异常数据（5%概率）
+        boolean isAbnormal = random.nextDouble() < 0.05;
+
+        int airHumidity;        // 空气湿度 (%RH)
+        int light;              // 光照强度 (lux)
+        int co2;                // CO2浓度 (ppm)
+        double airTemperature;  // 气温 (℃)
+
+        if (isAbnormal)
+        {
+            // 生成异常数据（用于触发告警测试）
+            int abnormalType = random.nextInt(4);
+
+            switch (abnormalType)
+            {
+                case 0: // 高温异常
+                    airHumidity = randomInt(30, 80);
+                    light = randomInt(10000, 100000);
+                    co2 = randomInt(300, 1000);
+                    airTemperature = randomDouble(40.0, 50.0);
+                    log.warn("!!! 生成异常数据：高温异常（气温={}℃）", round(airTemperature, 1));
+                    break;
+
+                case 1: // 低温异常
+                    airHumidity = randomInt(30, 80);
+                    light = randomInt(10000, 100000);
+                    co2 = randomInt(300, 1000);
+                    airTemperature = randomDouble(-10.0, 0.0);
+                    log.warn("!!! 生成异常数据：低温异常（气温={}℃）", round(airTemperature, 1));
+                    break;
+
+                case 2: // 高湿异常
+                    airHumidity = randomInt(90, 100);
+                    light = randomInt(10000, 100000);
+                    co2 = randomInt(300, 1000);
+                    airTemperature = randomDouble(10.0, 35.0);
+                    log.warn("!!! 生成异常数据：高湿异常（湿度={}%RH）", airHumidity);
+                    break;
+
+                case 3: // CO2浓度异常
+                    airHumidity = randomInt(30, 80);
+                    light = randomInt(10000, 100000);
+                    co2 = randomInt(2000, 3000);
+                    airTemperature = randomDouble(10.0, 35.0);
+                    log.warn("!!! 生成异常数据：CO2浓度异常（CO2={}ppm）", co2);
+                    break;
+
+                default:
+                    airHumidity = randomInt(30, 80);
+                    light = randomInt(10000, 100000);
+                    co2 = randomInt(300, 1000);
+                    airTemperature = randomDouble(10.0, 35.0);
+            }
+        }
+        else
+        {
+            // 生成正常范围内的数据
+            airHumidity = randomInt(30, 80);           // 正常湿度
+            light = randomInt(10000, 100000);          // 正常光照
+            co2 = randomInt(300, 1000);                // 正常CO2
+            airTemperature = randomDouble(10.0, 35.0); // 正常气温
+        }
+
+        // 保留一位小数并放入JSON
+        data.put("air_humidity", airHumidity);
+        data.put("light", light);
+        data.put("co2", co2);
+        data.put("air_temperature", round(airTemperature, 1));
+
+        // 附加信息
+        data.put("signalStrength", random.nextInt(20) - 90);  // 信号强度 -90 ~ -70 dBm
+
+        return data;
+    }
+
+    /**
+     * 生成指定范围内的随机整数
+     *
+     * @param min 最小值
+     * @param max 最大值
+     * @return 随机整数
+     */
+    private int randomInt(int min, int max)
+    {
+        return min + random.nextInt(max - min + 1);
+    }
 }

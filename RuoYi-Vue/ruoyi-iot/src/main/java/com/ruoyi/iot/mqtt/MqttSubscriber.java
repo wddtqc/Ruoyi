@@ -41,7 +41,8 @@ public class MqttSubscriber implements CommandLineRunner {
      */
     private static final String[] SUBSCRIBE_TOPICS = {
         "/agriculture/sensor/upload",  // 农业传感器数据上报主题
-        "/agriculture/water/upload"    // 水质监测数据上报主题
+        "/agriculture/water/upload",   // 水质监测数据上报主题
+        "/agriculture/weather/upload"  // 气象检测数据上报主题
     };
 
     /**
