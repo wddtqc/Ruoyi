@@ -70,4 +70,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         LIMIT 1
     </select>
 
+    <select id="selectTrendData" resultType="java.util.HashMap">
+        SELECT
+            HOUR(create_time) as hour,
+            ROUND(AVG(temperature), 1) as temperature,
+            ROUND(AVG(humidity), 1) as humidity
+        FROM iot_sensor_data
+        WHERE create_time >= DATE_SUB(NOW(), INTERVAL 24 HOUR)
+        GROUP BY HOUR(create_time)
+        ORDER BY hour
+    </select>
+
 </mapper>

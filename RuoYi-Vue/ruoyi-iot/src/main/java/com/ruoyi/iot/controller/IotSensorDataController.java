@@ -41,4 +41,13 @@ public class IotSensorDataController extends BaseController {
         IotSensorData data = iotSensorDataService.selectLatestBySerialNumber(serialNumber);
         return AjaxResult.success(data);
     }
+
+    /**
+     * 查询最近24小时温湿度趋势数据
+     */
+    @GetMapping("/trend")
+    public AjaxResult getTrendData() {
+        List<java.util.Map<String, Object>> list = iotSensorDataService.selectTrendData();
+        return AjaxResult.success(list);
+    }
 }

@@ -19,3 +19,13 @@ export function getLatestBySerialNumber(serialNumber) {
     method: 'get'
   })
 }
+
+/**
+ * 查询最近24小时温湿度趋势数据（按小时聚合）
+ */
+export function getTrendData() {
+  return request({
+    url: '/iot/sensor/trend',
+    method: 'get'
+  })
+}

@@ -93,9 +93,9 @@
 import * as echarts from 'echarts'
 import AMapLoader from '@amap/amap-jsapi-loader'
 import amapConfig from '@/config/amap'
-import { getCurrentWeather } from '@/api/agriculture/weather'
+import { getCurrentWeather, getForecast } from '@/api/agriculture/weather'
 import { listAllLand } from '@/api/agriculture/screen'
-import { getLatestSensorData } from '@/api/iot/sensor'
+import { getLatestSensorData, getTrendData } from '@/api/iot/sensor'
 import { listAllDeviceShort } from '@/api/iot/device'
 import { getAllBatch } from '@/api/system/batch'
 import { getAllGermplasm } from '@/api/system/germplasm'
@@ -114,8 +114,11 @@ export default {
       weatherData: null,
       weatherTimer: null,
       sensorTimer: null,
+      trendTimer: null,
+      weatherTrend: { temps: null, humids: null },
       landList: [],
       sensorDataList: [],
+      trendDataList: [],
       deviceLandMap: {}, // serialNumber → landName
       batchList: [],
       germplasmList: [],
@@ -133,6 +136,7 @@ export default {
     this.fetchAllData()
     this.weatherTimer = setInterval(() => this.fetchWeather(), 10 * 60 * 1000)
     this.sensorTimer = setInterval(() => this.fetchSensorData(), 30 * 1000)
+    this.trendTimer = setInterval(() => this.fetchTrendData(), 5 * 60 * 1000)
     this.$nextTick(() => { this.loadAMap() })
     this.resizeHandler = () => this.handleResize()
     window.addEventListener('resize', this.resizeHandler)
@@ -153,6 +157,7 @@ export default {
     clearInterval(this.clockTimer)
     clearInterval(this.weatherTimer)
     clearInterval(this.sensorTimer)
+    clearInterval(this.trendTimer)
     window.removeEventListener('resize', this.resizeHandler)
     if (this.map) this.map.destroy()
     this.barChart?.dispose(); this.pieChart?.dispose()
@@ -170,7 +175,7 @@ export default {
       await this.loadDeviceLandMap()
       // 批次数据必须在饼图初始化之前就绪
       await this.fetchBatchData()
-      await Promise.all([this.fetchWeather(), this.fetchLandData(), this.fetchSensorData()])
+      await Promise.all([this.fetchWeather(), this.fetchLandData(), this.fetchSensorData(), this.fetchTrendData(), this.fetchWeatherTrend()])
     },
 
     async fetchBatchData() {
@@ -219,13 +224,68 @@ export default {
       try {
         const res = await getLatestSensorData()
         this.sensorDataList = res.data || []
-        // 刷新 NPK 图表
-        if (this.npkChart) {
-          this.initNpkChart()
-        }
+        // 刷新 NPK 和湿度仪表盘
+        if (this.npkChart) this.initNpkChart()
+        if (this.gaugeChart) this.initGaugeChart()
       } catch (e) {
         console.warn('传感器数据获取失败', e)
         this.sensorDataList = []
+      }
+    },
+
+    async fetchTrendData() {
+      try {
+        const res = await getTrendData()
+        this.trendDataList = res.data || []
+        if (this.lineChart) {
+          this.initLineChart()
+        }
+      } catch (e) {
+        console.warn('趋势数据获取失败', e)
+        this.trendDataList = []
+      }
+    },
+
+    async fetchWeatherTrend() {
+      try {
+        const res = await getForecast()
+        const list = res.data?.list || []
+        if (list.length === 0) return
+        // 取前24小时（8个3小时间隔数据点），插值到24个整点
+        const hourly24 = list.slice(0, 8)
+        const temps24 = new Array(24).fill(null)
+        const humids24 = new Array(24).fill(null)
+        hourly24.forEach(item => {
+          const h = new Date(item.dt * 1000).getHours()
+          if (h >= 0 && h < 24 && item.main) {
+            temps24[h] = +item.main.temp.toFixed(1)
+            humids24[h] = item.main.humidity
+          }
+        })
+        // 线性插值填补空缺
+        const interpolate = arr => {
+          let lastIdx = -1
+          for (let i = 0; i < 24; i++) {
+            if (arr[i] != null) {
+              if (lastIdx >= 0 && i - lastIdx > 1) {
+                const step = (arr[i] - arr[lastIdx]) / (i - lastIdx)
+                for (let j = lastIdx + 1; j < i; j++) arr[j] = +(arr[lastIdx] + step * (j - lastIdx)).toFixed(1)
+              }
+              lastIdx = i
+            }
+          }
+          // 首尾填充
+          if (lastIdx >= 0) {
+            for (let i = 0; i < 24 && arr[i] == null; i++) arr[i] = arr[lastIdx]
+            for (let i = 23; i >= 0 && arr[i] == null; i--) arr[i] = arr[lastIdx]
+          }
+        }
+        interpolate(temps24)
+        interpolate(humids24)
+        this.weatherTrend = { temps: temps24, humids: humids24 }
+        if (this.lineChart) this.initLineChart()
+      } catch (e) {
+        console.warn('气象趋势获取失败', e)
       }
     },
 
@@ -406,14 +466,16 @@ export default {
     showLandInfo(land, position) {
       const AMap = this.AMapInstance
       const area = Number(land.landArea || 0).toFixed(1)
+      const statusInfo = land.status === '0' ? '🟢 种植中' : land.status === '1' ? '🟡 休耕' : '🔴 闲置'
       const info = new AMap.InfoWindow({
-        content: `<div style="padding:10px 14px;font-size:13px;line-height:1.8;min-width:160px;">
-          <strong style="font-size:14px;">${land.landName}</strong><br/>
-          作物：${land.cropName || '--'}<br/>
-          面积：${area} 亩<br/>
-          状态：${land.status === '0' ? '🟢 种植中' : land.status === '1' ? '🟡 休耕' : '🔴 闲置'}
+        content: `<div style="background:linear-gradient(135deg,#0a1628,#0d1f3c);color:#e0f0ff;padding:12px 16px;font-size:13px;line-height:2;min-width:170px;border:1px solid rgba(0,212,255,0.5);border-radius:6px;box-shadow:0 0 20px rgba(0,212,255,0.25),inset 0 0 20px rgba(0,212,255,0.05);">
+          <strong style="font-size:15px;color:#00d4ff;display:block;border-bottom:1px solid rgba(0,212,255,0.2);padding-bottom:6px;margin-bottom:4px;">${land.landName}</strong>
+          <span style="color:#80d8ff;">作物：</span>${land.cropName || '--'}<br/>
+          <span style="color:#80d8ff;">面积：</span>${area} 亩<br/>
+          <span style="color:#80d8ff;">状态：</span>${statusInfo}
         </div>`,
-        offset: new AMap.Pixel(0, -20)
+        offset: new AMap.Pixel(0, -20),
+        isCustom: true
       })
       info.open(this.map, position)
     },
@@ -633,12 +695,25 @@ export default {
       this.gaugeChart = echarts.init(this.$refs.gaugeChart)
 
       const top4 = this.landList.slice(0, 4)
-      // 计算各地块土壤湿度(基于作物类型模拟)
-      const moistureBase = { '水稻': 75, '油菜': 60, '蔬菜': 80, '果树': 55 }
-      const gaugeData = top4.map(l => ({
-        name: l.landName.length > 6 ? l.landName.slice(0, 6) + '..' : l.landName,
-        value: moistureBase[l.cropName] || (55 + Math.random() * 25)
-      }))
+      // 构建地块名→传感器湿度映射（通过deviceLandMap反查）
+      const landHumidity = {}
+      if (this.sensorDataList && this.sensorDataList.length > 0) {
+        this.sensorDataList.forEach(sensor => {
+          const sn = sensor.serialNumber || ''
+          const landName = this.deviceLandMap[sn]
+          if (landName && sensor.humidity != null) {
+            landHumidity[landName] = sensor.humidity
+          }
+        })
+      }
+      // 回退模拟值
+      const moistureFallback = { '水稻': 75, '油菜': 60, '蔬菜': 80, '果树': 55 }
+      const gaugeData = top4.map(l => {
+        const real = landHumidity[l.landName]
+        const name = l.landName.length > 6 ? l.landName.slice(0, 6) + '..' : l.landName
+        const value = real != null ? real : (moistureFallback[l.cropName] || (55 + Math.random() * 25))
+        return { name, value }
+      })
 
       this.gaugeChart.setOption({
         backgroundColor: 'transparent',
@@ -670,8 +745,32 @@ export default {
       this.lineChart = echarts.init(this.$refs.lineChart)
       const t = this.t()
       const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`)
-      const temps = [20, 21, 20, 19, 19, 18, 19, 21, 23, 25, 27, 28, 29, 30, 31, 30, 29, 28, 26, 25, 23, 22, 21, 20]
-      const humids = [75, 78, 80, 82, 83, 85, 82, 78, 72, 65, 60, 58, 55, 54, 53, 54, 56, 60, 65, 68, 70, 72, 73, 74]
+      const allNull = arr => !arr || arr.every(v => v == null)
+      const fallbackTemps = [20, 21, 20, 19, 19, 18, 19, 21, 23, 25, 27, 28, 29, 30, 31, 30, 29, 28, 26, 25, 23, 22, 21, 20]
+      const fallbackHumids = [75, 78, 80, 82, 83, 85, 82, 78, 72, 65, 60, 58, 55, 54, 53, 54, 56, 60, 65, 68, 70, 72, 73, 74]
+
+      let temps, humids
+      // 优先 OpenWeatherMap 预报
+      if (!allNull(this.weatherTrend.temps)) {
+        temps = [...this.weatherTrend.temps]
+        humids = [...this.weatherTrend.humids]
+      } else if (this.trendDataList && this.trendDataList.length > 0) {
+        // 次选传感器数据库历史数据
+        temps = new Array(24).fill(null)
+        humids = new Array(24).fill(null)
+        this.trendDataList.forEach(d => {
+          const h = parseInt(d.hour) || 0
+          if (h >= 0 && h < 24) {
+            if (d.temperature != null) temps[h] = d.temperature
+            if (d.humidity != null) humids[h] = d.humidity
+          }
+        })
+        if (allNull(temps)) temps = [...fallbackTemps]
+        if (allNull(humids)) humids = [...fallbackHumids]
+      } else {
+        temps = [...fallbackTemps]
+        humids = [...fallbackHumids]
+      }
 
       this.lineChart.setOption({
         backgroundColor: 'transparent',

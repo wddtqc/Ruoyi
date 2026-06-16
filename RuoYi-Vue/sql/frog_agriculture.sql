@@ -171,6 +171,127 @@ INSERT INTO `agriculture_batch_task` VALUES (88, 42, 1, '播种', '2023-09-12 00
 INSERT INTO `agriculture_batch_task` VALUES (89, 42, 1, '收获', '2023-09-19 00:00:00', '2023-09-19 00:00:00', NULL, NULL, '', NULL, NULL, '', '1', 0, 0, NULL, 1, '2023-09-05 14:11:51', '0');
 
 -- ----------------------------
+-- Table structure for agriculture_cost_employee
+-- ----------------------------
+DROP TABLE IF EXISTS `agriculture_cost_employee`;
+CREATE TABLE `agriculture_cost_employee` (
+  `cost_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '成本ID',
+  `task_id` bigint unsigned NOT NULL COMMENT '任务ID',
+  `batch_id` bigint unsigned DEFAULT NULL COMMENT '批次ID',
+  `employee_id` bigint unsigned NOT NULL COMMENT '员工ID',
+  `employee_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '员工姓名',
+  `work_type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '工种类型（技术员、操作工、管理人员等）',
+  `work_hours` decimal(10,2) DEFAULT '0.00' COMMENT '工作时长（小时）',
+  `work_date` date DEFAULT NULL COMMENT '工作日期',
+  `hourly_wage` decimal(10,2) DEFAULT '0.00' COMMENT '小时工资（元/小时）',
+  `total_cost` decimal(10,2) DEFAULT '0.00' COMMENT '总成本（元）',
+  `subsidy_amount` decimal(10,2) DEFAULT '0.00' COMMENT '补贴金额（元）',
+  `actual_payment` decimal(10,2) DEFAULT '0.00' COMMENT '实际支付（元）',
+  `payment_status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '支付状态（0未支付 1已支付）',
+  `remark` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `order_num` int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_by` bigint NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint DEFAULT '0' COMMENT '修改人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (`cost_id`) USING BTREE,
+  KEY `idx_task_id` (`task_id`) USING BTREE COMMENT '任务ID索引',
+  KEY `idx_employee_id` (`employee_id`) USING BTREE COMMENT '员工ID索引',
+  KEY `idx_batch_id` (`batch_id`) USING BTREE COMMENT '批次ID索引',
+  KEY `idx_work_date` (`work_date`) USING BTREE COMMENT '工作日期索引'
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='员工人工成本表';
+
+-- ----------------------------
+-- Records of agriculture_cost_employee
+-- ----------------------------
+INSERT INTO `agriculture_cost_employee` VALUES ('4', '90', null, '6', '', '', '3.00', '2026-06-15', '20.00', '60.00', '70.00', '70.00', '0', '', '0', '0', '0', '2026-06-14 15:42:30', '0', null, '0');
+INSERT INTO `agriculture_cost_employee` VALUES ('5', '91', null, '7', '', '', '30.00', '2026-06-14', '20.00', '120.00', '20.00', '750.00', '0', '', '0', '0', '0', '2026-06-14 15:49:09', '0', null, '0');
+INSERT INTO `agriculture_cost_employee` VALUES ('6', '91', null, '7', '郭浩铭', '', '6.00', '2026-06-18', '0.00', '0.00', '0.00', '0.00', '0', '', '0', '0', '0', '2026-06-14 15:59:16', '0', null, '0');
+INSERT INTO `agriculture_cost_employee` VALUES ('9', '91', null, '7', '郭浩铭', '', '123.00', '2026-06-16', '0.00', '0.00', '0.00', '0.00', '0', '', '0', '0', '0', '2026-06-14 17:15:58', '0', null, '0');
+
+-- ----------------------------
+-- Table structure for agriculture_cost_machine
+-- ----------------------------
+DROP TABLE IF EXISTS `agriculture_cost_machine`;
+CREATE TABLE `agriculture_cost_machine` (
+  `cost_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '成本ID',
+  `task_id` bigint unsigned NOT NULL COMMENT '任务ID',
+  `batch_id` bigint unsigned DEFAULT NULL COMMENT '批次ID',
+  `machine_id` bigint unsigned DEFAULT NULL COMMENT '机械ID',
+  `machine_name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '机械名称',
+  `machine_type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '机械类型（拖拉机、收割机、播种机、灌溉设备等）',
+  `machine_model` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '机械型号',
+  `use_hours` decimal(10,2) DEFAULT '0.00' COMMENT '使用时长（小时）',
+  `use_date` date DEFAULT NULL COMMENT '使用日期',
+  `hourly_cost` decimal(10,2) DEFAULT '0.00' COMMENT '小时成本（元/小时）',
+  `fuel_cost` decimal(10,2) DEFAULT '0.00' COMMENT '燃油费用（元）',
+  `maintenance_cost` decimal(10,2) DEFAULT '0.00' COMMENT '维护费用（元）',
+  `total_cost` decimal(10,2) DEFAULT '0.00' COMMENT '总成本（元）',
+  `operator_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '操作人员姓名',
+  `is_rental` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '是否租赁（0自有 1租赁）',
+  `payment_status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '支付状态（0未支付 1已支付）',
+  `remark` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `order_num` int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_by` bigint NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint DEFAULT '0' COMMENT '修改人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (`cost_id`) USING BTREE,
+  KEY `idx_task_id` (`task_id`) USING BTREE COMMENT '任务ID索引',
+  KEY `idx_machine_id` (`machine_id`) USING BTREE COMMENT '机械ID索引',
+  KEY `idx_batch_id` (`batch_id`) USING BTREE COMMENT '批次ID索引',
+  KEY `idx_use_date` (`use_date`) USING BTREE COMMENT '使用日期索引'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='农事机械成本表';
+
+-- ----------------------------
+-- Records of agriculture_cost_machine
+-- ----------------------------
+INSERT INTO `agriculture_cost_machine` VALUES ('1', '90', null, '1', '东方红天天向上牌拖拉机', '', '', '2.00', '2026-06-16', '30.00', '0.00', '0.00', '60.00', '', '0', '0', '', '0', '0', '0', '2026-06-14 18:36:39', '0', '2026-06-14 19:01:13', '0');
+
+-- ----------------------------
+-- Table structure for agriculture_cost_material
+-- ----------------------------
+DROP TABLE IF EXISTS `agriculture_cost_material`;
+CREATE TABLE `agriculture_cost_material` (
+  `cost_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '成本ID',
+  `task_id` bigint unsigned NOT NULL COMMENT '任务ID',
+  `batch_id` bigint unsigned DEFAULT NULL COMMENT '批次ID',
+  `material_id` bigint unsigned DEFAULT NULL COMMENT '物料ID',
+  `material_name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '物料名称',
+  `material_type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '物料类型（种子、肥料、农药、薄膜等）',
+  `material_spec` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '物料规格',
+  `material_unit` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '计量单位（公斤、袋、瓶等）',
+  `use_quantity` decimal(10,2) DEFAULT '0.00' COMMENT '使用数量',
+  `use_date` date DEFAULT NULL COMMENT '使用日期',
+  `unit_price` decimal(10,2) DEFAULT '0.00' COMMENT '单价（元）',
+  `total_cost` decimal(10,2) DEFAULT '0.00' COMMENT '总成本（元）',
+  `supplier_name` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '供应商名称',
+  `payment_status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '支付状态（0未支付 1已支付）',
+  `remark` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `order_num` int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_by` bigint NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint DEFAULT '0' COMMENT '修改人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (`cost_id`) USING BTREE,
+  KEY `idx_task_id` (`task_id`) USING BTREE COMMENT '任务ID索引',
+  KEY `idx_material_id` (`material_id`) USING BTREE COMMENT '物料ID索引',
+  KEY `idx_batch_id` (`batch_id`) USING BTREE COMMENT '批次ID索引',
+  KEY `idx_use_date` (`use_date`) USING BTREE COMMENT '使用日期索引'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='农资物料成本表';
+
+-- ----------------------------
+-- Records of agriculture_cost_material
+-- ----------------------------
+INSERT INTO `agriculture_cost_material` VALUES ('2', '90', null, '1', '钾肥', '', 'g', '袋', '3.00', '2026-06-17', '20.00', '60.00', '', '0', '', '0', '0', '0', '2026-06-14 18:45:44', '0', '2026-06-14 19:01:21', '0');
+
+-- ----------------------------
 -- Table structure for agriculture_crop_batch
 -- ----------------------------
 DROP TABLE IF EXISTS `agriculture_crop_batch`;
@@ -506,6 +627,81 @@ INSERT INTO `agriculture_standard_job` VALUES (14, 1, '采摘', '1', 15, 16, '',
 INSERT INTO `agriculture_standard_job` VALUES (15, 1, '作业流程', '0', 1, 2, '', '0', 0, 8, '2023-08-26 14:11:15', 0, NULL, '2');
 INSERT INTO `agriculture_standard_job` VALUES (16, 3, '播种', '1', 1, 1, '', '0', 0, 1, '2023-09-05 12:53:54', 0, NULL, '0');
 INSERT INTO `agriculture_standard_job` VALUES (17, 3, '收获', '1', 2, 2, '', '0', 0, 1, '2023-09-05 12:54:10', 0, NULL, '0');
+
+-- ----------------------------
+-- Table structure for agriculture_task_employee
+-- ----------------------------
+DROP TABLE IF EXISTS `agriculture_task_employee`;
+CREATE TABLE `agriculture_task_employee` (
+  `assign_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '分配ID',
+  `task_id` bigint unsigned NOT NULL COMMENT '任务ID',
+  `batch_id` bigint unsigned DEFAULT NULL COMMENT '批次ID',
+  `employee_id` bigint unsigned NOT NULL COMMENT '员工ID',
+  `employee_name` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '员工姓名',
+  `employee_role` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '任务角色（负责人、协助人员）',
+  `assign_time` datetime DEFAULT NULL COMMENT '分配时间',
+  `is_leader` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '是否负责人（0否 1是）',
+  `work_status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '工作状态（0待开始 1进行中 2已完成）',
+  `completion_rate` decimal(5,2) DEFAULT '0.00' COMMENT '完成率（百分比）',
+  `remark` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `order_num` int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_by` bigint NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint DEFAULT '0' COMMENT '修改人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (`assign_id`) USING BTREE,
+  KEY `idx_task_id` (`task_id`) USING BTREE COMMENT '任务ID索引',
+  KEY `idx_employee_id` (`employee_id`) USING BTREE COMMENT '员工ID索引',
+  KEY `idx_batch_id` (`batch_id`) USING BTREE COMMENT '批次ID索引'
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='任务分配员工表';
+
+-- ----------------------------
+-- Records of agriculture_task_employee
+-- ----------------------------
+INSERT INTO `agriculture_task_employee` VALUES ('5', '90', null, '6', '陈宇', '', null, '0', '0', '0.00', '', '0', '0', '0', '2026-06-14 14:53:22', '0', null, '0');
+INSERT INTO `agriculture_task_employee` VALUES ('6', '90', null, '8', '罗一凡', '', null, '0', '0', '0.00', '', '0', '0', '0', '2026-06-14 15:42:04', '0', null, '0');
+INSERT INTO `agriculture_task_employee` VALUES ('7', '91', null, '7', '郭浩铭', '', null, '0', '0', '0.00', '', '0', '0', '0', '2026-06-14 15:48:07', '0', null, '0');
+INSERT INTO `agriculture_task_employee` VALUES ('8', '91', null, '8', '罗一凡', '', null, '0', '0', '0.00', '', '0', '0', '0', '2026-06-14 15:48:08', '0', null, '0');
+
+-- ----------------------------
+-- Table structure for agriculture_task_log
+-- ----------------------------
+DROP TABLE IF EXISTS `agriculture_task_log`;
+CREATE TABLE `agriculture_task_log` (
+  `log_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '日志ID',
+  `task_id` bigint unsigned NOT NULL COMMENT '任务ID',
+  `batch_id` bigint unsigned DEFAULT NULL COMMENT '批次ID',
+  `log_type` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '日志类型（开始、暂停、继续、完成、异常）',
+  `log_content` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '日志内容',
+  `execute_person` bigint unsigned DEFAULT NULL COMMENT '执行人ID',
+  `execute_time` datetime DEFAULT NULL COMMENT '执行时间',
+  `execute_result` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '执行结果',
+  `execute_status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '执行状态（0正常 1异常）',
+  `log_images` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci COMMENT '日志图片',
+  `remark` varchar(2000) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '状态',
+  `order_num` int NOT NULL DEFAULT '0' COMMENT '排序',
+  `create_by` bigint NOT NULL DEFAULT '0' COMMENT '创建者ID',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` bigint DEFAULT '0' COMMENT '修改人ID',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `del_flag` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  PRIMARY KEY (`log_id`) USING BTREE,
+  KEY `idx_task_id` (`task_id`) USING BTREE COMMENT '任务ID索引',
+  KEY `idx_batch_id` (`batch_id`) USING BTREE COMMENT '批次ID索引',
+  KEY `idx_execute_time` (`execute_time`) USING BTREE COMMENT '执行时间索引'
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC COMMENT='任务执行日志表';
+
+-- ----------------------------
+-- Records of agriculture_task_log
+-- ----------------------------
+INSERT INTO `agriculture_task_log` VALUES ('4', '90', null, '', '增加参与人员', null, null, '', '0', null, '', '0', '0', '0', '2026-06-14 14:17:25', '0', null, '0');
+INSERT INTO `agriculture_task_log` VALUES ('5', '90', null, '', '删除参与人员', null, null, '', '0', null, '', '0', '0', '0', '2026-06-14 14:32:51', '0', null, '0');
+INSERT INTO `agriculture_task_log` VALUES ('6', '90', null, '', '删除参与人员', null, null, '', '0', null, '', '0', '0', '0', '2026-06-14 14:33:03', '0', null, '0');
+INSERT INTO `agriculture_task_log` VALUES ('7', '90', null, '', '增加参与人员', null, null, '', '0', null, '', '0', '0', '0', '2026-06-14 14:33:07', '0', null, '0');
+INSERT INTO `agriculture_task_log` VALUES ('38', '91', null, '', '完善项目信息', null, null, '', '0', null, '', '0', '0', '0', '2026-06-14 19:54:12', '0', null, '0');
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -1078,6 +1274,75 @@ INSERT INTO `iot_things_model_template` VALUES (48, '光照强度', 0, '系统',
 INSERT INTO `iot_things_model_template` VALUES (49, 'CO2浓度', 0, '系统', 110, 'co2', 1, 'integer', '{\"max\": 5000, \"min\": 0, \"step\": 1, \"type\": \"integer\", \"unit\": \"ppm\"}', 1, 1, 1, 1, 4, '0', 'admin', '2026-06-07 19:15:15', '', NULL, NULL);
 INSERT INTO `iot_things_model_template` VALUES (50, 'pH值', 0, '系统', 106, 'ph', 1, 'decimal', '{\"max\": 14, \"min\": 0, \"step\": 0.1, \"type\": \"decimal\", \"unit\": \"\"}', 1, 1, 1, 1, 3, '0', 'admin', '2026-06-07 19:51:36', '', NULL, NULL);
 INSERT INTO `iot_things_model_template` VALUES (51, '土壤温度', 0, '系统', 106, 'soil_temperature', 1, 'decimal', '{\"max\": 60, \"min\": -20, \"step\": 0.1, \"type\": \"decimal\", \"unit\": \"℃\"}', 1, 1, 1, 1, 1, '0', 'admin', '2026-06-07 19:51:45', '', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for iot_sensor_data
+-- ----------------------------
+DROP TABLE IF EXISTS `iot_sensor_data`;
+CREATE TABLE `iot_sensor_data` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `serial_number` varchar(64) DEFAULT NULL COMMENT '设备序列号',
+  `device_type` varchar(32) DEFAULT NULL COMMENT '设备类型',
+  `humidity` double DEFAULT NULL COMMENT '土壤湿度(%)',
+  `temperature` double DEFAULT NULL COMMENT '土壤温度(°C)',
+  `soil_ph` double DEFAULT NULL COMMENT '土壤PH值',
+  `nitrogen` double DEFAULT NULL COMMENT '氮含量(mg/kg)',
+  `phosphorus` double DEFAULT NULL COMMENT '磷含量(mg/kg)',
+  `potassium` double DEFAULT NULL COMMENT '钾含量(mg/kg)',
+  `signal_strength` int DEFAULT NULL COMMENT '信号强度(dBm)',
+  `device_timestamp` bigint DEFAULT NULL COMMENT '设备时间戳(毫秒)',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '系统入库时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_serial_number` (`serial_number`) COMMENT '设备序列号索引',
+  KEY `idx_device_type` (`device_type`) COMMENT '设备类型索引',
+  KEY `idx_create_time` (`create_time`) COMMENT '创建时间索引',
+  KEY `idx_device_timestamp` (`device_timestamp`) COMMENT '设备时间戳索引'
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='农业传感器历史数据表';
+
+-- ----------------------------
+-- Records of iot_sensor_data
+-- ----------------------------
+INSERT INTO `iot_sensor_data` VALUES ('1', 'NPK-TEST-001', 'NPK_SENSOR', '27.9', '18.5', '6', '33.5', '12.6', '70.3', '-82', '1781329969964', '2026-06-13 13:52:55');
+INSERT INTO `iot_sensor_data` VALUES ('2', 'NPK-TEST-001', 'NPK_SENSOR', '32.7', '22.7', '7.2', '52', '17', '82.6', '-89', '1781438695252', '2026-06-14 20:05:00');
+INSERT INTO `iot_sensor_data` VALUES ('3', 'NPK-TEST-001', 'NPK_SENSOR', '32.3', '20.4', '6.9', '49.3', '14.8', '76.3', '-90', '1781505835208', '2026-06-15 14:44:05');
+INSERT INTO `iot_sensor_data` VALUES ('4', 'NPK-TEST-001', 'NPK_SENSOR', '33.7', '25.2', '6.6', '51.7', '18.7', '88.2', '-81', '1781508230025', '2026-06-15 15:23:55');
+INSERT INTO `iot_sensor_data` VALUES ('5', 'NPK-TEST-001', 'NPK_SENSOR', '29.1', '26.6', '7.1', '44.5', '13.5', '84.3', '-72', '1781508261493', '2026-06-15 15:24:25');
+
+-- ----------------------------
+-- Table structure for iot_water_quality_data
+-- ----------------------------
+DROP TABLE IF EXISTS `iot_water_quality_data`;
+CREATE TABLE `iot_water_quality_data` (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `serial_number` varchar(64) DEFAULT NULL COMMENT '设备序列号',
+  `device_type` varchar(32) DEFAULT NULL COMMENT '设备类型',
+  `water_temperature` double DEFAULT NULL COMMENT '水温(℃)',
+  `water_ph` double DEFAULT NULL COMMENT 'pH值',
+  `dissolved_oxygen` double DEFAULT NULL COMMENT '溶解氧(mg/L)',
+  `turbidity` double DEFAULT NULL COMMENT '浊度(NTU)',
+  `signal_strength` int DEFAULT NULL COMMENT '信号强度(dBm)',
+  `battery_level` int DEFAULT NULL COMMENT '电池电量(%)',
+  `device_timestamp` bigint DEFAULT NULL COMMENT '设备时间戳(毫秒)',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '系统入库时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_serial_number` (`serial_number`) COMMENT '设备序列号索引',
+  KEY `idx_device_type` (`device_type`) COMMENT '设备类型索引',
+  KEY `idx_create_time` (`create_time`) COMMENT '创建时间索引',
+  KEY `idx_device_timestamp` (`device_timestamp`) COMMENT '设备时间戳索引'
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='水质监测历史数据表';
+
+-- ----------------------------
+-- Records of iot_water_quality_data
+-- ----------------------------
+INSERT INTO `iot_water_quality_data` VALUES ('1', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '20.5', '7.2', '8.5', '15.3', '-78', '85', '1718149463728', '2026-06-15 14:07:44');
+INSERT INTO `iot_water_quality_data` VALUES ('2', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '16', '7', '8.1', '38', '-73', '93', '1781503770317', '2026-06-15 14:09:35');
+INSERT INTO `iot_water_quality_data` VALUES ('3', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '22.8', '8', '8.6', '38.7', '-84', '97', '1781505837562', '2026-06-15 14:44:05');
+INSERT INTO `iot_water_quality_data` VALUES ('4', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '23.2', '8', '6.6', '44.4', '-75', '84', '1781508154611', '2026-06-15 15:22:39');
+INSERT INTO `iot_water_quality_data` VALUES ('5', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '19.9', '7.9', '8.4', '29.7', '-80', '71', '1781508295089', '2026-06-15 15:24:58');
+INSERT INTO `iot_water_quality_data` VALUES ('6', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '20.1', '7.2', '9.3', '29.7', '-77', '72', '1781509572400', '2026-06-15 15:46:17');
+INSERT INTO `iot_water_quality_data` VALUES ('7', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '23.7', '7.7', '6.5', '45.2', '-87', '96', '1781509653445', '2026-06-15 15:47:38');
+INSERT INTO `iot_water_quality_data` VALUES ('8', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '22.9', '6.8', '6.7', '29.9', '-76', '90', '1781510034528', '2026-06-15 15:53:59');
+INSERT INTO `iot_water_quality_data` VALUES ('9', 'DEV17814946377282952', 'WATER_QUALITY_MONITOR', '17.8', '8.3', '9.3', '33.1', '-83', '90', '1781510156101', '2026-06-15 15:56:01');
 
 -- ----------------------------
 -- Table structure for qrtz_blob_triggers

@@ -33,4 +33,11 @@ public interface IIotSensorDataService {
      * @return 最新的传感器数据
      */
     IotSensorData selectLatestBySerialNumber(String serialNumber);
+
+    /**
+     * 查询最近24小时温湿度趋势数据（按小时聚合）
+     *
+     * @return 每小时的温度、湿度平均值列表
+     */
+    List<java.util.Map<String, Object>> selectTrendData();
 }

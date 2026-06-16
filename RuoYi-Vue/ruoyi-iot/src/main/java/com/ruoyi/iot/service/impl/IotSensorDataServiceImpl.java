@@ -51,4 +51,9 @@ public class IotSensorDataServiceImpl implements IIotSensorDataService {
     public IotSensorData selectLatestBySerialNumber(String serialNumber) {
         return iotSensorDataMapper.selectLatestBySerialNumber(serialNumber);
     }
+
+    @Override
+    public List<java.util.Map<String, Object>> selectTrendData() {
+        return iotSensorDataMapper.selectTrendData();
+    }
 }
