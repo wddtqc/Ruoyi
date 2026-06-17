@@ -120,6 +120,15 @@ export function delDevice(deviceId) {
     })
 }
 
+// 批量获取设备实时数据（供大屏使用）
+export function getBatchRealtimeData(deviceIds) {
+    return request({
+        url: '/iot/device/runningStatus/realtimeData/batch',
+        method: 'get',
+        params: { deviceIds }
+    })
+}
+
 // 生成设备编号
 export function generatorDeviceNum() {
     return request({

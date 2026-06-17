@@ -125,6 +125,11 @@ public class IotWaterQualityDataServiceImpl implements IIotWaterQualityDataServi
         return iotWaterQualityDataMapper.batchInsertIotWaterQualityData(dataList);
     }
 
+    @Override
+    public List<IotWaterQualityData> selectLatestWaterQualityDataList() {
+        return iotWaterQualityDataMapper.selectLatestWaterQualityDataList();
+    }
+
     /**
      * 保存MQTT接收到的水质数据
      *

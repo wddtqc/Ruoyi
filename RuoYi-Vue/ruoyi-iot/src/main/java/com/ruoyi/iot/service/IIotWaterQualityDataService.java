@@ -82,4 +82,6 @@ public interface IIotWaterQualityDataService
      * @return 结果
      */
     public int saveWaterQualityDataFromMqtt(String jsonData);
+
+    public List<IotWaterQualityData> selectLatestWaterQualityDataList();
 }

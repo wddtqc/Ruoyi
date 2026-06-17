@@ -64,6 +64,15 @@ public class IotWaterQualityDataController extends BaseController
     }
 
     /**
+     * 查询所有设备最新水质数据
+     */
+    @GetMapping("/latest/list")
+    public AjaxResult getLatestList() {
+        List<IotWaterQualityData> list = iotWaterQualityDataService.selectLatestWaterQualityDataList();
+        return AjaxResult.success(list);
+    }
+
+    /**
      * 查询设备最新数据
      */
     @GetMapping("/latest/{serialNumber}")

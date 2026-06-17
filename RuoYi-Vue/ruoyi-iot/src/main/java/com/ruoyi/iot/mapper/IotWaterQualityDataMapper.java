@@ -74,4 +74,9 @@ public interface IotWaterQualityDataMapper
      * @return 结果
      */
     public int batchInsertIotWaterQualityData(List<IotWaterQualityData> dataList);
+
+    /**
+     * 查询所有设备的最新水质数据
+     */
+    public List<IotWaterQualityData> selectLatestWaterQualityDataList();
 }

@@ -73,16 +73,16 @@
       <!-- 底部叠加图表条 -->
       <div class="overlay-bottom">
         <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-s-data"></i></span> 面积与产量对比</div>
-          <div ref="barChart" class="chart-box"></div>
-        </div>
-        <div class="panel-card chart-card">
           <div class="card-title"><span class="title-icon"><i class="el-icon-s-operation"></i></span> 土壤氮磷钾 (mg/kg)</div>
           <div ref="npkChart" class="chart-box"></div>
         </div>
         <div class="panel-card chart-card">
-          <div class="card-title"><span class="title-icon"><i class="el-icon-odometer"></i></span> 土壤墒情监测</div>
-          <div ref="gaugeChart" class="chart-box"></div>
+          <div class="card-title"><span class="title-icon"><i class="el-icon-water"></i></span> 水质监测分析</div>
+          <div ref="waterQualityChart" class="chart-box"></div>
+        </div>
+        <div class="panel-card chart-card">
+          <div class="card-title"><span class="title-icon"><i class="el-icon-sunny"></i></span> 空气环境分析</div>
+          <div ref="airQualityChart" class="chart-box"></div>
         </div>
       </div>
     </main>
@@ -96,7 +96,8 @@ import amapConfig from '@/config/amap'
 import { getCurrentWeather, getForecast } from '@/api/agriculture/weather'
 import { listAllLand } from '@/api/agriculture/screen'
 import { getLatestSensorData, getTrendData } from '@/api/iot/sensor'
-import { listAllDeviceShort } from '@/api/iot/device'
+import { getBatchRealtimeData } from '@/api/iot/device'
+import { getLatestWaterQualityData } from '@/api/iot/waterQuality'
 import { getAllBatch } from '@/api/system/batch'
 import { getAllGermplasm } from '@/api/system/germplasm'
 
@@ -113,18 +114,17 @@ export default {
       clockTimer: null,
       weatherData: null,
       weatherTimer: null,
-      sensorTimer: null,
-      trendTimer: null,
+      sensorTimer: null, trendTimer: null, envTimer: null,
       weatherTrend: { temps: null, humids: null },
       landList: [],
-      sensorDataList: [],
-      trendDataList: [],
-      deviceLandMap: {}, // serialNumber → landName
+      sensorDataList: [], trendDataList: [],
+      waterQualityLatest: null, airQualityLatest: null,
       batchList: [],
       germplasmList: [],
       map: null,
       AMapInstance: null,
-      barChart: null, pieChart: null, gaugeChart: null, lineChart: null, npkChart: null,
+      pieChart: null, lineChart: null, npkChart: null,
+      waterQualityChart: null, airQualityChart: null,
       resizeHandler: null,
       overviewStats: [],
       cropTypeLegend: []
@@ -135,8 +135,9 @@ export default {
     this.clockTimer = setInterval(() => this.updateClock(), 1000)
     this.fetchAllData()
     this.weatherTimer = setInterval(() => this.fetchWeather(), 10 * 60 * 1000)
-    this.sensorTimer = setInterval(() => this.fetchSensorData(), 30 * 1000)
+    this.sensorTimer = setInterval(() => this.fetchSensorData(), 15 * 1000)
     this.trendTimer = setInterval(() => this.fetchTrendData(), 5 * 60 * 1000)
+    this.envTimer = setInterval(() => this.fetchEnvData(), 15 * 1000)
     this.$nextTick(() => { this.loadAMap() })
     this.resizeHandler = () => this.handleResize()
     window.addEventListener('resize', this.resizeHandler)
@@ -153,15 +154,15 @@ export default {
       this.$nextTick(() => { this.loadAMap() })
     }
   },
+  computed: {},
   beforeDestroy() {
     clearInterval(this.clockTimer)
     clearInterval(this.weatherTimer)
-    clearInterval(this.sensorTimer)
-    clearInterval(this.trendTimer)
+    clearInterval(this.sensorTimer); clearInterval(this.trendTimer); clearInterval(this.envTimer)
     window.removeEventListener('resize', this.resizeHandler)
     if (this.map) this.map.destroy()
-    this.barChart?.dispose(); this.pieChart?.dispose()
-    this.gaugeChart?.dispose(); this.lineChart?.dispose(); this.npkChart?.dispose()
+    this.pieChart?.dispose(); this.lineChart?.dispose(); this.npkChart?.dispose()
+    this.waterQualityChart?.dispose(); this.airQualityChart?.dispose()
   },
   methods: {
     updateClock() {
@@ -172,10 +173,8 @@ export default {
 
     // ========== 数据获取 ==========
     async fetchAllData() {
-      await this.loadDeviceLandMap()
-      // 批次数据必须在饼图初始化之前就绪
       await this.fetchBatchData()
-      await Promise.all([this.fetchWeather(), this.fetchLandData(), this.fetchSensorData(), this.fetchTrendData(), this.fetchWeatherTrend()])
+      await Promise.all([this.fetchWeather(), this.fetchLandData(), this.fetchSensorData(), this.fetchTrendData(), this.fetchWeatherTrend(), this.fetchEnvData()])
     },
 
     async fetchBatchData() {
@@ -187,22 +186,6 @@ export default {
       } catch (e) {
         this.batchList = []
         this.germplasmList = []
-      }
-    },
-
-    async loadDeviceLandMap() {
-      try {
-        const res = await listAllDeviceShort()
-        const devices = res.data || []
-        const map = {}
-        devices.forEach(d => {
-          if (d.serialNumber && d.landName) {
-            map[d.serialNumber] = d.landName
-          }
-        })
-        this.deviceLandMap = map
-      } catch (e) {
-        this.deviceLandMap = {}
       }
     },
 
@@ -224,26 +207,33 @@ export default {
       try {
         const res = await getLatestSensorData()
         this.sensorDataList = res.data || []
-        // 刷新 NPK 和湿度仪表盘
         if (this.npkChart) this.initNpkChart()
-        if (this.gaugeChart) this.initGaugeChart()
-      } catch (e) {
-        console.warn('传感器数据获取失败', e)
-        this.sensorDataList = []
-      }
+      } catch (e) { console.warn('传感器数据获取失败', e) }
     },
-
     async fetchTrendData() {
       try {
         const res = await getTrendData()
         this.trendDataList = res.data || []
-        if (this.lineChart) {
-          this.initLineChart()
-        }
-      } catch (e) {
-        console.warn('趋势数据获取失败', e)
-        this.trendDataList = []
-      }
+        if (this.lineChart) this.initLineChart()
+      } catch (e) { console.warn('趋势数据获取失败', e) }
+    },
+    async fetchEnvData() {
+      try {
+        // 水质：iot_water_quality_data 表
+        const wRes = await getLatestWaterQualityData()
+        const wList = wRes.data || []
+        if (wList.length > 0) { this.waterQualityLatest = wList[0]; if (this.waterQualityChart) this.initWaterQualityChart() }
+        // 空气：iot_device_running_status 表 (device 1003)
+        const aRes = await getBatchRealtimeData('1003')
+        const aList = aRes.data || []
+        aList.forEach(item => {
+          const sd = item.sensorData || {}
+          if (item.deviceId === 1003) {
+            this.airQualityLatest = { airTemperature: sd.air_temperature, airHumidity: sd.air_humidity, co2: sd.co2, light: sd.light }
+          }
+        })
+        if (this.airQualityLatest && this.airQualityChart) this.initAirQualityChart()
+      } catch (e) { console.warn('环境数据获取失败', e) }
     },
 
     async fetchWeatherTrend() {
@@ -343,14 +333,10 @@ export default {
     computeOverviewStats() {
       const totalArea = this.landList.reduce((s, l) => s + Number(l.landArea || 0), 0)
       const cropTypes = new Set(this.landList.map(l => l.cropName).filter(Boolean))
-      // 估产：水稻600kg/亩，油菜300kg/亩，蔬菜3000kg/亩，果树800kg/亩
-      const yieldRates = { '水稻': 0.6, '油菜': 0.3, '蔬菜': 3, '果树': 0.8 }
-      const totalYield = this.landList.reduce((s, l) => s + Number(l.landArea || 0) * (yieldRates[l.cropName] || 0.5), 0)
       this.overviewStats = [
         { label: '地块总数', value: `${this.landList.length} 块`, color: '#00ff88' },
         { label: '农田总面积', value: `${totalArea.toFixed(0)} 亩`, color: '#45b7ff' },
-        { label: '作物种类', value: `${cropTypes.size} 类`, color: '#ff8c00' },
-        { label: '估产总量', value: `${totalYield.toFixed(0)} 吨`, color: '#ff6b6b' }
+        { label: '作物种类', value: `${cropTypes.size} 类`, color: '#ff8c00' }
       ]
     },
 
@@ -482,11 +468,11 @@ export default {
 
     // ========== ECharts ==========
     initCharts() {
-      this.initBarChart()
       this.initPieChart()
       this.initNpkChart()
-      this.initGaugeChart()
       this.initLineChart()
+      this.initWaterQualityChart()
+      this.initAirQualityChart()
     },
 
     t() {
@@ -496,67 +482,9 @@ export default {
       }
     },
 
-    initBarChart() {
-      if (!this.$refs.barChart) return
-      this.barChart = echarts.init(this.$refs.barChart)
-      const t = this.t()
-      const names = this.landList.map(l => l.landName.length > 6 ? l.landName.slice(0, 6) + '..' : l.landName)
-      const areas = this.landList.map(l => Number(l.landArea || 0))
-      const yieldRates = { '水稻': 0.6, '油菜': 0.3, '蔬菜': 3, '果树': 0.8 }
-      const yields = this.landList.map(l => Number(l.landArea || 0) * (yieldRates[l.cropName] || 0.5))
-
-      this.barChart.setOption({
-        backgroundColor: 'transparent',
-        tooltip: {
-          trigger: 'axis',
-          backgroundColor: 'rgba(6,16,40,0.9)',
-          borderColor: 'rgba(0,212,255,0.3)',
-          textStyle: { color: '#fff', fontSize: 12 }
-        },
-        legend: {
-          right: 0,
-          textStyle: { color: t.text, fontSize: 11 },
-          itemWidth: 12, itemHeight: 8
-        },
-        grid: { left: 50, right: 20, top: 35, bottom: 50 },
-        xAxis: {
-          type: 'category', data: names,
-          axisLine: { lineStyle: { color: t.border } },
-          axisTick: { show: false },
-          axisLabel: { color: t.text, fontSize: 10, rotate: 30 }
-        },
-        yAxis: {
-          type: 'value', name: '吨 / 亩',
-          splitLine: { lineStyle: { color: t.splitLine } },
-          axisLabel: { color: t.textWeak, fontSize: 10 },
-          nameTextStyle: { color: t.textWeak, fontSize: 10 }
-        },
-        series: [
-          {
-            name: '种植面积(亩)', type: 'bar', data: areas, barWidth: 14,
-            itemStyle: {
-              borderRadius: [4, 4, 0, 0],
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#00ff88' }, { offset: 1, color: '#005533' }
-              ])
-            }
-          },
-          {
-            name: '估产量(吨)', type: 'bar', data: yields.map(y => +y.toFixed(1)), barWidth: 14,
-            itemStyle: {
-              borderRadius: [4, 4, 0, 0],
-              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: '#45b7ff' }, { offset: 1, color: '#002255' }
-              ])
-            }
-          }
-        ]
-      })
-    },
-
     initPieChart() {
       if (!this.$refs.pieChart) return
-      this.pieChart = echarts.init(this.$refs.pieChart)
+      this.pieChart?.dispose(); this.pieChart = echarts.init(this.$refs.pieChart)
       const t = this.t()
       const cropArea = {}
       if (this.batchList && this.batchList.length > 0) {
@@ -601,49 +529,25 @@ export default {
 
     initNpkChart() {
       if (!this.$refs.npkChart) return
-      this.npkChart = echarts.init(this.$refs.npkChart)
+      this.npkChart?.dispose(); this.npkChart = echarts.init(this.$refs.npkChart)
       const t = this.t()
 
-      let names = []
-      let nData = []
-      let pData = []
-      let kData = []
-
-      // 优先使用真实传感器数据
+      // 优先数据库实时数据（iot_sensor_data 表），无数据时用 SQL 模拟值兜底
+      let names, nData, pData, kData
       if (this.sensorDataList && this.sensorDataList.length > 0) {
-        this.sensorDataList.forEach(sensor => {
-          const sn = sensor.serialNumber || ''
-          const landName = this.deviceLandMap[sn]
-          const name = landName || sn || '未知设备'
-          names.push(name.length > 8 ? name.slice(0, 8) + '..' : name)
-          nData.push(sensor.nitrogen || 0)
-          pData.push(sensor.phosphorus || 0)
-          kData.push(sensor.potassium || 0)
+        names = []; nData = []; pData = []; kData = []
+        this.sensorDataList.forEach(s => {
+          names.push((s.serialNumber || '设备').slice(-8))
+          nData.push(s.nitrogen || 0); pData.push(s.phosphorus || 0); kData.push(s.potassium || 0)
         })
-      } else {
-        // 回退到地块模拟数据
+      } else if (this.landList.length > 0) {
+        const fallN = 50.8, fallP = 16.5, fallK = 87.2
         names = this.landList.map(l => l.landName.length > 5 ? l.landName.slice(0, 5) + '..' : l.landName)
-
-        const npkBase = {
-          '水稻': { n: 120, p: 18, k: 85 },
-          '油菜': { n: 95, p: 22, k: 70 },
-          '蔬菜': { n: 150, p: 35, k: 120 },
-          '果树': { n: 80, p: 15, k: 90 }
-        }
-        const defaultNpk = { n: 100, p: 20, k: 80 }
-
-        nData = this.landList.map(l => {
-          const base = npkBase[l.cropName] || defaultNpk
-          return +(base.n + (Math.random() - 0.5) * 20).toFixed(1)
-        })
-        pData = this.landList.map(l => {
-          const base = npkBase[l.cropName] || defaultNpk
-          return +(base.p + (Math.random() - 0.5) * 5).toFixed(1)
-        })
-        kData = this.landList.map(l => {
-          const base = npkBase[l.cropName] || defaultNpk
-          return +(base.k + (Math.random() - 0.5) * 15).toFixed(1)
-        })
+        nData = this.landList.map((_, i) => i === 0 ? fallN : +(fallN * (0.8 + Math.random() * 0.4)).toFixed(1))
+        pData = this.landList.map((_, i) => i === 0 ? fallP : +(fallP * (0.8 + Math.random() * 0.4)).toFixed(1))
+        kData = this.landList.map((_, i) => i === 0 ? fallK : +(fallK * (0.8 + Math.random() * 0.4)).toFixed(1))
+      } else {
+        names = ['1号大棚']; nData = [50.8]; pData = [16.5]; kData = [87.2]
       }
 
       this.npkChart.setOption({
@@ -675,7 +579,7 @@ export default {
         },
         series: [
           {
-            name: '氮(N)', type: 'bar', data: nData, barWidth: 10,
+            name: '氮(N)', type: 'bar', data: nData, barWidth: 10, barGap: '60%',
             itemStyle: { color: '#00ff88', borderRadius: [3, 3, 0, 0] }
           },
           {
@@ -690,59 +594,9 @@ export default {
       })
     },
 
-    initGaugeChart() {
-      if (!this.$refs.gaugeChart) return
-      this.gaugeChart = echarts.init(this.$refs.gaugeChart)
-
-      const top4 = this.landList.slice(0, 4)
-      // 构建地块名→传感器湿度映射（通过deviceLandMap反查）
-      const landHumidity = {}
-      if (this.sensorDataList && this.sensorDataList.length > 0) {
-        this.sensorDataList.forEach(sensor => {
-          const sn = sensor.serialNumber || ''
-          const landName = this.deviceLandMap[sn]
-          if (landName && sensor.humidity != null) {
-            landHumidity[landName] = sensor.humidity
-          }
-        })
-      }
-      // 回退模拟值
-      const moistureFallback = { '水稻': 75, '油菜': 60, '蔬菜': 80, '果树': 55 }
-      const gaugeData = top4.map(l => {
-        const real = landHumidity[l.landName]
-        const name = l.landName.length > 6 ? l.landName.slice(0, 6) + '..' : l.landName
-        const value = real != null ? real : (moistureFallback[l.cropName] || (55 + Math.random() * 25))
-        return { name, value }
-      })
-
-      this.gaugeChart.setOption({
-        backgroundColor: 'transparent',
-        series: gaugeData.map((item, i) => ({
-          type: 'gauge',
-          center: [(i % 2 === 0 ? 25 : 75) + '%', i < 2 ? '28%' : '72%'],
-          radius: '42%',
-          min: 0, max: 100,
-          startAngle: 210, endAngle: -30,
-          title: { show: true, offsetCenter: [0, '80%'], color: '#8ec8ff', fontSize: 10 },
-          detail: { formatter: '{value}%', color: '#fff', fontSize: 16, offsetCenter: [0, '42%'] },
-          data: [{ value: +item.value.toFixed(0), name: item.name }],
-          axisLine: {
-            lineStyle: {
-              width: 8,
-              color: [[0.3, '#ff6b6b'], [0.7, '#ffcc00'], [1, '#00ff88']]
-            }
-          },
-          axisTick: { show: false },
-          splitLine: { show: false },
-          axisLabel: { show: false },
-          pointer: { length: '55%', width: 4, itemStyle: { color: '#00d4ff' } }
-        }))
-      })
-    },
-
     initLineChart() {
       if (!this.$refs.lineChart) return
-      this.lineChart = echarts.init(this.$refs.lineChart)
+      this.lineChart?.dispose(); this.lineChart = echarts.init(this.$refs.lineChart)
       const t = this.t()
       const hours = Array.from({ length: 24 }, (_, i) => `${i}:00`)
       const allNull = arr => !arr || arr.every(v => v == null)
@@ -755,21 +609,46 @@ export default {
         temps = [...this.weatherTrend.temps]
         humids = [...this.weatherTrend.humids]
       } else if (this.trendDataList && this.trendDataList.length > 0) {
-        // 次选传感器数据库历史数据
-        temps = new Array(24).fill(null)
-        humids = new Array(24).fill(null)
+        // 数据库趋势数据（iot_sensor_data 表）
+        temps = new Array(24).fill(null); humids = new Array(24).fill(null)
         this.trendDataList.forEach(d => {
           const h = parseInt(d.hour) || 0
-          if (h >= 0 && h < 24) {
-            if (d.temperature != null) temps[h] = d.temperature
-            if (d.humidity != null) humids[h] = d.humidity
-          }
+          if (h >= 0 && h < 24) { if (d.temperature != null) temps[h] = d.temperature; if (d.humidity != null) humids[h] = d.humidity }
         })
+        const interp = arr => {
+          let lastI = -1
+          for (let i = 0; i < 24; i++) { if (arr[i] != null) { if (lastI >= 0 && i - lastI > 1) { const step = (arr[i] - arr[lastI]) / (i - lastI); for (let j = lastI + 1; j < i; j++) arr[j] = +(arr[lastI] + step * (j - lastI)).toFixed(1) } lastI = i } }
+          if (lastI >= 0) { for (let i = 0; i < 24 && arr[i] == null; i++) arr[i] = arr[lastI]; for (let i = 23; i >= 0 && arr[i] == null; i--) arr[i] = arr[lastI] }
+        }
+        interp(temps); interp(humids)
         if (allNull(temps)) temps = [...fallbackTemps]
         if (allNull(humids)) humids = [...fallbackHumids]
       } else {
-        temps = [...fallbackTemps]
-        humids = [...fallbackHumids]
+        // SQL 模拟数据兜底
+        const soilTrend = { 1: [34.2,21.5], 5: [35.6,19.8], 8: [29.8,23.5], 10: [27.1,28.3], 13: [27.9,18.5], 14: [26.4,31.2], 15: [29.1,26.6], 17: [28.5,27.2], 18: [28.9,28.6], 19: [30.2,25.8], 20: [32.7,22.7], 21: [31.8,24.1], 23: [33.5,22.3] }
+        temps = new Array(24).fill(null)
+        humids = new Array(24).fill(null)
+        Object.entries(soilTrend).forEach(([h, v]) => { temps[h] = v[0]; humids[h] = v[1] })
+        // 线性插值填补空缺
+        const interp = arr => {
+          let lastI = -1
+          for (let i = 0; i < 24; i++) {
+            if (arr[i] != null) {
+              if (lastI >= 0 && i - lastI > 1) {
+                const step = (arr[i] - arr[lastI]) / (i - lastI)
+                for (let j = lastI + 1; j < i; j++) arr[j] = +(arr[lastI] + step * (j - lastI)).toFixed(1)
+              }
+              lastI = i
+            }
+          }
+          if (lastI >= 0) {
+            for (let i = 0; i < 24 && arr[i] == null; i++) arr[i] = arr[lastI]
+            for (let i = 23; i >= 0 && arr[i] == null; i--) arr[i] = arr[lastI]
+          }
+        }
+        interp(temps); interp(humids)
+        if (allNull(temps)) temps = [...fallbackTemps]
+        if (allNull(humids)) humids = [...fallbackHumids]
       }
 
       this.lineChart.setOption({
@@ -831,9 +710,122 @@ export default {
       })
     },
 
+    initWaterQualityChart() {
+      if (!this.$refs.waterQualityChart) return
+      this.waterQualityChart?.dispose(); this.waterQualityChart = echarts.init(this.$refs.waterQualityChart)
+      const t = this.t()
+      const d = this.waterQualityLatest
+      const metrics = [
+        { name: '水温', value: d?.waterTemperature ?? 22.8, unit: '°C', color: '#00ff88' },
+        { name: 'pH值', value: d?.waterPh ?? 7.6, unit: '', color: '#00d4ff' },
+        { name: '溶解氧', value: d?.dissolvedOxygen ?? 8.0, unit: 'mg/L', color: '#45b7ff' },
+        { name: '浊度', value: d?.turbidity ?? 36.3, unit: 'NTU', color: '#ffcc00' }
+      ]
+      this.waterQualityChart.setOption({
+        backgroundColor: 'transparent',
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(6,16,40,0.9)',
+          borderColor: 'rgba(0,212,255,0.3)',
+          textStyle: { color: '#fff', fontSize: 12 }
+        },
+        grid: { left: 55, right: 15, top: 10, bottom: 25 },
+        xAxis: {
+          type: 'category',
+          data: metrics.map(m => m.name),
+          axisLine: { lineStyle: { color: t.border } },
+          axisTick: { show: false },
+          axisLabel: { color: t.text, fontSize: 9 }
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: { lineStyle: { color: t.splitLine } },
+          axisLabel: { color: t.textWeak, fontSize: 9 }
+        },
+        series: [{
+          type: 'bar', barWidth: 18,
+          data: metrics.map(m => ({
+            value: m.value,
+            itemStyle: {
+              borderRadius: [3, 3, 0, 0],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: m.color }, { offset: 1, color: 'rgba(0,0,0,0.3)' }
+              ])
+            }
+          })),
+          label: {
+            show: true, position: 'top',
+            color: t.text, fontSize: 10,
+            formatter: p => p.value + metrics[p.dataIndex].unit
+          }
+        }]
+      })
+    },
+
+    initAirQualityChart() {
+      if (!this.$refs.airQualityChart) return
+      this.airQualityChart?.dispose(); this.airQualityChart = echarts.init(this.$refs.airQualityChart)
+      const t = this.t()
+      const d = this.airQualityLatest
+      const co2Raw = d?.co2 ?? 733
+      const lightRaw = d?.light ?? 23209
+      const metrics = [
+        { name: '气温', value: d?.airTemperature ?? 17.6, unit: '°C', color: '#ff6b6b' },
+        { name: '湿度', value: d?.airHumidity ?? 67, unit: '%', color: '#45b7ff' },
+        { name: 'CO₂', value: +(co2Raw / 10).toFixed(1), unit: '×10ppm', color: '#ff8c00' },
+        { name: '光照', value: +(lightRaw / 1000).toFixed(1), unit: 'klux', color: '#ffcc00' }
+      ]
+      const rawVals = [
+        (d?.airTemperature ?? 17.6) + '°C',
+        (d?.airHumidity ?? 67) + '%',
+        co2Raw + 'ppm',
+        lightRaw + 'lux'
+      ]
+      this.airQualityChart.setOption({
+        backgroundColor: 'transparent',
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(6,16,40,0.9)',
+          borderColor: 'rgba(0,212,255,0.3)',
+          textStyle: { color: '#fff', fontSize: 12 },
+          formatter: ps => ps.map(p => p.marker + ' ' + p.name + ': ' + rawVals[p.dataIndex]).join('<br/>')
+        },
+        grid: { left: 55, right: 15, top: 10, bottom: 25 },
+        xAxis: {
+          type: 'category',
+          data: metrics.map(m => m.name),
+          axisLine: { lineStyle: { color: t.border } },
+          axisTick: { show: false },
+          axisLabel: { color: t.text, fontSize: 9 }
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: { lineStyle: { color: t.splitLine } },
+          axisLabel: { color: t.textWeak, fontSize: 9 }
+        },
+        series: [{
+          type: 'bar', barWidth: 18,
+          data: metrics.map(m => ({
+            value: m.value,
+            itemStyle: {
+              borderRadius: [3, 3, 0, 0],
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: m.color }, { offset: 1, color: 'rgba(0,0,0,0.3)' }
+              ])
+            }
+          })),
+          label: {
+            show: true, position: 'top',
+            color: t.text, fontSize: 10,
+            formatter: p => p.value + metrics[p.dataIndex].unit
+          }
+        }]
+      })
+    },
+
     handleResize() {
-      this.barChart?.resize(); this.pieChart?.resize()
-      this.gaugeChart?.resize(); this.lineChart?.resize(); this.npkChart?.resize()
+      this.pieChart?.resize(); this.lineChart?.resize(); this.npkChart?.resize()
+      this.waterQualityChart?.resize(); this.airQualityChart?.resize()
       if (this.map) this.map.resize()
     }
   }
@@ -985,15 +977,16 @@ $border-glow: rgba(0, 212, 255, 0.15);
 // 右侧叠加面板
 .overlay-sidebar {
   position: absolute; top: 14px; right: 20px; width: 260px; bottom: 224px;
-  z-index: 10; display: flex; flex-direction: column; gap: 8px;
+  z-index: 10; display: flex; flex-direction: column; gap: 6px;
   pointer-events: auto;
   background: transparent;
+  overflow-y: auto;
 }
 
 // 底部叠加图表条
 .overlay-bottom {
   position: absolute; left: 20px; right: 20px; bottom: 18px; height: 200px;
-  z-index: 10; display: flex; gap: 8px;
+  z-index: 10; display: flex; gap: 6px;
   pointer-events: auto;
 }
 
@@ -1160,6 +1153,11 @@ $border-glow: rgba(0, 212, 255, 0.15);
       }
     }
   }
+}
+
+.loading-placeholder {
+  padding: 20px; text-align: center; color: $text-dim; font-size: 12px; flex: 1;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
 }
 </style>
 

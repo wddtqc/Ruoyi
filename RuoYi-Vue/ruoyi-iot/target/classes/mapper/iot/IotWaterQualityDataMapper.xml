@@ -124,4 +124,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <select id="selectLatestWaterQualityDataList" resultMap="IotWaterQualityDataResult">
+        SELECT t1.* FROM iot_water_quality_data t1
+        INNER JOIN (
+            SELECT serial_number, MAX(create_time) as max_time
+            FROM iot_water_quality_data GROUP BY serial_number
+        ) t2 ON t1.serial_number = t2.serial_number AND t1.create_time = t2.max_time
+        ORDER BY t1.create_time DESC
+    </select>
+
 </mapper>
