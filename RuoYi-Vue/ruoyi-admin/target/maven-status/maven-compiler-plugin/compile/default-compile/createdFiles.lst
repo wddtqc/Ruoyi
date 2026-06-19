@@ -5,6 +5,7 @@ com\ruoyi\controller\system\SysDictDataController.class
 com\ruoyi\controller\system\SysDictTypeController.class
 com\ruoyi\controller\tool\TestController.class
 com\ruoyi\controller\monitor\CacheController.class
+com\ruoyi\controller\ai\DeepSeekAIController.class
 com\ruoyi\controller\system\AgricultureBatchTaskController.class
 com\ruoyi\controller\system\AgricultureMaterialInfoController.class
 com\ruoyi\controller\system\SysIndexController.class
@@ -24,6 +25,7 @@ com\ruoyi\controller\system\SysNoticeController.class
 com\ruoyi\RuoYiServletInitializer.class
 com\ruoyi\RuoYiApplication.class
 com\ruoyi\controller\system\SysMenuController.class
+com\ruoyi\config\RestTemplateConfig.class
 com\ruoyi\controller\monitor\ServerController.class
 com\ruoyi\controller\monitor\SysLogininforController.class
 com\ruoyi\controller\system\SysProfileController.class

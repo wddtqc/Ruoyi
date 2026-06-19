@@ -156,3 +156,9 @@ mqtt:
   password: public                           # MQTT密码（如不需要认证可留空）
   subscribe-topics: /agriculture/sensor/upload  # 订阅主题（多个用逗号分隔）
   qos: 1                                     # 消息质量等级（0=至多一次 1=至少一次 2=恰好一次）
+
+# DeepSeek AI配置
+deepseek:
+  api:
+    url: https://api.deepseek.com/v1/chat/completions  # DeepSeek API地址
+    key: sk-ff6a79fcef90402cb0841e6b182414da           # DeepSeek API密钥
